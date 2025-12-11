@@ -19,7 +19,7 @@ import '../models/etudiant_model.dart';
 
 // 2. Import du widget personnalisé utilisé pour afficher chaque étudiant.
 //    Ce widget encapsule la mise en forme d'une "carte visuelle" (avatar + informations).
-import '../widgets/etudiant_card.dart';
+import '../widgets/stateless_widgets/etudiant_card.dart';
 
 // ============================================================================
 // 1. HomeScreen : ÉCRAN D'ACCUEIL DE L'APPLICATION
