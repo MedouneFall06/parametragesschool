@@ -29,4 +29,26 @@ class User {
     required this.email,
     required this.role,
   });
+
+  // AJOUTE ces méthodes manquantes
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      id: json['id'].toString(),
+      nom: json['nom'] ?? '',
+      prenom: json['prenom'] ?? '',
+      email: json['email'] ?? '',
+      role: json['role'] ?? '',
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'nom': nom,
+      'prenom': prenom,
+      'email': email,
+      'role': role,
+    };
+  }
+
 }
