@@ -24,6 +24,11 @@ import 'package:flutter/material.dart';
 //
 import 'screens/login_screen.dart';
 import 'screens/home_screen.dart';
+import 'screens/forgot_password_screen.dart';
+import 'screens/help_support_screen.dart';
+import 'screens/onboarding_screen.dart';
+import 'screens/splash_screen.dart';
+import 'screens/terms_screen.dart';
 
 // ============================================================================
 // 1. FONCTION MAIN : POINT D'ENTRÉE DE L'APPLICATION

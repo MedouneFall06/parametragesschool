@@ -14,7 +14,7 @@
 import 'package:flutter/material.dart';
 
 // Importation du modèle Etudiant :
-import '../models/etudiant_model.dart';
+import '../../models/etudiant_model.dart';
 
 /// ===========================================================================
 /// 1. DÉFINITION DU WIDGET EtudiantCard

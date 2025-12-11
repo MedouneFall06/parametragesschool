@@ -1,21 +1,10 @@
 import 'package:flutter/material.dart';
-// TP4
+import 'package:parametragesschool/core/theme/app_theme.dart';
+import 'package:parametragesschool/widgets/stateless_widgets/page_header.dart';
+import 'package:parametragesschool/widgets/stateless_widgets/primary_button.dart';
+// ignore: unused_import
+import 'package:parametragesschool/widgets/stateless_widgets/secondary_button.dart';
 
-/// ===========================================================================
-/// 1. DÉCLARATION D’UN WIDGET AVEC ÉTAT : StatefulWidget
-/// ===========================================================================
-///
-/// L’écran de connexion est défini comme un StatefulWidget.
-/// Pourquoi ?
-/// - Un écran de connexion doit gérer :
-///     * la saisie utilisateur,
-///     * l’affichage d’erreurs,
-///     * les états de chargement,
-///     * la validation des champs.
-/// - Ces comportements nécessitent un *état mutable*, manipulé via setState().
-///
-/// Donc même si l’écran est statique pour l’instant, il est pertinent de
-/// préparer sa structure pour les évolutions futures.
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -23,108 +12,226 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-/// ===========================================================================
-/// 2. CLASSE D’ÉTAT ASSOCIÉE : _LoginScreenState
-/// ===========================================================================
-///
-/// Cette classe contient :
-/// - les variables d’état (email, password, erreurs, chargement…),
-/// - la logique fonctionnelle,
-/// - la méthode build() qui génère l’interface.
-///
-/// Le préfixe "_" la rend privée au fichier.
 class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  bool _isLoading = false;
+  bool _obscurePassword = true;
+
+  Future<void> _handleLogin() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
+
+      // Simuler une authentification
+      await Future.delayed(const Duration(seconds: 2));
+
+      setState(() {
+        _isLoading = false;
+      });
+
+      // Naviguer vers l'écran d'accueil
+      Navigator.pushReplacementNamed(context, '/home');
+    }
+  }
+
+  void _handleForgotPassword() {
+    Navigator.pushNamed(context, '/forgot-password');
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Scaffold structure une page complète Material Design :
-    // - AppBar
-    // - Body
-    // - BottomNavigationBar
-    // - FloatingActionButton
-    // etc.
     return Scaffold(
-
-      // ----------------------------------------------------------------------
-      // 1. BARRE SUPÉRIEURE (AppBar)
-      // ----------------------------------------------------------------------
-      //
-      // L’AppBar permet d’afficher un titre ou des actions (boutons…).
-      appBar: AppBar(
-        title: const Text("Connexion à ParametrageSchool"),
-      ),
-
-      // ----------------------------------------------------------------------
-      // 2. CONTENU PRINCIPAL (BODY)
-      // ----------------------------------------------------------------------
-      //
-      // Padding ajoute marges internes autour du contenu :
-      // meilleure ergonomie, respect des guidelines UI.
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-
-        // Column : disposition des widgets en colonne verticale.
-        child: Column(
-          // Centre verticalement l’ensemble des widgets.
-          mainAxisAlignment: MainAxisAlignment.center,
-
-          children: [
-            // ================================================================
-            // Champ de saisie : Adresse e-mail
-            // ================================================================
-            TextField(
-              // Type spécifique de clavier (email) pour une meilleure UX.
-              keyboardType: TextInputType.emailAddress,
-
-              // decoration permet d’ajouter label, icône, bordure…
-              decoration: const InputDecoration(
-                labelText: 'Adresse e-mail',           // Texte d’aide
-                border: OutlineInputBorder(),          // Bordure standard
-                prefixIcon: Icon(Icons.email),         // Icône à gauche
+      backgroundColor: AppTheme.backgroundColor,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const PageHeader(
+                title: 'Connexion',
+                subtitle: 'Accédez à votre espace scolaire',
               ),
-            ),
-
-            // Ajout d’un espace vertical de 20 pixels.
-            const SizedBox(height: 20),
-
-            // ================================================================
-            // Champ de saisie : Mot de passe
-            // ================================================================
-            TextField(
-              // Cache le texte saisi pour protéger le mot de passe.
-              obscureText: true,
-
-              decoration: const InputDecoration(
-                labelText: 'Mot de passe',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.lock),          // Icône cadenas
+              
+              Padding(
+                padding: const EdgeInsets.all(24),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 16),
+                      
+                      // Logo de l'application
+                      Center(
+                        child: Container(
+                          width: 100,
+                          height: 100,
+                          decoration: BoxDecoration(
+                            color: AppTheme.primaryColor,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 8,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: const Icon(
+                            Icons.school,
+                            size: 50,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      
+                      const SizedBox(height: 32),
+                      
+                      // Champ Email
+                      TextFormField(
+                        controller: _emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: const InputDecoration(
+                          labelText: 'Adresse email',
+                          hintText: 'exemple@ecole.com',
+                          prefixIcon: Icon(Icons.email),
+                          border: OutlineInputBorder(),
+                          filled: true,
+                          fillColor: Colors.white,
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Veuillez entrer votre email';
+                          }
+                          if (!value.contains('@')) {
+                            return 'Email invalide';
+                          }
+                          return null;
+                        },
+                      ),
+                      
+                      const SizedBox(height: 20),
+                      
+                      // Champ Mot de passe
+                      TextFormField(
+                        controller: _passwordController,
+                        obscureText: _obscurePassword,
+                        decoration: InputDecoration(
+                          labelText: 'Mot de passe',
+                          prefixIcon: const Icon(Icons.lock),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscurePassword
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscurePassword = !_obscurePassword;
+                              });
+                            },
+                          ),
+                          border: const OutlineInputBorder(),
+                          filled: true,
+                          fillColor: Colors.white,
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Veuillez entrer votre mot de passe';
+                          }
+                          if (value.length < 6) {
+                            return 'Le mot de passe doit contenir au moins 6 caractères';
+                          }
+                          return null;
+                        },
+                      ),
+                      
+                      const SizedBox(height: 16),
+                      
+                      // Lien "Mot de passe oublié"
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: _handleForgotPassword,
+                          child: Text(
+                            'Mot de passe oublié ?',
+                            style: TextStyle(
+                              color: AppTheme.primaryColor,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+                      
+                      const SizedBox(height: 24),
+                      
+                      // Bouton de connexion
+                      PrimaryButton(
+                        text: _isLoading ? 'Connexion en cours...' : 'Se connecter',
+                        onPressed: _isLoading ? null : _handleLogin,
+                        fullWidth: true,
+                        icon: _isLoading ? null : Icons.login,
+                      ),
+                      
+                      const SizedBox(height: 32),
+                      
+                      // Séparateur
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Divider(
+                              color: AppTheme.textSecondary.withOpacity(0.3),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Text(
+                              'Ou',
+                              style: TextStyle(
+                                color: AppTheme.textSecondary,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Divider(
+                              color: AppTheme.textSecondary.withOpacity(0.3),
+                            ),
+                          ),
+                        ],
+                      ),
+                      
+                      const SizedBox(height: 24),
+                      
+                      // Informations supplémentaires
+                      Center(
+                        child: Column(
+                          children: [
+                            Text(
+                              'Application de gestion scolaire',
+                              style: TextStyle(
+                                color: AppTheme.textSecondary,
+                                fontSize: 14,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'Version 1.0.0',
+                              style: TextStyle(
+                                color: AppTheme.textSecondary.withOpacity(0.7),
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ),
-
-            const SizedBox(height: 30),
-
-            // ================================================================
-            // Bouton de connexion
-            // ================================================================
-            ElevatedButton(
-              // Fonction exécutée lors du clic.
-              // Plus tard, vous y mettrez :
-              //   - validation des champs
-              //   - appel API / Firebase Auth
-              //   - gestion des erreurs
-              onPressed: () {
-                print('Bouton de connexion cliqué !');
-              },
-
-              // Personnalisation du bouton.
-              style: ElevatedButton.styleFrom(
-                // Lui donner toute la largeur disponible
-                minimumSize: const Size.fromHeight(50),
-              ),
-
-              // Texte affiché dans le bouton.
-              child: const Text('Se Connecter'),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
