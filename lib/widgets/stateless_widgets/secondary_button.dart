@@ -4,14 +4,14 @@ import '../../core/theme/app_theme.dart';
 
 class SecondaryButton extends StatelessWidget {
   final String text;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final bool fullWidth;
   final IconData? icon;
   
   const SecondaryButton({
     super.key,
     required this.text,
-    required this.onPressed,
+    this.onPressed,
     this.fullWidth = false,
     this.icon,
   });

@@ -24,11 +24,25 @@ import 'package:flutter/material.dart';
 //
 import 'screens/login_screen.dart';
 import 'screens/home_screen.dart';
+
 import 'screens/forgot_password_screen.dart';
 import 'screens/help_support_screen.dart';
 import 'screens/onboarding_screen.dart';
 import 'screens/splash_screen.dart';
 import 'screens/terms_screen.dart';
+
+import 'screens/privacy_policy_screen.dart';
+import 'screens/about_screen.dart';
+import 'screens/no_internet_screen.dart';
+import 'screens/maintenance_screen.dart';
+import 'screens/coming_soon_screen.dart';
+
+import 'screens/appearance_settings_screen.dart';
+import 'screens/language_settings_screen.dart';
+import 'screens/notification_settings_screen.dart';
+import 'screens/profile_screen.dart';
+import 'screens/settings_screen.dart';
+
 
 // ============================================================================
 // 1. FONCTION MAIN : POINT D'ENTRÉE DE L'APPLICATION
@@ -82,7 +96,7 @@ class MyApp extends StatelessWidget {
       // - Expérience utilisateur standard pour les apps nécessitant un login
       // - Possibilité de vérifier les tokens/sessions existants
       //
-      home: const SplashScreen(),
+      home: const SettingsScreen(),
 
       // ----------------------------------------------------------------------
       // 5. CONFIGURATION DU THÈME
