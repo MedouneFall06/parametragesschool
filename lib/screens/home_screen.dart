@@ -96,7 +96,7 @@ class HomeScreen extends StatelessWidget {
           children: [
             const PageHeader(
               title: 'Tableau de bord',
-              subtitle: 'Gestion scolaire en un clic',
+              subtitle: 'Gestion scolaire',
             ),
             
             Expanded(
