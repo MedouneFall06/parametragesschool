@@ -96,7 +96,7 @@ class MyApp extends StatelessWidget {
       // - Expérience utilisateur standard pour les apps nécessitant un login
       // - Possibilité de vérifier les tokens/sessions existants
       //
-      home: const SettingsScreen(),
+      home: const HomeScreen(),
 
       // ----------------------------------------------------------------------
       // 5. CONFIGURATION DU THÈME
