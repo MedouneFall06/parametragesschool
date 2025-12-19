@@ -14,17 +14,25 @@ import 'package:parametragesschool/models/etudiant_model.dart';
 // TODO: Ajouter fonctionnalités d'édition/suppression
 
 class EtudiantDetailScreen extends StatelessWidget {
-  final Etudiant etudiant;
-  final String? nomClasse;
+
   
   const EtudiantDetailScreen({
     super.key,
-    required this.etudiant,
-    this.nomClasse,
   });
 
   @override
   Widget build(BuildContext context) {
+    // TEMPORAIRE – sera remplacé par Provider
+    final Etudiant etudiant = Etudiant(
+      id: 'ETD001',
+      prenom: 'Abass',
+      nom: 'AIDARA',
+      matricule: 'MAT2024001',
+      parentId: 'PRT001',
+      classeId: 'CLS001',
+    );
+
+    final String nomClasse = 'Terminale S1';
     // Données fictives pour l'affichage statique
     final Map<String, dynamic> studentStats = {
       'moyenne': 14.5,

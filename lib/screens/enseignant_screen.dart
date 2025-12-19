@@ -31,6 +31,7 @@ class _EnseignantScreenState extends State<EnseignantScreen> {
       prenom: "Mamadou",
       email: "m.diallo@ecole.com",
       role: "enseignant",
+
     ),
     User(
       id: "ENS002",

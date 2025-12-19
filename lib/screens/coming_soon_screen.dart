@@ -6,14 +6,14 @@ import 'package:parametragesschool/widgets/stateless_widgets/secondary_button.da
 import 'package:parametragesschool/widgets/stateless_widgets/info_card.dart';
 
 class ComingSoonScreen extends StatefulWidget {
-  final String featureName;
-  final String? featureDescription;
-  
   const ComingSoonScreen({
     super.key,
-    required this.featureName,
+    this.featureName = 'Fonctionnalité',
     this.featureDescription,
   });
+
+  final String featureName;
+  final String? featureDescription;
 
   @override
   State<ComingSoonScreen> createState() => _ComingSoonScreenState();

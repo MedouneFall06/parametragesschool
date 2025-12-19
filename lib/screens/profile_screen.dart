@@ -7,15 +7,21 @@ import 'package:parametragesschool/widgets/stateless_widgets/info_card.dart';
 import 'package:parametragesschool/models/user_model.dart';
 
 class ProfileScreen extends StatelessWidget {
-  final User user;
   
   const ProfileScreen({
     super.key,
-    required this.user,
   });
 
   @override
   Widget build(BuildContext context) {
+    // TEMPORAIRE – sera remplacé par Provider
+    final User user = User(
+      id: 'USR001',
+      prenom: 'Papa Samour',
+      nom: 'Diop',
+      email: 'samour.diop@gmail.com',
+      role: 'enseignant',
+    );
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       body: SafeArea(

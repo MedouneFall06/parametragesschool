@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:parametragesschool/core/theme/app_theme.dart';
+import 'package:parametragesschool/providers/auth_provider.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/page_header.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/primary_button.dart';
 // ignore: unused_import
@@ -33,12 +35,13 @@ class _LoginScreenState extends State<LoginScreen> {
       });
 
       // Naviguer vers l'écran d'accueil
-      Navigator.pushReplacementNamed(context, '/home');
+      context.go('/home');
+
     }
   }
 
   void _handleForgotPassword() {
-    Navigator.pushNamed(context, '/forgot-password');
+    context.go('/forgot-password');
   }
 
   @override
@@ -128,9 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   : Icons.visibility,
                             ),
                             onPressed: () {
-                              setState(() {
-                                _obscurePassword = !_obscurePassword;
-                              });
+                              // ref.read(authStateProvider.notifier).state=true;
                             },
                           ),
                           border: const OutlineInputBorder(),

@@ -16,5 +16,6 @@ class Etudiant {
     required this.matricule,
     required this.classeId,
     this.parentId,
+
   });
 }

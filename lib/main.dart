@@ -14,6 +14,8 @@
 // ============================================================================
 
 import 'package:flutter/material.dart';
+import 'package:parametragesschool/screens/note_screen.dart';
+import 'config/router.dart';
 
 // ----------------------------------------------------------------------------
 // IMPORTATIONS DES ÉCRANS
@@ -96,7 +98,7 @@ class MyApp extends StatelessWidget {
       // - Expérience utilisateur standard pour les apps nécessitant un login
       // - Possibilité de vérifier les tokens/sessions existants
       //
-      home: const HomeScreen(),
+      home: const LoginScreen(),
 
       // ----------------------------------------------------------------------
       // 5. CONFIGURATION DU THÈME
