@@ -380,7 +380,7 @@ class _ClasseScreenState extends State<ClasseScreen> {
                                     ],
                                   ),
                                   onTap: () {
-                                    context.goNamed('matieres');
+                                    context.pushNamed('matieres');
                                   },
                                 ),
                               );
