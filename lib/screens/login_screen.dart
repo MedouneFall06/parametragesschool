@@ -38,8 +38,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         _isLoading = false;
       });
 
-      // Naviguer vers l'écran d'accueil
-      //context.go('/home');
 
     }
   }
@@ -159,7 +157,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       Align(
                         alignment: Alignment.centerRight,
                         child: TextButton(
-                          onPressed: _handleForgotPassword,
+                          //onPressed: _handleForgotPassword,
+                          onPressed: () => _handleForgotPassword(),  // Avec fonction anonyme
                           child: Text(
                             'Mot de passe oublié ?',
                             style: TextStyle(

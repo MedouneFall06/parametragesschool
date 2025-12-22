@@ -81,6 +81,12 @@ final routerProvider = Provider<GoRouter>((ref) {
     // ------------------------------------------------------------------------
     redirect: (context, state) {
       final isGoingToLogin = state.matchedLocation == '/login';
+      final isGoingToForgotPassword = state.matchedLocation == '/forgot-password';
+
+      // Autoriser /forgot-password même si non authentifié
+      if (isGoingToForgotPassword) {
+        return null;  // Pas de redirection
+      }
 
       if (!isAuthenticated && !isGoingToLogin) {
         return '/login';
@@ -135,16 +141,41 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
 
       // ================= ÉTUDIANTS =================
+      // Route pour l'écran de détail étudiant avec paramètres
       GoRoute(
-        path: '/etudiants',
-        name: 'etudiantList',
-        builder: (context, state) => const EtudiantListScreen(),
-      ),
-      GoRoute(
-        path: '/etudiants/detail',
+        path: '/etudiants/:id',
         name: 'etudiantDetail',
-        builder: (context, state) => const EtudiantDetailScreen(),
+        builder: (context, state) {
+          // Récupérer l'ID depuis les paramètres
+          final etudiantId = state.pathParameters['id'];
+          // TODO: Récupérer l'étudiant depuis un provider/API
+          return const EtudiantDetailScreen();
+        },
       ),
+      
+      // Route pour créer/modifier un étudiant
+    /*  GoRoute(
+        path: '/etudiants/edit/:id?',
+        name: 'etudiantEdit',
+        builder: (context, state) {
+          final etudiantId = state.pathParameters['id']; // null si création
+          return EtudiantEditScreen(etudiantId: etudiantId);
+        },
+      ),
+      
+      // Route pour ajouter une note
+      GoRoute(
+        path: '/notes/add',
+        name: 'noteAdd',
+        builder: (context, state) {
+          final etudiantId = state.uri.queryParameters['etudiantId'];
+          return NoteEditScreen(
+            note: null,
+            etudiants: [], // TODO: Passer liste réelle
+            matieres: [],  // TODO: Passer liste réelle
+          );
+        },
+      ),*/
 
       // ================= ENSEIGNANTS =================
       GoRoute(
@@ -321,7 +352,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const NoInternetScreen(),
       ),
       // Autres
-       GoRoute(
+      GoRoute(
         path: '/forgot-password',
         name: 'forgot-password',
         builder: (context, state) => const ForgotPasswordScreen(),
