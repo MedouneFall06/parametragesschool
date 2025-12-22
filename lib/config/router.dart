@@ -24,6 +24,7 @@ import '../screens/profile_screen.dart';
 import '../screens/user_management_screen.dart';
 
 import '../screens/etudiant_list_screen.dart';
+import '../screens/etudiant_screen.dart';
 import '../screens/etudiant_detail_screen.dart';
 
 import '../screens/enseignant_screen.dart';
@@ -142,40 +143,35 @@ final routerProvider = Provider<GoRouter>((ref) {
 
       // ================= ÉTUDIANTS =================
       // Route pour l'écran de détail étudiant avec paramètres
+      // Dans config/router.dart
       GoRoute(
-        path: '/etudiants/:id',
-        name: 'etudiantDetail',
-        builder: (context, state) {
-          // Récupérer l'ID depuis les paramètres
-          final etudiantId = state.pathParameters['id'];
-          // TODO: Récupérer l'étudiant depuis un provider/API
-          return const EtudiantDetailScreen();
-        },
+        path: '/etudiants',
+        builder: (context, state) => const EtudiantListScreen(),
       ),
-      
-      // Route pour créer/modifier un étudiant
-    /*  GoRoute(
-        path: '/etudiants/edit/:id?',
-        name: 'etudiantEdit',
-        builder: (context, state) {
-          final etudiantId = state.pathParameters['id']; // null si création
-          return EtudiantEditScreen(etudiantId: etudiantId);
-        },
-      ),
-      
-      // Route pour ajouter une note
       GoRoute(
-        path: '/notes/add',
-        name: 'noteAdd',
+        path: '/etudiant-detail',
         builder: (context, state) {
-          final etudiantId = state.uri.queryParameters['etudiantId'];
-          return NoteEditScreen(
-            note: null,
-            etudiants: [], // TODO: Passer liste réelle
-            matieres: [],  // TODO: Passer liste réelle
+          final args = state.extra as Map<String, dynamic>? ?? {};
+          return EtudiantDetailScreen(
+            etudiant: args['etudiant']!,
+            nomClasse: args['nomClasse'],
           );
         },
-      ),*/
+      ),
+      GoRoute(
+        path: '/etudiant-create',
+        builder: (context, state) => const EtudiantEditScreen(mode: 'create'),
+      ),
+      GoRoute(
+        path: '/etudiant-edit',
+        builder: (context, state) {
+          final args = state.extra as Map<String, dynamic>? ?? {};
+          return EtudiantEditScreen(
+            etudiant: args['etudiant']!,
+            mode: 'edit',
+          );
+        },
+      ),
 
       // ================= ENSEIGNANTS =================
       GoRoute(

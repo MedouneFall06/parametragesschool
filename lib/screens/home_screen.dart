@@ -16,6 +16,7 @@ class HomeScreen extends StatelessWidget {
             const PageHeader(
               title: 'Tableau de bord',
               subtitle: 'Accès rapide aux modules de gestion',
+              showBackButton: false, // ← DÉSACTIVER LE BOUTON RETOUR
             ),
             Expanded(
               child: SingleChildScrollView(
@@ -81,8 +82,7 @@ class HomeScreen extends StatelessWidget {
                           subtitle: 'Gérer les fiches des étudiants',
                           color: AppTheme.successColor,
                           onTap: () {
-                            // TODO: Naviguer vers la route 'etudiants'
-                            print('Navigation vers les étudiants');
+                            context.push('/etudiants');
                           },
                         ),
 
