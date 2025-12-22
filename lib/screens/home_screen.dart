@@ -71,8 +71,7 @@ class HomeScreen extends StatelessWidget {
                           subtitle: 'Gérer le personnel enseignant',
                           color: AppTheme.secondaryColor,
                           onTap: () {
-                            // TODO: Naviguer vers la route 'enseignants'
-                            print('Navigation vers les enseignants');
+                            context.pushNamed('enseignants');
                           },
                         ),
 
@@ -92,8 +91,7 @@ class HomeScreen extends StatelessWidget {
                           subtitle: 'Planifier les cours',
                           color: AppTheme.warningColor,
                           onTap: () {
-                            // TODO: Naviguer vers la route 'edt'
-                            print('Navigation vers l\'emploi du temps');
+                            context.pushNamed('schedule');
                           },
                         ),
 
@@ -103,8 +101,7 @@ class HomeScreen extends StatelessWidget {
                           subtitle: 'Consulter les statistiques',
                           color: AppTheme.infoColor,
                           onTap: () {
-                            // TODO: Naviguer vers la route 'rapports'
-                            print('Navigation vers les rapports');
+                            context.pushNamed('reports');
                           },
                         ),
                       ],

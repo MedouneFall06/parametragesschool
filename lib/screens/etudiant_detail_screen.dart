@@ -224,7 +224,7 @@ class EtudiantDetailScreen extends StatelessWidget {
                               TextButton(
                                 onPressed: () {
                                   context.pushNamed(
-                                    'notes',  // TODO: Ajouter route '/notes' dans router.dart
+                                    'notes',
                                     extra: {'etudiantId': etudiant.id},
                                   );
                                 },
@@ -300,7 +300,7 @@ class EtudiantDetailScreen extends StatelessWidget {
                               TextButton(
                                 onPressed: () {
                                   context.pushNamed(
-                                    'absences',  // TODO: Ajouter route '/absences' dans router.dart
+                                    'absences',
                                     extra: {'etudiantId': etudiant.id},
                                   );
                                 },
@@ -378,7 +378,7 @@ class EtudiantDetailScreen extends StatelessWidget {
                           child: SecondaryButton(
                             text: 'Modifier',
                             onPressed: () {
-                              context.pushNamed(  // CHANGER Navigator.pushNamed
+                              context.pushNamed(
                                 'etudiant-edit',
                                 extra: {  // CHANGER arguments en extra
                                   'etudiant': etudiant,
