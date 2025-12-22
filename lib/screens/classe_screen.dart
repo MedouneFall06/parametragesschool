@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:parametragesschool/core/theme/app_theme.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/page_header.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/primary_button.dart';
@@ -9,7 +10,7 @@ import 'package:parametragesschool/models/classe_model.dart';
 // ignore: unused_import
 import 'package:parametragesschool/models/departement_model.dart';
 
-// TODO: Transformer en StatefulWidget avec Provider
+// TODO: Transformer en ConsumerStatefulWidget avec Riverpod
 // TODO: Créer ClasseViewModel
 // TODO: Récupérer classes depuis l'API/BDD
 // TODO: Implémenter CRUD des classes
@@ -79,17 +80,18 @@ class _ClasseScreenState extends State<ClasseScreen> {
   Widget build(BuildContext context) {
     // Filtrage local (à déplacer dans ViewModel)
     List<Classe> filteredClasses = _classes.where((classe) {
-      bool matchesNiveau = _selectedNiveau == null || 
-          classe.niveau == _selectedNiveau;
-      
-      bool matchesDepartement = _selectedDepartement == null || 
+      bool matchesNiveau =
+          _selectedNiveau == null || classe.niveau == _selectedNiveau;
+
+      bool matchesDepartement = _selectedDepartement == null ||
           classe.departementId == _selectedDepartement;
-      
+
       return matchesNiveau && matchesDepartement;
     }).toList();
 
     // Calcul des statistiques (à déplacer dans ViewModel)
-    final totalEtudiants = _effectifs.values.fold(0, (sum, effectif) => sum + effectif);
+    final totalEtudiants =
+    _effectifs.values.fold(0, (sum, effectif) => sum + effectif);
     final classesParNiveau = {
       'Terminale': _classes.where((c) => c.niveau == 'Terminale').length,
       'Première': _classes.where((c) => c.niveau == 'Première').length,
@@ -98,7 +100,19 @@ class _ClasseScreenState extends State<ClasseScreen> {
 
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
+      // Le retour est maintenant gerer par le page_header
+      // L'AppBar est ici pour gérer le bouton de retour
+      // appBar: AppBar(
+      //   backgroundColor: Colors.transparent,
+      //   elevation: 0,
+      //   automaticallyImplyLeading: true,
+      //   iconTheme: IconThemeData(
+      //     color: AppTheme.textPrimary,
+      //   ),
+      // ),
+      // // Le body contient tout le reste de la page
       body: SafeArea(
+        top: false, // Important pour éviter un double espace en haut
         child: Column(
           children: [
             const PageHeader(
@@ -132,18 +146,19 @@ class _ClasseScreenState extends State<ClasseScreen> {
                         ),
                       ],
                     ),
-                    
+
                     const SizedBox(height: 12),
-                    
+
                     StatCard(
                       title: 'Moyenne par classe',
-                      value: (totalEtudiants / _classes.length).toStringAsFixed(1),
+                      value:
+                      (totalEtudiants / _classes.length).toStringAsFixed(1),
                       icon: Icons.calculate,
                       color: AppTheme.secondaryColor,
                     ),
-                    
+
                     const SizedBox(height: 24),
-                    
+
                     // Filters
                     InfoCard(
                       child: Column(
@@ -240,7 +255,8 @@ class _ClasseScreenState extends State<ClasseScreen> {
                                 child: PrimaryButton(
                                   text: 'Nouvelle classe',
                                   onPressed: () {
-                                    // TODO: Naviguer vers création de classe
+                                    context.goNamed('classe_details',
+                                        pathParameters: {'id': 'new'});
                                   },
                                   icon: Icons.add,
                                 ),
@@ -250,9 +266,9 @@ class _ClasseScreenState extends State<ClasseScreen> {
                         ],
                       ),
                     ),
-                    
+
                     const SizedBox(height: 24),
-                    
+
                     // Classes List
                     InfoCard(
                       child: Column(
@@ -320,7 +336,8 @@ class _ClasseScreenState extends State<ClasseScreen> {
                                     ),
                                   ),
                                   subtitle: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
                                     children: [
                                       const SizedBox(height: 4),
                                       Text(
@@ -346,22 +363,24 @@ class _ClasseScreenState extends State<ClasseScreen> {
                                         icon: const Icon(Icons.people,
                                             size: 20),
                                         onPressed: () {
-                                          // TODO: Voir étudiants de la classe
+                                          // TODO: Naviguer vers la liste des étudiants de la classe
                                         },
                                         color: AppTheme.primaryColor,
                                       ),
                                       IconButton(
-                                        icon: const Icon(Icons.edit,
-                                            size: 20),
+                                        icon: const Icon(Icons.edit, size: 20),
                                         onPressed: () {
-                                          // TODO: Éditer la classe
+                                          context.goNamed('classe_details',
+                                              pathParameters: {
+                                                'id': classe.id
+                                              });
                                         },
                                         color: AppTheme.accentColor,
                                       ),
                                     ],
                                   ),
                                   onTap: () {
-                                    // TODO: Voir détails de la classe
+                                    context.goNamed('matieres');
                                   },
                                 ),
                               );
@@ -369,9 +388,9 @@ class _ClasseScreenState extends State<ClasseScreen> {
                         ],
                       ),
                     ),
-                    
+
                     const SizedBox(height: 24),
-                    
+
                     // Statistics by Level
                     InfoCard(
                       child: Column(
@@ -387,14 +406,16 @@ class _ClasseScreenState extends State<ClasseScreen> {
                           ),
                           const SizedBox(height: 16),
                           ...classesParNiveau.entries.map((entry) {
-                            final percentage = (entry.value / _classes.length * 100);
+                            final percentage =
+                            (entry.value / _classes.length * 100);
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 12),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
                                         entry.key,
@@ -427,9 +448,9 @@ class _ClasseScreenState extends State<ClasseScreen> {
                         ],
                       ),
                     ),
-                    
+
                     const SizedBox(height: 24),
-                    
+
                     // Quick Actions
                     InfoCard(
                       child: Column(
@@ -452,7 +473,7 @@ class _ClasseScreenState extends State<ClasseScreen> {
                                 icon: Icons.schedule,
                                 label: 'Emploi du temps',
                                 onTap: () {
-                                  // TODO: Voir emploi du temps
+                                  // TODO: Naviguer vers la page générale des EDT
                                 },
                               ),
                               _buildQuickAction(
@@ -481,18 +502,16 @@ class _ClasseScreenState extends State<ClasseScreen> {
                         ],
                       ),
                     ),
-                    
+
                     const SizedBox(height: 32),
-                    
+
                     // Export Options
                     Row(
                       children: [
                         Expanded(
                           child: SecondaryButton(
                             text: 'Générer rapport',
-                            onPressed: () {
-                              // TODO: Générer rapport
-                            },
+                            onPressed: () {},
                             icon: Icons.description,
                           ),
                         ),
@@ -500,15 +519,13 @@ class _ClasseScreenState extends State<ClasseScreen> {
                         Expanded(
                           child: SecondaryButton(
                             text: 'Importer classes',
-                            onPressed: () {
-                              // TODO: Importer depuis fichier
-                            },
+                            onPressed: () {},
                             icon: Icons.upload,
                           ),
                         ),
                       ],
                     ),
-                    
+
                     const SizedBox(height: 32),
                   ],
                 ),
@@ -551,7 +568,9 @@ class _ClasseScreenState extends State<ClasseScreen> {
     if (parts.length >= 2) {
       return '${parts[0][0]}${parts[1][0]}';
     }
-    return nom.length >= 2 ? nom.substring(0, 2).toUpperCase() : nom.toUpperCase();
+    return nom.length >= 2
+        ? nom.substring(0, 2).toUpperCase()
+        : nom.toUpperCase();
   }
 
   Widget _buildQuickAction({
