@@ -7,32 +7,18 @@ import 'package:parametragesschool/widgets/stateless_widgets/info_card.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/stat_card.dart';
 import 'package:parametragesschool/models/etudiant_model.dart';
 
-// TODO: Transformer en StatefulWidget avec Provider
-// TODO: Créer EtudiantDetailViewModel
-// TODO: Récupérer l'étudiant depuis l'API/BDD
-// TODO: Gérer les états loading/error
-// TODO: Ajouter fonctionnalités d'édition/suppression
-
 class EtudiantDetailScreen extends StatelessWidget {
+  final Etudiant etudiant;
+  final String? nomClasse;
 
-  
   const EtudiantDetailScreen({
     super.key,
+    required this.etudiant,
+    this.nomClasse,
   });
 
   @override
   Widget build(BuildContext context) {
-    // TEMPORAIRE – sera remplacé par Provider
-    final Etudiant etudiant = Etudiant(
-      id: 'ETD001',
-      prenom: 'Abass',
-      nom: 'AIDARA',
-      matricule: 'MAT2024001',
-      parentId: 'PRT001',
-      classeId: 'CLS001',
-    );
-
-    final String nomClasse = 'Terminale S1';
     // Données fictives pour l'affichage statique
     final Map<String, dynamic> studentStats = {
       'moyenne': 14.5,
@@ -105,23 +91,21 @@ class EtudiantDetailScreen extends StatelessWidget {
                               color: AppTheme.textSecondary,
                             ),
                           ),
-                          if (nomClasse != null) ...[
-                            const SizedBox(height: 8),
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                              decoration: BoxDecoration(
-                                color: AppTheme.primaryColor.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: Text(
-                                nomClasse!,
-                                style: const TextStyle(
-                                  color: AppTheme.primaryColor,
-                                  fontWeight: FontWeight.w500,
-                                ),
+                          const SizedBox(height: 8),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: AppTheme.primaryColor.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Text(
+                              nomClasse ?? 'Classe non spécifiée',
+                              style: const TextStyle(
+                                color: AppTheme.primaryColor,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
-                          ],
+                          ),
                         ],
                       ),
                     ),
@@ -206,7 +190,7 @@ class EtudiantDetailScreen extends StatelessWidget {
                           _buildInfoItem(
                             icon: Icons.family_restroom,
                             label: 'Parent lié',
-                            value: etudiant.parentId != null ? 'Oui' : 'Non',
+                            value: etudiant.parentId != null ? 'Oui (ID: ${etudiant.parentId})' : 'Non',
                           ),
                           const Divider(),
                           _buildInfoItem(
@@ -238,7 +222,12 @@ class EtudiantDetailScreen extends StatelessWidget {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  // TODO: Naviguer vers écran des notes
+                                  // TODO: Naviguer vers écran des notes avec filtre par étudiant
+                                  Navigator.pushNamed(
+                                    context,
+                                    '/notes',
+                                    arguments: {'etudiantId': etudiant.id},
+                                  );
                                 },
                                 child: const Text('Voir tout'),
                               ),
@@ -311,7 +300,12 @@ class EtudiantDetailScreen extends StatelessWidget {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  // TODO: Naviguer vers écran des absences
+                                  // TODO: Naviguer vers écran des absences avec filtre par étudiant
+                                  Navigator.pushNamed(
+                                    context,
+                                    '/absences',
+                                    arguments: {'etudiantId': etudiant.id},
+                                  );
                                 },
                                 child: const Text('Voir tout'),
                               ),
@@ -387,7 +381,13 @@ class EtudiantDetailScreen extends StatelessWidget {
                           child: SecondaryButton(
                             text: 'Modifier',
                             onPressed: () {
-                              // TODO: Naviguer vers écran d'édition
+                              Navigator.pushNamed(
+                                context,
+                                '/etudiant-edit',
+                                arguments: {
+                                  'etudiant': etudiant,
+                                },
+                              );
                             },
                             icon: Icons.edit,
                           ),
@@ -397,7 +397,14 @@ class EtudiantDetailScreen extends StatelessWidget {
                           child: PrimaryButton(
                             text: 'Ajouter une note',
                             onPressed: () {
-                              // TODO: Naviguer vers ajout de note
+                              Navigator.pushNamed(
+                                context,
+                                '/note-create',
+                                arguments: {
+                                  'etudiantId': etudiant.id,
+                                  'etudiantNom': '${etudiant.prenom} ${etudiant.nom}',
+                                },
+                              );
                             },
                             icon: Icons.add,
                           ),
@@ -413,7 +420,14 @@ class EtudiantDetailScreen extends StatelessWidget {
                           child: SecondaryButton(
                             text: 'Voir le bulletin',
                             onPressed: () {
-                              // TODO: Naviguer vers bulletin
+                              Navigator.pushNamed(
+                                context,
+                                '/bulletin',
+                                arguments: {
+                                  'etudiantId': etudiant.id,
+                                  'etudiantNom': '${etudiant.prenom} ${etudiant.nom}',
+                                },
+                              );
                             },
                             icon: Icons.description,
                           ),
@@ -421,14 +435,41 @@ class EtudiantDetailScreen extends StatelessWidget {
                         const SizedBox(width: 12),
                         Expanded(
                           child: SecondaryButton(
-                            text: 'Contacter parent',
+                            text: 'Ajouter absence',
                             onPressed: () {
-                              // TODO: Contacter parent
+                              Navigator.pushNamed(
+                                context,
+                                '/absence-create',
+                                arguments: {
+                                  'etudiantId': etudiant.id,
+                                  'etudiantNom': '${etudiant.prenom} ${etudiant.nom}',
+                                },
+                              );
                             },
-                            icon: Icons.message,
+                            icon: Icons.person_add_disabled,
                           ),
                         ),
                       ],
+                    ),
+                    
+                    const SizedBox(height: 12),
+                    
+                    SecondaryButton(
+                      text: 'Contacter parent',
+                      onPressed: () {
+                        // TODO: Contacter parent
+                        if (etudiant.parentId != null) {
+                          // Naviguer vers écran de messagerie
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Aucun parent associé à cet étudiant'),
+                            ),
+                          );
+                        }
+                      },
+                      icon: Icons.message,
+                      fullWidth: true,
                     ),
                     
                     const SizedBox(height: 32),

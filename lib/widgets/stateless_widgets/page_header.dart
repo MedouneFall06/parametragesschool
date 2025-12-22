@@ -1,30 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart'; // 1. IMPORTER GOROUTER
+import 'package:go_router/go_router.dart';
 import '../../core/theme/app_theme.dart';
 
 class PageHeader extends StatelessWidget {
   final String title;
   final String? subtitle;
   final Widget? trailing;
+  final bool showBackButton;
+  final VoidCallback? onBackPressed;
 
   const PageHeader({
     super.key,
     required this.title,
     this.subtitle,
     this.trailing,
+    this.showBackButton = true,
+    this.onBackPressed,
   });
 
   @override
   Widget build(BuildContext context) {
-    // 2. DÉTECTER SI ON PEUT REVENIR EN ARRIÈRE
+    // Vérifier si on peut revenir en arrière
     final bool canPop = GoRouter.of(context).canPop();
+    final bool shouldShowBackButton = showBackButton && canPop;
 
     return Container(
-      // Le padding est conservé
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
         color: AppTheme.primaryColor,
-        borderRadius: BorderRadius.circular(20), // Simplifié pour les 4 coins
+        borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.1),
@@ -34,25 +38,19 @@ class PageHeader extends StatelessWidget {
         ],
       ),
       child: Row(
-        // Utilisation d'une Row pour aligner le bouton retour et le contenu
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // 3. AFFICHER LE BOUTON RETOUR SI POSSIBLE
-          if (canPop)
+          // Bouton Retour - AFFICHER TOUJOURS (sauf si explicitement désactivé)
+          if (shouldShowBackButton)
             Padding(
-              // Un peu d'espace entre la flèche et le titre
               padding: const EdgeInsets.only(right: 8.0),
               child: IconButton(
-                // On utilise une icône blanche pour correspondre à votre design
                 icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
-                onPressed: () {
-                  context.pop(); // L'action pour revenir en arrière
-                },
+                onPressed: onBackPressed ?? () => context.pop(),
                 tooltip: 'Retour',
               ),
             ),
 
-          // Le reste de votre contenu (titre, sous-titre) est maintenant dans un Expanded
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,8 +58,10 @@ class PageHeader extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // Le titre doit être flexible pour ne pas causer de "pixel overflow"
-                    // si le texte est long et qu'il y a le bouton retour
+                    // Si pas de bouton retour mais qu'on veut l'espacement
+                    if (!shouldShowBackButton)
+                      const SizedBox(width: 48), // Espace pour alignement
+
                     Expanded(
                       child: Text(
                         title,
@@ -70,14 +70,14 @@ class PageHeader extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
-                        // Empêche le texte de déborder
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    // Le widget 'trailing' est conservé
+                    
                     if (trailing != null) trailing!,
                   ],
                 ),
+                
                 if (subtitle != null)
                   Padding(
                     padding: const EdgeInsets.only(top: 4.0),
