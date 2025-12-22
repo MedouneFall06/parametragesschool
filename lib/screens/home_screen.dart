@@ -16,7 +16,7 @@ class HomeScreen extends StatelessWidget {
             const PageHeader(
               title: 'Tableau de bord',
               subtitle: 'Accès rapide aux modules de gestion',
-              showBackButton: false, // ← DÉSACTIVER LE BOUTON RETOUR
+              showBackButton: false,
             ),
             Expanded(
               child: SingleChildScrollView(
@@ -24,88 +24,212 @@ class HomeScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Modules principaux',
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: AppTheme.textPrimary,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
+                    // Section ACADÉMIQUE
+                    _buildSectionTitle('📊 ACADÉMIQUE'),
                     GridView.count(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       crossAxisCount: 2,
-                      crossAxisSpacing: 16,
-                      mainAxisSpacing: 16,
-                      childAspectRatio: 1.2,
+                      crossAxisSpacing: 12,
+                      mainAxisSpacing: 12,
+                      childAspectRatio: 1.8,
                       children: [
-                        // CORRECTION : 'context,' a été retiré de chaque appel
-                        _buildModuleCard(
-                          icon: Icons.class_,
-                          title: 'Classes',
-                          subtitle: 'Gérer les classes et les niveaux',
-                          color: AppTheme.primaryColor,
-                          onTap: () {
-
-                            // ==================== CORRECTION ICI ====================
-                            // Remplacez 'goNamed' par 'pushNamed' pour ajouter la page
-                            // à la pile de navigation et permettre le retour.
-                            context.pushNamed('classes');
-                          },
-                        ),
-
-                        _buildModuleCard(
-                          icon: Icons.menu_book,
-                          title: 'Matières',
-                          subtitle: 'Configurer les matières et coefficients',
-                          color: AppTheme.accentColor,
-                          onTap: () {
-                            context.pushNamed('matieres');
-                          },
-                        ),
-
-                        _buildModuleCard(
-                          icon: Icons.school,
-                          title: 'Enseignants',
-                          subtitle: 'Gérer le personnel enseignant',
-                          color: AppTheme.secondaryColor,
-                          onTap: () {
-                            context.pushNamed('enseignants');
-                          },
-                        ),
-
                         _buildModuleCard(
                           icon: Icons.people_alt,
                           title: 'Étudiants',
-                          subtitle: 'Gérer les fiches des étudiants',
+                          subtitle: 'Gérer les étudiants',
                           color: AppTheme.successColor,
-                          onTap: () {
-                            context.push('/etudiants');
-                          },
+                          onTap: () => context.pushNamed('etudiants'),
                         ),
-
                         _buildModuleCard(
-                          icon: Icons.calendar_today,
-                          title: 'Emploi du temps',
-                          subtitle: 'Planifier les cours',
-                          color: AppTheme.warningColor,
-                          onTap: () {
-                            context.pushNamed('schedule');
-                          },
+                          icon: Icons.grade,
+                          title: 'Notes',
+                          subtitle: 'Saisie et consultation',
+                          color: AppTheme.accentColor,
+                          onTap: () => context.pushNamed('notes'),
                         ),
-
                         _buildModuleCard(
-                          icon: Icons.bar_chart,
-                          title: 'Rapports',
-                          subtitle: 'Consulter les statistiques',
+                          icon: Icons.class_,
+                          title: 'Classes',
+                          subtitle: 'Classes et niveaux',
+                          color: AppTheme.primaryColor,
+                          onTap: () => context.pushNamed('classes'),
+                        ),
+                        _buildModuleCard(
+                          icon: Icons.description,
+                          title: 'Bulletin',
+                          subtitle: 'Bulletins scolaires',
                           color: AppTheme.infoColor,
-                          onTap: () {
-                            context.pushNamed('reports');
-                          },
+                          onTap: () => context.pushNamed('bulletin'),
+                        ),
+                        _buildModuleCard(
+                          icon: Icons.menu_book,
+                          title: 'Matières',
+                          subtitle: 'Matières enseignées',
+                          color: AppTheme.secondaryColor,
+                          onTap: () => context.pushNamed('matieres'),
+                        ),
+                        _buildModuleCard(
+                          icon: Icons.person_off,
+                          title: 'Absences',
+                          subtitle: 'Gestion des absences',
+                          color: AppTheme.warningColor,
+                          onTap: () => context.pushNamed('absences'),
                         ),
                       ],
                     ),
+                    
+                    const SizedBox(height: 24),
+                    
+                    // Section PLANNING
+                    _buildSectionTitle('📅 PLANNING'),
+                    GridView.count(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 12,
+                      mainAxisSpacing: 12,
+                      childAspectRatio: 1.8,
+                      children: [
+                        _buildModuleCard(
+                          icon: Icons.calendar_today,
+                          title: 'Emploi du temps',
+                          subtitle: 'Planning des cours',
+                          color: AppTheme.primaryColor,
+                          onTap: () => context.pushNamed('schedule'),
+                        ),
+                        _buildModuleCard(
+                          icon: Icons.event,
+                          title: 'Calendrier scolaire',
+                          subtitle: 'Événements et vacances',
+                          color: AppTheme.accentColor,
+                          onTap: () => context.pushNamed('school-calendar'),
+                        ),
+                      ],
+                    ),
+                    
+                    const SizedBox(height: 24),
+                    
+                    // Section PERSONNEL
+                    _buildSectionTitle('👥 PERSONNEL'),
+                    GridView.count(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 12,
+                      mainAxisSpacing: 12,
+                      childAspectRatio: 1.8,
+                      children: [
+                        _buildModuleCard(
+                          icon: Icons.school,
+                          title: 'Enseignants',
+                          subtitle: 'Gestion du personnel',
+                          color: AppTheme.secondaryColor,
+                          onTap: () => context.pushNamed('enseignants'),
+                        ),
+                        _buildModuleCard(
+                          icon: Icons.assessment,
+                          title: 'Évaluation',
+                          subtitle: 'Évaluation enseignants',
+                          color: AppTheme.infoColor,
+                          onTap: () => context.pushNamed('teacher-evaluation'),
+                        ),
+                      ],
+                    ),
+                    
+                    const SizedBox(height: 24),
+                    
+                    // Section RAPPORTS & ANALYSE
+                    _buildSectionTitle('📈 RAPPORTS & ANALYSE'),
+                    GridView.count(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 12,
+                      mainAxisSpacing: 12,
+                      childAspectRatio: 1.8,
+                      children: [
+                        _buildModuleCard(
+                          icon: Icons.bar_chart,
+                          title: 'Rapports',
+                          subtitle: 'Rapports généraux',
+                          color: AppTheme.primaryColor,
+                          onTap: () => context.pushNamed('reports'),
+                        ),
+                        _buildModuleCard(
+                          icon: Icons.analytics,
+                          title: 'Statistiques',
+                          subtitle: 'Statistiques avancées',
+                          color: AppTheme.accentColor,
+                          onTap: () => context.pushNamed('advanced-stats'),
+                        ),
+                        _buildModuleCard(
+                          icon: Icons.auto_awesome,
+                          title: 'Rapports auto',
+                          subtitle: 'Rapports automatiques',
+                          color: AppTheme.secondaryColor,
+                          onTap: () => context.pushNamed('auto-reports'),
+                        ),
+                      ],
+                    ),
+                    
+                    const SizedBox(height: 24),
+                    
+                    // Section ADMINISTRATION
+                    _buildSectionTitle('⚙️ ADMINISTRATION'),
+                    GridView.count(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 12,
+                      mainAxisSpacing: 12,
+                      childAspectRatio: 1.8,
+                      children: [
+                        _buildModuleCard(
+                          icon: Icons.settings,
+                          title: 'Paramètres',
+                          subtitle: 'Paramètres système',
+                          color: AppTheme.infoColor,
+                          onTap: () => context.pushNamed('settings'),
+                        ),
+                        _buildModuleCard(
+                          icon: Icons.backup,
+                          title: 'Backup',
+                          subtitle: 'Sauvegarde des données',
+                          color: AppTheme.warningColor,
+                          onTap: () => context.pushNamed('backup'),
+                        ),
+                        _buildModuleCard(
+                          icon: Icons.people_outline,
+                          title: 'Utilisateurs',
+                          subtitle: 'Gestion des comptes',
+                          color: AppTheme.primaryColor,
+                          onTap: () => context.pushNamed('user-management'),
+                        ),
+                        _buildModuleCard(
+                          icon: Icons.sync,
+                          title: 'Sync',
+                          subtitle: 'Synchronisation',
+                          color: AppTheme.successColor,
+                          onTap: () => context.pushNamed('sync'),
+                        ),
+                        _buildModuleCard(
+                          icon: Icons.dashboard,
+                          title: 'Admin Dashboard',
+                          subtitle: 'Tableau de bord admin',
+                          color: AppTheme.secondaryColor,
+                          onTap: () => context.pushNamed('admin-dashboard'),
+                        ),
+                        _buildModuleCard(
+                          icon: Icons.history,
+                          title: 'Audit Log',
+                          subtitle: 'Journal d\'audit',
+                          color: AppTheme.accentColor,
+                          onTap: () => context.pushNamed('audit-log'),
+                        ),
+                      ],
+                    ),
+                    
                     const SizedBox(height: 32),
                   ],
                 ),
@@ -117,7 +241,20 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  // CORRECTION : 'context' a été retiré des paramètres de la fonction
+  Widget _buildSectionTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Text(
+        title,
+        style: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          color: AppTheme.textPrimary,
+        ),
+      ),
+    );
+  }
+
   Widget _buildModuleCard({
     required IconData icon,
     required String title,
@@ -132,40 +269,43 @@ class HomeScreen extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
         child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          padding: const EdgeInsets.all(12),
+          child: Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(8),
+                width: 40,
+                height: 40,
                 decoration: BoxDecoration(
                   color: color.withOpacity(0.15),
-                  shape: BoxShape.circle,
+                  borderRadius: BorderRadius.circular(8),
                 ),
-                child: Icon(icon, color: color, size: 24),
+                child: Icon(icon, color: color, size: 20),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: AppTheme.textPrimary,
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: AppTheme.textPrimary,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    subtitle,
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: AppTheme.textSecondary,
+                    const SizedBox(height: 2),
+                    Text(
+                      subtitle,
+                      style: const TextStyle(
+                        fontSize: 11,
+                        color: AppTheme.textSecondary,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
+              const Icon(Icons.chevron_right, size: 16, color: Colors.grey),
             ],
           ),
         ),
