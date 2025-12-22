@@ -9,6 +9,8 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter/material.dart'; // Pour Container
+
 import 'package:parametragesschool/screens/forgot_password_screen.dart';
 
 // ---------------- PROVIDER AUTH ----------------
@@ -30,11 +32,16 @@ import '../screens/etudiant_detail_screen.dart';
 import '../screens/enseignant_screen.dart';
 import '../screens/teacher_evaluation_screen.dart';
 
-import '../screens/absence_screen.dart';
+//import '../screens/absence_screen.dart';
 import '../screens/absence_list_screen.dart';
 
+import '../screens/absence_edit_screen.dart'; // À créer
+
 import '../screens/note_screen.dart';
+import '../screens/note_edit_screen.dart';
 import '../screens/note_list_screen.dart';
+
+import '../screens/bulletin_screen.dart';
 
 import '../screens/schedule_screen.dart';
 import '../screens/emploi_du_temps_screen.dart';
@@ -146,10 +153,12 @@ final routerProvider = Provider<GoRouter>((ref) {
       // Dans config/router.dart
       GoRoute(
         path: '/etudiants',
+        name: 'etudiants',
         builder: (context, state) => const EtudiantListScreen(),
       ),
       GoRoute(
         path: '/etudiant-detail',
+        name: 'etudiant-detail',
         builder: (context, state) {
           final args = state.extra as Map<String, dynamic>? ?? {};
           return EtudiantDetailScreen(
@@ -160,10 +169,12 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/etudiant-create',
+        name: 'etudiant-create',
         builder: (context, state) => const EtudiantEditScreen(mode: 'create'),
       ),
       GoRoute(
         path: '/etudiant-edit',
+        name: 'etudiant-edit',
         builder: (context, state) {
           final args = state.extra as Map<String, dynamic>? ?? {};
           return EtudiantEditScreen(
@@ -185,30 +196,50 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const TeacherEvaluationScreen(),
       ),
 
-      // ================= ABSENCES =================
+      // ================= NOTES, ABSENCES, BULLETIN =================
       GoRoute(
-        path: '/absences',
-        name: 'absence',
-        builder: (context, state) => const AbsenceScreen(),
-      ),
-      GoRoute(
-        path: '/absences/list',
-        name: 'absenceList',
-        builder: (context, state) => const AbsenceListScreen(),
+        path: '/note-create',
+        name: 'note-create',
+        builder: (context, state) {
+          final args = state.extra as Map<String, dynamic>? ?? {};
+          return NoteEditScreen(
+            note: null,
+            etudiants: [], // TODO: Remplacer par liste réelle
+            matieres: [],  // TODO: Remplacer par liste réelle
+          );
+        },
       ),
 
-      // ================= NOTES =================
+      GoRoute(
+        path: '/absence-create',
+        name: 'absence-create',
+        builder: (context, state) {
+          final args = state.extra as Map<String, dynamic>? ?? {};
+          return AbsenceEditScreen(
+            absence: null,
+            etudiantId: args['etudiantId'],
+            etudiantNom: args['etudiantNom'],
+          );
+        },
+      ),
+
       GoRoute(
         path: '/notes',
-        name: 'note',
-        builder: (context, state) => const NoteScreen(),
-      ),
-      GoRoute(
-        path: '/notes/list',
-        name: 'noteList',
+        name: 'notes',
         builder: (context, state) => const NoteListScreen(),
       ),
 
+      GoRoute(
+        path: '/absences',
+        name: 'absences',
+        builder: (context, state) => const AbsenceListScreen(),
+      ),
+
+      GoRoute(
+        path: '/bulletin',
+        name: 'bulletin',
+        builder: (context, state) => const BulletinScreen(),
+      ),
       // ================= EMPLOI DU TEMPS =================
       GoRoute(
         path: '/schedule',
