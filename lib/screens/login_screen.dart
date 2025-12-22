@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:parametragesschool/core/theme/app_theme.dart';
 import 'package:parametragesschool/providers/auth_provider.dart';
@@ -7,14 +8,14 @@ import 'package:parametragesschool/widgets/stateless_widgets/primary_button.dart
 // ignore: unused_import
 import 'package:parametragesschool/widgets/stateless_widgets/secondary_button.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -30,12 +31,15 @@ class _LoginScreenState extends State<LoginScreen> {
       // Simuler une authentification
       await Future.delayed(const Duration(seconds: 2));
 
+      // IMPORTANT: Mettre à jour l'état d'authentification
+      ref.read(authStateProvider.notifier).state = true;
+
       setState(() {
         _isLoading = false;
       });
 
       // Naviguer vers l'écran d'accueil
-      context.go('/home');
+      //context.go('/home');
 
     }
   }

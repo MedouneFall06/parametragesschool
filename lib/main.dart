@@ -14,6 +14,7 @@
 // ============================================================================
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:parametragesschool/screens/note_screen.dart';
 import 'config/router.dart';
 
@@ -54,7 +55,11 @@ import 'screens/settings_screen.dart';
 // Elle appelle runApp() qui initialise l'interface utilisateur.
 //
 void main() {
-  runApp(const MyApp());
+  runApp(
+    const ProviderScope(
+      child: MyApp(),
+    ),
+  );
 }
 
 // ============================================================================
@@ -69,11 +74,11 @@ void main() {
 // - Gère la navigation, les thèmes, les localisations
 // - Offre de nombreux widgets prédéfinis
 //
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     // ------------------------------------------------------------------------
     // 3. MATERIALAPP : CONFIGURATION PRINCIPALE
     // ------------------------------------------------------------------------
@@ -85,7 +90,11 @@ class MyApp extends StatelessWidget {
     // - Des routes nommées
     // - Des paramètres de débogage
     //
-    return MaterialApp(
+    
+    final router = ref.watch(routerProvider);
+
+
+    return MaterialApp.router(
       // ----------------------------------------------------------------------
       // 4. ÉCRAN D'ACCUEIL (home)
       // ----------------------------------------------------------------------
@@ -98,7 +107,7 @@ class MyApp extends StatelessWidget {
       // - Expérience utilisateur standard pour les apps nécessitant un login
       // - Possibilité de vérifier les tokens/sessions existants
       //
-      home: const LoginScreen(),
+      routerConfig: router,
 
       // ----------------------------------------------------------------------
       // 5. CONFIGURATION DU THÈME
