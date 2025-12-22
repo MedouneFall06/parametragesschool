@@ -7,6 +7,7 @@ import 'package:parametragesschool/widgets/stateless_widgets/info_card.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/stat_card.dart';
 import 'package:parametragesschool/models/parent_model.dart';
 import 'package:parametragesschool/models/user_model.dart';
+// ignore: unused_import
 import 'package:parametragesschool/models/etudiant_model.dart';
 
 // TODO: Transformer en StatefulWidget avec Provider
@@ -63,6 +64,7 @@ class _ParentScreenState extends State<ParentScreen> {
     ),
   ];
 
+  // ignore: unused_field
   final Map<String, Parent> _parentsDetails = {
     "PAR001": Parent(userId: "PAR001"),
     "PAR002": Parent(userId: "PAR002"),
