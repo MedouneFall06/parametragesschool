@@ -9,6 +9,7 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:parametragesschool/screens/forgot_password_screen.dart';
 
 // ---------------- PROVIDER AUTH ----------------
 import '../providers/auth_provider.dart';
@@ -318,6 +319,12 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/no-internet',
         name: 'noInternet',
         builder: (context, state) => const NoInternetScreen(),
+      ),
+      // Autres
+       GoRoute(
+        path: '/forgot-password',
+        name: 'forgot-password',
+        builder: (context, state) => const ForgotPasswordScreen(),
       ),
     ],
   );
