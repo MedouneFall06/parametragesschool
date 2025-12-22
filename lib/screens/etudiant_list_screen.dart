@@ -6,6 +6,7 @@ import 'package:parametragesschool/widgets/stateless_widgets/secondary_button.da
 import 'package:parametragesschool/widgets/stateless_widgets/etudiant_card.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/empty_state_widget.dart';
 import 'package:parametragesschool/models/etudiant_model.dart';
+import 'package:go_router/go_router.dart';
 
 // TODO: Transformer en StatefulWidget avec Provider
 // TODO: Créer EtudiantListViewModel
@@ -314,11 +315,9 @@ class _EtudiantListScreenState extends State<EtudiantListScreen> {
                                   etudiant: etudiant,
                                   nomClasse: _classes[etudiant.classeId],
                                   onTap: () {
-                                    // TODO: Naviguer vers détail avec Provider
-                                    Navigator.pushNamed(
-                                      context,
-                                      '/etudiant-detail',
-                                      arguments: {
+                                    context.pushNamed(  // CHANGER Navigator.pushNamed en context.pushNamed
+                                      'etudiant-detail',  // CHANGER '/etudiant-detail' en 'etudiant-detail'
+                                      extra: {  // CHANGER arguments en extra
                                         'etudiant': etudiant,
                                         'nomClasse': _classes[etudiant.classeId],
                                       },
@@ -336,12 +335,12 @@ class _EtudiantListScreenState extends State<EtudiantListScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // TODO: Naviguer vers ajout d'étudiant
-        },
-        backgroundColor: AppTheme.primaryColor,
-        foregroundColor: Colors.white,
-        child: const Icon(Icons.person_add),
+      onPressed: () {
+        context.pushNamed('etudiant-create');  // CHANGER Navigator.pushNamed
+      },
+      backgroundColor: AppTheme.primaryColor,
+      foregroundColor: Colors.white,
+      child: const Icon(Icons.person_add),
       ),
     );
   }

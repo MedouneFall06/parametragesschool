@@ -6,6 +6,7 @@ import 'package:parametragesschool/widgets/stateless_widgets/secondary_button.da
 import 'package:parametragesschool/widgets/stateless_widgets/info_card.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/stat_card.dart';
 import 'package:parametragesschool/models/etudiant_model.dart';
+import 'package:go_router/go_router.dart';
 
 class EtudiantDetailScreen extends StatelessWidget {
   final Etudiant etudiant;
@@ -222,11 +223,9 @@ class EtudiantDetailScreen extends StatelessWidget {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  // TODO: Naviguer vers écran des notes avec filtre par étudiant
-                                  Navigator.pushNamed(
-                                    context,
-                                    '/notes',
-                                    arguments: {'etudiantId': etudiant.id},
+                                  context.pushNamed(
+                                    'notes',  // TODO: Ajouter route '/notes' dans router.dart
+                                    extra: {'etudiantId': etudiant.id},
                                   );
                                 },
                                 child: const Text('Voir tout'),
@@ -300,11 +299,9 @@ class EtudiantDetailScreen extends StatelessWidget {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  // TODO: Naviguer vers écran des absences avec filtre par étudiant
-                                  Navigator.pushNamed(
-                                    context,
-                                    '/absences',
-                                    arguments: {'etudiantId': etudiant.id},
+                                  context.pushNamed(
+                                    'absences',  // TODO: Ajouter route '/absences' dans router.dart
+                                    extra: {'etudiantId': etudiant.id},
                                   );
                                 },
                                 child: const Text('Voir tout'),
@@ -381,10 +378,9 @@ class EtudiantDetailScreen extends StatelessWidget {
                           child: SecondaryButton(
                             text: 'Modifier',
                             onPressed: () {
-                              Navigator.pushNamed(
-                                context,
-                                '/etudiant-edit',
-                                arguments: {
+                              context.pushNamed(  // CHANGER Navigator.pushNamed
+                                'etudiant-edit',
+                                extra: {  // CHANGER arguments en extra
                                   'etudiant': etudiant,
                                 },
                               );
@@ -397,10 +393,10 @@ class EtudiantDetailScreen extends StatelessWidget {
                           child: PrimaryButton(
                             text: 'Ajouter une note',
                             onPressed: () {
-                              Navigator.pushNamed(
-                                context,
-                                '/note-create',
-                                arguments: {
+                              // TODO: Créer une route '/note-create' dans router.dart
+                              context.pushNamed(
+                                'note-create',
+                                extra: {
                                   'etudiantId': etudiant.id,
                                   'etudiantNom': '${etudiant.prenom} ${etudiant.nom}',
                                 },
@@ -420,10 +416,9 @@ class EtudiantDetailScreen extends StatelessWidget {
                           child: SecondaryButton(
                             text: 'Voir le bulletin',
                             onPressed: () {
-                              Navigator.pushNamed(
-                                context,
-                                '/bulletin',
-                                arguments: {
+                              context.pushNamed(
+                                'bulletin',
+                                extra: {
                                   'etudiantId': etudiant.id,
                                   'etudiantNom': '${etudiant.prenom} ${etudiant.nom}',
                                 },
@@ -437,10 +432,10 @@ class EtudiantDetailScreen extends StatelessWidget {
                           child: SecondaryButton(
                             text: 'Ajouter absence',
                             onPressed: () {
-                              Navigator.pushNamed(
-                                context,
-                                '/absence-create',
-                                arguments: {
+                              // TODO: Créer une route '/absence-create' dans router.dart
+                              context.pushNamed(
+                                'absence-create',
+                                extra: {
                                   'etudiantId': etudiant.id,
                                   'etudiantNom': '${etudiant.prenom} ${etudiant.nom}',
                                 },
