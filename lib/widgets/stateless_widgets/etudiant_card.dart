@@ -16,57 +16,108 @@ class EtudiantCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // FORCER l'adaptation radicale pour petits écrans
+    final width = MediaQuery.of(context).size.width;
+    final bool isVerySmallScreen = width < 400; // iPhone SE, petits Android
+    final bool isSmallScreen = width < 600;     // Mobiles standards
+    
     return Card(
-      margin: const EdgeInsets.symmetric(vertical: 8),
+      margin: EdgeInsets.zero, // CRITIQUE : ResponsiveGrid gère l'espace
       elevation: 1,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(10),
       ),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
+        borderRadius: BorderRadius.circular(10),
+        child: Container(
+          constraints: BoxConstraints(
+            minHeight: 0, // Permet de rétrécir
+            maxHeight: double.infinity,
+          ),
+          padding: EdgeInsets.all(isVerySmallScreen ? 8 : isSmallScreen ? 10 : 12),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              _buildAvatar(),
-              const SizedBox(width: 16),
+              // AVATAR - TAILLE DYNAMIQUE RADICALE
+              Container(
+                width: isVerySmallScreen ? 32 : isSmallScreen ? 36 : 40,
+                height: isVerySmallScreen ? 32 : isSmallScreen ? 36 : 40,
+                decoration: BoxDecoration(
+                  color: _getAvatarColor(etudiant.id),
+                  shape: BoxShape.circle,
+                ),
+                child: Center(
+                  child: Text(
+                    _getInitiales(etudiant.prenom, etudiant.nom),
+                    style: TextStyle(
+                      fontSize: isVerySmallScreen ? 12 : isSmallScreen ? 13 : 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+              
+              SizedBox(width: isVerySmallScreen ? 8 : isSmallScreen ? 10 : 12),
+              
+              // CONTENU PRINCIPAL - AVEC CONTRAINTES STRICTES
               Expanded(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
+                    // NOM PRÉNOM - TAILLE DYNAMIQUE
                     Text(
                       "${etudiant.prenom} ${etudiant.nom}",
-                      style: const TextStyle(
-                        fontSize: 16,
+                      style: TextStyle(
+                        fontSize: isVerySmallScreen ? 13 : isSmallScreen ? 14 : 15,
                         fontWeight: FontWeight.w600,
                         color: AppTheme.textPrimary,
+                        height: 1.2,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 4),
-                    _buildInfoRow(
+                    
+                    SizedBox(height: isVerySmallScreen ? 2 : 3),
+                    
+                    // MATRICULE
+                    _buildCompactInfoRow(
                       icon: Icons.badge,
                       text: etudiant.matricule,
+                      isVerySmallScreen: isVerySmallScreen,
+                      isSmallScreen: isSmallScreen,
                     ),
-                    if (nomClasse != null && nomClasse!.isNotEmpty) ...[
-                      const SizedBox(height: 4),
-                      _buildInfoRow(
+                    
+                    // CLASSE (seulement si place)
+                    if (nomClasse != null && nomClasse!.isNotEmpty) 
+                      _buildCompactInfoRow(
                         icon: Icons.school,
                         text: nomClasse!,
+                        isVerySmallScreen: isVerySmallScreen,
+                        isSmallScreen: isSmallScreen,
                       ),
-                    ],
-                    const SizedBox(height: 4),
-                    _buildParentStatus(),
+                    
+                    // STATUT PARENT (seulement sur écrans assez larges)
+                    if (!isVerySmallScreen && width > 350)
+                      _buildParentStatusCompact(
+                        etudiant: etudiant,
+                        isVerySmallScreen: isVerySmallScreen,
+                        isSmallScreen: isSmallScreen,
+                      ),
                   ],
                 ),
               ),
-              if (onTap != null) ...[
-                const SizedBox(width: 8),
+              
+              // FLÈCHE (seulement si assez de place)
+              if (onTap != null && width > 300) ...[
+                SizedBox(width: isVerySmallScreen ? 4 : 6),
                 Icon(
                   Icons.chevron_right,
                   color: AppTheme.primaryColor,
+                  size: isVerySmallScreen ? 16 : isSmallScreen ? 18 : 20,
                 ),
               ],
             ],
@@ -76,19 +127,72 @@ class EtudiantCard extends StatelessWidget {
     );
   }
 
-  Widget _buildAvatar() {
-    final initiales = _getInitiales(etudiant.prenom, etudiant.nom);
+  Widget _buildCompactInfoRow({
+    required IconData icon,
+    required String text,
+    required bool isVerySmallScreen,
+    required bool isSmallScreen,
+  }) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: isVerySmallScreen ? 1 : 2),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Icon(
+            icon,
+            size: isVerySmallScreen ? 10 : isSmallScreen ? 11 : 12,
+            color: AppTheme.textSecondary,
+          ),
+          SizedBox(width: isVerySmallScreen ? 3 : 4),
+          Expanded(
+            child: Text(
+              text,
+              style: TextStyle(
+                fontSize: isVerySmallScreen ? 11 : isSmallScreen ? 12 : 13,
+                color: AppTheme.textSecondary,
+                height: 1.1,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildParentStatusCompact({
+    required Etudiant etudiant,
+    required bool isVerySmallScreen,
+    required bool isSmallScreen,
+  }) {
+    final hasParent = etudiant.parentId != null && etudiant.parentId!.isNotEmpty;
     
-    return CircleAvatar(
-      radius: 24,
-      backgroundColor: _getAvatarColor(etudiant.id),
-      child: Text(
-        initiales,
-        style: const TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
+    return Padding(
+      padding: EdgeInsets.only(top: isVerySmallScreen ? 1 : 2),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Icon(
+            hasParent ? Icons.family_restroom : Icons.person_off,
+            size: isVerySmallScreen ? 10 : isSmallScreen ? 11 : 12,
+            color: hasParent ? AppTheme.successColor : AppTheme.textSecondary,
+          ),
+          SizedBox(width: isVerySmallScreen ? 3 : 4),
+          Expanded(
+            child: Text(
+              hasParent ? "Parent lié" : "Non lié",
+              style: TextStyle(
+                fontSize: isVerySmallScreen ? 10 : isSmallScreen ? 11 : 12,
+                color: hasParent ? AppTheme.successColor : AppTheme.textSecondary,
+                fontStyle: FontStyle.italic,
+                height: 1.1,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -111,70 +215,5 @@ class EtudiantCard extends StatelessWidget {
       AppTheme.successColor,
     ];
     return colors[hash.abs() % colors.length];
-  }
-
-  Widget _buildInfoRow({
-    required IconData icon,
-    required String text,
-  }) {
-    return Row(
-      children: [
-        Icon(
-          icon,
-          size: 14,
-          color: AppTheme.textSecondary,
-        ),
-        const SizedBox(width: 6),
-        Text(
-          text,
-          style: const TextStyle(
-            fontSize: 14,
-            color: AppTheme.textSecondary,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildParentStatus() {
-    if (etudiant.parentId != null && etudiant.parentId!.isNotEmpty) {
-      return Row(
-        children: [
-          Icon(
-            Icons.family_restroom,
-            size: 14,
-            color: AppTheme.successColor,
-          ),
-          const SizedBox(width: 6),
-          Text(
-            "Lié à un parent",
-            style: TextStyle(
-              fontSize: 12,
-              color: AppTheme.successColor,
-              fontStyle: FontStyle.italic,
-            ),
-          ),
-        ],
-      );
-    } else {
-      return Row(
-        children: [
-          Icon(
-            Icons.person_off,
-            size: 14,
-            color: AppTheme.textSecondary,
-          ),
-          const SizedBox(width: 6),
-          Text(
-            "Non lié",
-            style: TextStyle(
-              fontSize: 12,
-              color: AppTheme.textSecondary,
-              fontStyle: FontStyle.italic,
-            ),
-          ),
-        ],
-      );
-    }
   }
 }

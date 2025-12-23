@@ -62,6 +62,8 @@ import '../screens/backup_screen.dart';
 import '../screens/export_data_screen.dart';
 import '../screens/sync_screen.dart';
 
+import '../screens/school_calendar_screen.dart';
+
 import '../screens/settings_screen.dart';
 import '../screens/appearance_settings_screen.dart';
 import '../screens/language_settings_screen.dart';
@@ -251,7 +253,12 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: 'emploiDuTemps',
         builder: (context, state) => const EmploiDuTempsScreen(),
       ),
-
+      // ================= PLANNING =================
+      GoRoute(
+        path: '/school-calendar',
+        name: 'schoolCalendar',
+        builder: (context, state) => const SchoolCalendarScreen(),
+      ),
       // ================= CLASSES & MATIÈRES =================
       GoRoute(
         path: '/classes',

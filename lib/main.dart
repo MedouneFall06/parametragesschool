@@ -18,6 +18,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:parametragesschool/screens/note_screen.dart';
 import 'config/router.dart';
 
+import 'package:parametragesschool/core/responsive/responsive_wrapper.dart'; // AJOUTE CET IMPORT
+
 // ----------------------------------------------------------------------------
 // IMPORTATIONS DES ÉCRANS
 // ----------------------------------------------------------------------------
@@ -95,6 +97,11 @@ class MyApp extends ConsumerWidget {
 
 
     return MaterialApp.router(
+      /*builder: (context, child) { // ← AJOUTÉ
+        return ResponsiveWrapper(
+          child: child!,
+        );
+      },*/
       // ----------------------------------------------------------------------
       // 4. ÉCRAN D'ACCUEIL (home)
       // ----------------------------------------------------------------------

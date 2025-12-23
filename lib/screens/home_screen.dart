@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:parametragesschool/core/theme/app_theme.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/page_header.dart';
+import 'package:parametragesschool/core/responsive/responsive_grid.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -26,13 +27,8 @@ class HomeScreen extends StatelessWidget {
                   children: [
                     // Section ACADÉMIQUE
                     _buildSectionTitle('📊 ACADÉMIQUE'),
-                    GridView.count(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 12,
-                      mainAxisSpacing: 12,
-                      childAspectRatio: 1.8,
+                    ResponsiveGrid(
+                      spacing: 12,
                       children: [
                         _buildModuleCard(
                           icon: Icons.people_alt,
@@ -83,13 +79,8 @@ class HomeScreen extends StatelessWidget {
                     
                     // Section PLANNING
                     _buildSectionTitle('📅 PLANNING'),
-                    GridView.count(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 12,
-                      mainAxisSpacing: 12,
-                      childAspectRatio: 1.8,
+                    ResponsiveGrid(
+                      spacing: 12,
                       children: [
                         _buildModuleCard(
                           icon: Icons.calendar_today,
@@ -103,7 +94,7 @@ class HomeScreen extends StatelessWidget {
                           title: 'Calendrier scolaire',
                           subtitle: 'Événements et vacances',
                           color: AppTheme.accentColor,
-                          onTap: () => context.pushNamed('school-calendar'),
+                          onTap: () => context.pushNamed('schoolCalendar'),
                         ),
                       ],
                     ),
@@ -112,13 +103,8 @@ class HomeScreen extends StatelessWidget {
                     
                     // Section PERSONNEL
                     _buildSectionTitle('👥 PERSONNEL'),
-                    GridView.count(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 12,
-                      mainAxisSpacing: 12,
-                      childAspectRatio: 1.8,
+                    ResponsiveGrid(
+                      spacing: 12,
                       children: [
                         _buildModuleCard(
                           icon: Icons.school,
@@ -132,7 +118,7 @@ class HomeScreen extends StatelessWidget {
                           title: 'Évaluation',
                           subtitle: 'Évaluation enseignants',
                           color: AppTheme.infoColor,
-                          onTap: () => context.pushNamed('teacher-evaluation'),
+                          onTap: () => context.pushNamed('teacherEvaluation'),
                         ),
                       ],
                     ),
@@ -141,13 +127,8 @@ class HomeScreen extends StatelessWidget {
                     
                     // Section RAPPORTS & ANALYSE
                     _buildSectionTitle('📈 RAPPORTS & ANALYSE'),
-                    GridView.count(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 12,
-                      mainAxisSpacing: 12,
-                      childAspectRatio: 1.8,
+                    ResponsiveGrid(
+                      spacing: 12,
                       children: [
                         _buildModuleCard(
                           icon: Icons.bar_chart,
@@ -161,14 +142,14 @@ class HomeScreen extends StatelessWidget {
                           title: 'Statistiques',
                           subtitle: 'Statistiques avancées',
                           color: AppTheme.accentColor,
-                          onTap: () => context.pushNamed('advanced-stats'),
+                          onTap: () => context.pushNamed('advancedStats'),
                         ),
                         _buildModuleCard(
                           icon: Icons.auto_awesome,
                           title: 'Rapports auto',
                           subtitle: 'Rapports automatiques',
                           color: AppTheme.secondaryColor,
-                          onTap: () => context.pushNamed('auto-reports'),
+                          onTap: () => context.pushNamed('autoReports'),
                         ),
                       ],
                     ),
@@ -177,13 +158,8 @@ class HomeScreen extends StatelessWidget {
                     
                     // Section ADMINISTRATION
                     _buildSectionTitle('⚙️ ADMINISTRATION'),
-                    GridView.count(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 12,
-                      mainAxisSpacing: 12,
-                      childAspectRatio: 1.8,
+                    ResponsiveGrid(
+                      spacing: 12,
                       children: [
                         _buildModuleCard(
                           icon: Icons.settings,
@@ -204,7 +180,7 @@ class HomeScreen extends StatelessWidget {
                           title: 'Utilisateurs',
                           subtitle: 'Gestion des comptes',
                           color: AppTheme.primaryColor,
-                          onTap: () => context.pushNamed('user-management'),
+                          onTap: () => context.pushNamed('userManagement'),
                         ),
                         _buildModuleCard(
                           icon: Icons.sync,
@@ -218,14 +194,14 @@ class HomeScreen extends StatelessWidget {
                           title: 'Admin Dashboard',
                           subtitle: 'Tableau de bord admin',
                           color: AppTheme.secondaryColor,
-                          onTap: () => context.pushNamed('admin-dashboard'),
+                          onTap: () => context.pushNamed('adminDashboard'),
                         ),
                         _buildModuleCard(
                           icon: Icons.history,
                           title: 'Audit Log',
                           subtitle: 'Journal d\'audit',
                           color: AppTheme.accentColor,
-                          onTap: () => context.pushNamed('audit-log'),
+                          onTap: () => context.pushNamed('auditLog'),
                         ),
                       ],
                     ),
