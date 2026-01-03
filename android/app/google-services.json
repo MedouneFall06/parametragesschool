@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "223135447310",
+    "project_id": "parametrageschool",
+    "storage_bucket": "parametrageschool.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:223135447310:android:0324b02c29f738696eff5f",
+        "android_client_info": {
+          "package_name": "com.example.parametragesschool"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJNyDEu4qKx9SUIHH17mJ0AN58dQbtkt4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
