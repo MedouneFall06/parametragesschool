@@ -3,6 +3,7 @@ import 'package:parametragesschool/core/theme/app_theme.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/primary_button.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/secondary_button.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/info_card.dart';
+import 'package:parametragesschool/core/constant/constants.dart';
 
 class NoInternetScreen extends StatelessWidget {
   final VoidCallback? onRetry;
@@ -40,7 +41,7 @@ class NoInternetScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               
-              const SizedBox(height: 16),
+              SizedBox(height: AppConstants.fixedHeightSmall),
               
               // Message
               Text(

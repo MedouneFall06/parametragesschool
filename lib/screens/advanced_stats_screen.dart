@@ -5,6 +5,8 @@ import 'package:parametragesschool/widgets/stateless_widgets/primary_button.dart
 import 'package:parametragesschool/widgets/stateless_widgets/secondary_button.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/info_card.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/stat_card.dart';
+import 'package:parametragesschool/core/responsive/responsive_grid.dart';
+import 'package:parametragesschool/core/constant/constants.dart';
 // TODO: Importer les modèles et services de statistiques
 
 class AdvancedStatsScreen extends StatefulWidget {
@@ -43,7 +45,7 @@ class _AdvancedStatsScreenState extends State<AdvancedStatsScreen> {
             const PageHeader(title: 'Statistiques avancées'),
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.paddingAll)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -52,109 +54,105 @@ class _AdvancedStatsScreenState extends State<AdvancedStatsScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Filtres',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 16),
-                          Row(
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                          ResponsiveGrid(
+                            customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenItems),
                             children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      'Période',
-                                      style: TextStyle(
-                                        color: AppTheme.textSecondary,
-                                        fontSize: 14,
-                                      ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Période',
+                                    style: TextStyle(
+                                      color: AppTheme.textSecondary,
+                                      fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
                                     ),
-                                    const SizedBox(height: 8),
-                                    DropdownButtonFormField<String>(
-                                      value: _selectedPeriod,
-                                      decoration: const InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        filled: true,
-                                        fillColor: Colors.white,
-                                      ),
-                                      items: const [
-                                        DropdownMenuItem(
-                                          value: 'week',
-                                          child: Text('Cette semaine'),
-                                        ),
-                                        DropdownMenuItem(
-                                          value: 'month',
-                                          child: Text('Ce mois'),
-                                        ),
-                                        DropdownMenuItem(
-                                          value: 'quarter',
-                                          child: Text('Ce trimestre'),
-                                        ),
-                                        DropdownMenuItem(
-                                          value: 'year',
-                                          child: Text('Cette année'),
-                                        ),
-                                      ],
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _selectedPeriod = value!;
-                                        });
-                                      },
+                                  ),
+                                  SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                                  DropdownButtonFormField<String>(
+                                    value: _selectedPeriod,
+                                    decoration: InputDecoration(
+                                      border: const OutlineInputBorder(),
+                                      filled: true,
+                                      fillColor: Colors.white,
                                     ),
-                                  ],
-                                ),
+                                    items: const [
+                                      DropdownMenuItem(
+                                        value: 'week',
+                                        child: Text('Cette semaine'),
+                                      ),
+                                      DropdownMenuItem(
+                                        value: 'month',
+                                        child: Text('Ce mois'),
+                                      ),
+                                      DropdownMenuItem(
+                                        value: 'quarter',
+                                        child: Text('Ce trimestre'),
+                                      ),
+                                      DropdownMenuItem(
+                                        value: 'year',
+                                        child: Text('Cette année'),
+                                      ),
+                                    ],
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _selectedPeriod = value!;
+                                      });
+                                    },
+                                  ),
+                                ],
                               ),
-                              const SizedBox(width: 16),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      'Type de statistiques',
-                                      style: TextStyle(
-                                        color: AppTheme.textSecondary,
-                                        fontSize: 14,
-                                      ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Type de statistiques',
+                                    style: TextStyle(
+                                      color: AppTheme.textSecondary,
+                                      fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
                                     ),
-                                    const SizedBox(height: 8),
-                                    DropdownButtonFormField<String>(
-                                      value: _selectedStatType,
-                                      decoration: const InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        filled: true,
-                                        fillColor: Colors.white,
-                                      ),
-                                      items: const [
-                                        DropdownMenuItem(
-                                          value: 'grades',
-                                          child: Text('Notes'),
-                                        ),
-                                        DropdownMenuItem(
-                                          value: 'attendance',
-                                          child: Text('Présences'),
-                                        ),
-                                        DropdownMenuItem(
-                                          value: 'performance',
-                                          child: Text('Performance'),
-                                        ),
-                                      ],
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _selectedStatType = value!;
-                                        });
-                                      },
+                                  ),
+                                  SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                                  DropdownButtonFormField<String>(
+                                    value: _selectedStatType,
+                                    decoration: InputDecoration(
+                                      border: const OutlineInputBorder(),
+                                      filled: true,
+                                      fillColor: Colors.white,
                                     ),
-                                  ],
-                                ),
+                                    items: const [
+                                      DropdownMenuItem(
+                                        value: 'grades',
+                                        child: Text('Notes'),
+                                      ),
+                                      DropdownMenuItem(
+                                        value: 'attendance',
+                                        child: Text('Présences'),
+                                      ),
+                                      DropdownMenuItem(
+                                        value: 'performance',
+                                        child: Text('Performance'),
+                                      ),
+                                    ],
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _selectedStatType = value!;
+                                      });
+                                    },
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           PrimaryButton(
                             text: 'Appliquer les filtres',
                             onPressed: () {
@@ -167,87 +165,79 @@ class _AdvancedStatsScreenState extends State<AdvancedStatsScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Statistiques globales
-                    const Text(
+                    Text(
                       'Vue d\'ensemble',
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                         fontWeight: FontWeight.w600,
                         color: AppTheme.textPrimary,
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                     
-                    Row(
+                    ResponsiveGrid(
+                      customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenStats),
                       children: [
-                        Expanded(
-                          child: StatCard(
-                            title: 'Moyenne générale',
-                            value: '15.8',
-                            icon: Icons.trending_up,
-                            color: AppTheme.successColor,
-                          ),
+                        StatCard(
+                          title: 'Moyenne générale',
+                          value: '15.8',
+                          icon: Icons.trending_up,
+                          color: AppTheme.successColor,
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: StatCard(
-                            title: 'Taux de présence',
-                            value: '92%',
-                            icon: Icons.people,
-                            color: AppTheme.infoColor,
-                          ),
+                        StatCard(
+                          title: 'Taux de présence',
+                          value: '92%',
+                          icon: Icons.people,
+                          color: AppTheme.infoColor,
                         ),
                       ],
                     ),
                     
-                    const SizedBox(height: 12),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                     
-                    Row(
+                    ResponsiveGrid(
+                      customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenStats),
                       children: [
-                        Expanded(
-                          child: StatCard(
-                            title: 'Meilleure moyenne',
-                            value: '17.2',
-                            icon: Icons.emoji_events,
-                            color: AppTheme.warningColor,
-                          ),
+                        StatCard(
+                          title: 'Meilleure moyenne',
+                          value: '17.2',
+                          icon: Icons.emoji_events,
+                          color: AppTheme.warningColor,
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: StatCard(
-                            title: 'Évolution',
-                            value: '+2.1%',
-                            icon: Icons.show_chart,
-                            color: AppTheme.accentColor,
-                          ),
+                        StatCard(
+                          title: 'Évolution',
+                          value: '+2.1%',
+                          icon: Icons.show_chart,
+                          color: AppTheme.accentColor,
                         ),
                       ],
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Graphique des tendances
                     InfoCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Évolution des moyennes',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 12),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           SizedBox(
-                            height: 200,
+                            height: MediaQuery.of(context).size.height * 0.25,
                             child: _buildTrendChart(),
                           ),
-                          const SizedBox(height: 16),
-                          const Row(
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text('Sep', style: TextStyle(color: AppTheme.textSecondary)),
@@ -262,29 +252,29 @@ class _AdvancedStatsScreenState extends State<AdvancedStatsScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Répartition des présences
                     InfoCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Répartition des présences',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 12),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           SizedBox(
-                            height: 150,
+                            height: MediaQuery.of(context).size.height * 0.20,
                             child: _buildAttendanceChart(),
                           ),
-                          const SizedBox(height: 16),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                          ResponsiveGrid(
+                            customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenItems),
                             children: [
                               _buildLegendItem(Colors.green, 'Présent (85%)'),
                               _buildLegendItem(Colors.red, 'Absent (10%)'),
@@ -295,22 +285,22 @@ class _AdvancedStatsScreenState extends State<AdvancedStatsScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Meilleurs étudiants
                     InfoCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Top 3 des étudiants',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           ..._topStudents.map((student) {
                             return Column(
                               children: [
@@ -324,22 +314,22 @@ class _AdvancedStatsScreenState extends State<AdvancedStatsScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Analyses détaillées
                     InfoCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Analyses détaillées',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           SecondaryButton(
                             text: 'Analyse par matière',
                             onPressed: () {
@@ -348,7 +338,7 @@ class _AdvancedStatsScreenState extends State<AdvancedStatsScreen> {
                             fullWidth: true,
                             icon: Icons.subject,
                           ),
-                          const SizedBox(height: 12),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           SecondaryButton(
                             text: 'Analyse par classe',
                             onPressed: () {
@@ -357,7 +347,7 @@ class _AdvancedStatsScreenState extends State<AdvancedStatsScreen> {
                             fullWidth: true,
                             icon: Icons.school,
                           ),
-                          const SizedBox(height: 12),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           SecondaryButton(
                             text: 'Rapport détaillé',
                             onPressed: () {
@@ -370,34 +360,32 @@ class _AdvancedStatsScreenState extends State<AdvancedStatsScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 32),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Actions
-                    Row(
+                    ResponsiveGrid(
+                      customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenItems),
                       children: [
-                        Expanded(
-                          child: PrimaryButton(
-                            text: 'Exporter les statistiques',
-                            onPressed: () {
-                              // TODO: Exporter
-                            },
-                            icon: Icons.download,
-                          ),
+                        PrimaryButton(
+                          text: 'Exporter les statistiques',
+                          onPressed: () {
+                            // TODO: Exporter
+                          },
+                          icon: Icons.download,
+                          fullWidth: true,
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: PrimaryButton(
-                            text: 'Partager',
-                            onPressed: () {
-                              // TODO: Partager
-                            },
-                            icon: Icons.share,
-                          ),
+                        PrimaryButton(
+                          text: 'Partager',
+                          onPressed: () {
+                            // TODO: Partager
+                          },
+                          icon: Icons.share,
+                          fullWidth: true,
                         ),
                       ],
                     ),
                     
-                    const SizedBox(height: 32),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                   ],
                 ),
               ),
@@ -433,18 +421,18 @@ class _AdvancedStatsScreenState extends State<AdvancedStatsScreen> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          width: 12,
-          height: 12,
+        width: AppConstants.widthPercentage(context, AppConstants.avatarSize * 0.5),
+        height: AppConstants.widthPercentage(context, AppConstants.avatarSize * 0.5),
           decoration: BoxDecoration(
             color: color,
             shape: BoxShape.circle,
           ),
         ),
-        const SizedBox(width: 8),
+        SizedBox(width: AppConstants.widthPercentage(context, AppConstants.spacingSmall)),
         Text(
           label,
-          style: const TextStyle(
-            fontSize: 12,
+          style: TextStyle(
+            fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
             color: AppTheme.textSecondary,
           ),
         ),
@@ -455,8 +443,8 @@ class _AdvancedStatsScreenState extends State<AdvancedStatsScreen> {
   Widget _buildTopStudentCard(Map<String, dynamic> student) {
     return ListTile(
       leading: Container(
-        width: 40,
-        height: 40,
+        width: AppConstants.widthPercentage(context, AppConstants.avatarSize),
+        height: AppConstants.widthPercentage(context, AppConstants.avatarSize),
         decoration: BoxDecoration(
           color: AppTheme.primaryColor.withOpacity(0.1),
           shape: BoxShape.circle,
@@ -464,26 +452,41 @@ class _AdvancedStatsScreenState extends State<AdvancedStatsScreen> {
         child: Center(
           child: Text(
             '${_topStudents.indexOf(student) + 1}',
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              color: AppTheme.primaryColor,
-            ),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: AppTheme.primaryColor,
+                fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
+              ),
           ),
         ),
       ),
-      title: Text(student['name']),
-      subtitle: Text('Moyenne: ${student['average']}/20'),
+      title: Text(
+        student['name'],
+        style: TextStyle(
+          fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
+        ),
+      ),
+      subtitle: Text(
+        'Moyenne: ${student['average']}/20',
+        style: TextStyle(
+          fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
+        ),
+      ),
       trailing: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        padding: EdgeInsets.symmetric(
+          horizontal: AppConstants.widthPercentage(context, AppConstants.spacingSmall),
+          vertical: AppConstants.heightPercentage(context, AppConstants.spacingSmall),
+        ),
         decoration: BoxDecoration(
           color: Colors.green.withOpacity(0.1),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Text(
           student['improvement'],
-          style: const TextStyle(
+          style: TextStyle(
             color: Colors.green,
             fontWeight: FontWeight.w600,
+            fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
           ),
         ),
       ),
@@ -531,7 +534,7 @@ class _TrendChartPainter extends CustomPainter {
   }
   
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
+  bool shouldRepaint(CustomPainter oldDelegate) => true;
 }
 
 class _PieChartPainter extends CustomPainter {
@@ -572,5 +575,5 @@ class _PieChartPainter extends CustomPainter {
   }
   
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
+  bool shouldRepaint(CustomPainter oldDelegate) => true;
 }

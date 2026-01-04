@@ -6,6 +6,8 @@ import 'package:parametragesschool/widgets/stateless_widgets/secondary_button.da
 import 'package:parametragesschool/widgets/stateless_widgets/info_card.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/stat_card.dart';
 import 'package:parametragesschool/models/absence_model.dart';
+import 'package:parametragesschool/core/constant/constants.dart';
+import 'package:parametragesschool/core/responsive/responsive_grid.dart';
 
 // TODO: Transformer en StatefulWidget avec Provider
 // TODO: Créer AbsenceViewModel
@@ -122,52 +124,44 @@ class _AbsenceScreenState extends State<AbsenceScreen> {
             ),
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.paddingAll)),
                 child: Column(
                   children: [
                     // Statistics
-                    Row(
+                    ResponsiveGrid(
+                      customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenStats),
                       children: [
-                        Expanded(
-                          child: StatCard(
-                            title: 'Absences totales',
-                            value: totalAbsences.toString(),
-                            icon: Icons.person_off,
-                            color: AppTheme.primaryColor,
-                          ),
+                        StatCard(
+                          title: 'Absences totales',
+                          value: totalAbsences.toString(),
+                          icon: Icons.person_off,
+                          color: AppTheme.primaryColor,
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: StatCard(
-                            title: 'Justifiées',
-                            value: absencesJustifiees.toString(),
-                            icon: Icons.check_circle,
-                            color: AppTheme.successColor,
-                          ),
+                        StatCard(
+                          title: 'Justifiées',
+                          value: absencesJustifiees.toString(),
+                          icon: Icons.check_circle,
+                          color: AppTheme.successColor,
                         ),
                       ],
                     ),
                     
-                    const SizedBox(height: 12),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                     
-                    Row(
+                    ResponsiveGrid(
+                      customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenStats),
                       children: [
-                        Expanded(
-                          child: StatCard(
-                            title: 'Non justifiées',
-                            value: absencesNonJustifiees.toString(),
-                            icon: Icons.cancel,
-                            color: AppTheme.errorColor,
-                          ),
+                        StatCard(
+                          title: 'Non justifiées',
+                          value: absencesNonJustifiees.toString(),
+                          icon: Icons.cancel,
+                          color: AppTheme.errorColor,
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: StatCard(
-                            title: 'Taux d\'absentisme',
-                            value: '${tauxAbsentisme.toStringAsFixed(1)}%',
-                            icon: Icons.trending_up,
-                            color: AppTheme.warningColor,
-                          ),
+                        StatCard(
+                          title: 'Taux d\'absentisme',
+                          value: '${tauxAbsentisme.toStringAsFixed(1)}%',
+                          icon: Icons.trending_up,
+                          color: AppTheme.warningColor,
                         ),
                       ],
                     ),
@@ -179,15 +173,15 @@ class _AbsenceScreenState extends State<AbsenceScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Filtres',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           // Search Bar
                           TextField(
                             decoration: InputDecoration(
@@ -213,101 +207,119 @@ class _AbsenceScreenState extends State<AbsenceScreen> {
                               });
                             },
                           ),
-                          const SizedBox(height: 12),
-                          Row(
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                          ResponsiveGrid(
+                            customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenItems),
                             children: [
-                              Expanded(
-                                child: DropdownButtonFormField<String?>(
-                                  value: _selectedEtudiant,
-                                  decoration: const InputDecoration(
-                                    labelText: 'Étudiant (optionnel)',
-                                    border: OutlineInputBorder(),
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                  ),
-                                  items: [
-                                    const DropdownMenuItem(
-                                      value: null,
-                                      child: Text('Tous les étudiants'),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Étudiant',
+                                    style: TextStyle(
+                                      color: AppTheme.textSecondary,
+                                      fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
                                     ),
-                                    ..._etudiants.entries.map((entry) {
-                                      return DropdownMenuItem(
-                                        value: entry.key,
-                                        child: Text('${entry.value} - ${_classes[entry.key]}'),
-                                      );
-                                    }).toList(),
-                                  ],
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _selectedEtudiant = value;
-                                    });
-                                  },
-                                ),
+                                  ),
+                                  SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                                  DropdownButtonFormField<String?>(
+                                    value: _selectedEtudiant,
+                                    decoration: const InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                    ),
+                                    items: [
+                                      const DropdownMenuItem(
+                                        value: null,
+                                        child: Text('Tous les étudiants'),
+                                      ),
+                                      ..._etudiants.entries.map((entry) {
+                                        return DropdownMenuItem(
+                                          value: entry.key,
+                                          child: Text('${entry.value} - ${_classes[entry.key]}'),
+                                        );
+                                      }).toList(),
+                                    ],
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _selectedEtudiant = value;
+                                      });
+                                    },
+                                  ),
+                                ],
                               ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: DropdownButtonFormField<String?>(
-                                  value: _selectedStatut,
-                                  decoration: const InputDecoration(
-                                    labelText: 'Statut (optionnel)',
-                                    border: OutlineInputBorder(),
-                                    filled: true,
-                                    fillColor: Colors.white,
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Statut',
+                                    style: TextStyle(
+                                      color: AppTheme.textSecondary,
+                                      fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
+                                    ),
                                   ),
-                                  items: [
-                                    const DropdownMenuItem(
-                                      value: null,
-                                      child: Text('Tous'),
+                                  SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                                  DropdownButtonFormField<String?>(
+                                    value: _selectedStatut,
+                                    decoration: const InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      filled: true,
+                                      fillColor: Colors.white,
                                     ),
-                                    const DropdownMenuItem(
-                                      value: 'justified',
-                                      child: Text('Justifiées'),
-                                    ),
-                                    const DropdownMenuItem(
-                                      value: 'unjustified',
-                                      child: Text('Non justifiées'),
-                                    ),
-                                  ],
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _selectedStatut = value;
-                                    });
-                                  },
-                                ),
+                                    items: [
+                                      const DropdownMenuItem(
+                                        value: null,
+                                        child: Text('Tous'),
+                                      ),
+                                      const DropdownMenuItem(
+                                        value: 'justified',
+                                        child: Text('Justifiées'),
+                                      ),
+                                      const DropdownMenuItem(
+                                        value: 'unjustified',
+                                        child: Text('Non justifiées'),
+                                      ),
+                                    ],
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _selectedStatut = value;
+                                      });
+                                    },
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-                          const SizedBox(height: 12),
-                          Row(
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                          ResponsiveGrid(
+                            customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenItems),
                             children: [
-                              Expanded(
-                                child: ElevatedButton(
-                                  onPressed: () async {
-                                    final DateTimeRange? picked = await showDateRangePicker(
-                                      context: context,
-                                      firstDate: DateTime(2023, 1, 1),
-                                      lastDate: DateTime(2024, 12, 31),
-                                      currentDate: DateTime.now(),
-                                    );
-                                    if (picked != null) {
-                                      setState(() {
-                                        _dateRange = picked;
-                                      });
-                                    }
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.white,
-                                    foregroundColor: AppTheme.textPrimary,
-                                    elevation: 0,
-                                  ),
-                                  child: Text(
-                                    _dateRange != null
-                                        ? '${_dateRange!.start.day}/${_dateRange!.start.month} - ${_dateRange!.end.day}/${_dateRange!.end.month}'
-                                        : 'Période (optionnel)',
-                                  ),
+                              ElevatedButton(
+                                onPressed: () async {
+                                  final DateTimeRange? picked = await showDateRangePicker(
+                                    context: context,
+                                    firstDate: DateTime(2023, 1, 1),
+                                    lastDate: DateTime(2024, 12, 31),
+                                    currentDate: DateTime.now(),
+                                  );
+                                  if (picked != null) {
+                                    setState(() {
+                                      _dateRange = picked;
+                                    });
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  foregroundColor: AppTheme.textPrimary,
+                                  elevation: 0,
+                                ),
+                                child: Text(
+                                  _dateRange != null
+                                      ? '${_dateRange!.start.day}/${_dateRange!.start.month} - ${_dateRange!.end.day}/${_dateRange!.end.month}'
+                                      : 'Période (optionnel)',
                                 ),
                               ),
-                              const SizedBox(width: 12),
                               SecondaryButton(
                                 text: 'Réinitialiser',
                                 onPressed: () {
@@ -319,6 +331,7 @@ class _AbsenceScreenState extends State<AbsenceScreen> {
                                   });
                                 },
                                 icon: Icons.filter_alt_off,
+                                fullWidth: true,
                               ),
                             ],
                           ),
@@ -338,8 +351,8 @@ class _AbsenceScreenState extends State<AbsenceScreen> {
                             children: [
                               Text(
                                 'Absences (${filteredAbsences.length})',
-                                style: const TextStyle(
-                                  fontSize: 18,
+                                style: TextStyle(
+                                  fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                                   fontWeight: FontWeight.w600,
                                   color: AppTheme.textPrimary,
                                 ),
@@ -371,8 +384,8 @@ class _AbsenceScreenState extends State<AbsenceScreen> {
                                 margin: const EdgeInsets.only(bottom: 12),
                                 child: ListTile(
                                   leading: Container(
-                                    width: 50,
-                                    height: 50,
+                                    width: AppConstants.widthPercentage(context, AppConstants.avatarSize),
+                                    height: AppConstants.widthPercentage(context, AppConstants.avatarSize),
                                     decoration: BoxDecoration(
                                       color: absence.justifie
                                           ? AppTheme.successColor.withOpacity(0.1)
@@ -386,6 +399,7 @@ class _AbsenceScreenState extends State<AbsenceScreen> {
                                       color: absence.justifie
                                           ? AppTheme.successColor
                                           : AppTheme.errorColor,
+                                      size: AppConstants.widthPercentage(context, AppConstants.iconSize),
                                     ),
                                   ),
                                   title: Text(
@@ -397,19 +411,19 @@ class _AbsenceScreenState extends State<AbsenceScreen> {
                                   subtitle: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      const SizedBox(height: 4),
+                                      SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                                       Text(
                                         '${absence.date.day}/${absence.date.month}/${absence.date.year} - ${absence.motif}',
-                                        style: const TextStyle(
-                                          fontSize: 14,
+                                        style: TextStyle(
+                                          fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
                                         ),
                                       ),
-                                      const SizedBox(height: 4),
+                                      SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                                       Text(
                                         _classes[absence.etudiantId] ?? 'Classe inconnue',
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           color: AppTheme.textSecondary,
-                                          fontSize: 13,
+                                          fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
                                         ),
                                       ),
                                     ],
@@ -419,8 +433,8 @@ class _AbsenceScreenState extends State<AbsenceScreen> {
                                     children: [
                                       if (!absence.justifie)
                                         IconButton(
-                                          icon: const Icon(Icons.check,
-                                              size: 20),
+                                          icon: Icon(Icons.check,
+                                              size: AppConstants.widthPercentage(context, AppConstants.smallIconSize)),
                                           onPressed: () {
                                             _showJustifyDialog(context, absence);
                                           },
@@ -428,16 +442,16 @@ class _AbsenceScreenState extends State<AbsenceScreen> {
                                           tooltip: 'Justifier',
                                         ),
                                       IconButton(
-                                        icon: const Icon(Icons.edit,
-                                            size: 20),
+                                        icon: Icon(Icons.edit,
+                                            size: AppConstants.widthPercentage(context, AppConstants.smallIconSize)),
                                         onPressed: () {
                                           // TODO: Éditer absence
                                         },
                                         color: AppTheme.primaryColor,
                                       ),
                                       IconButton(
-                                        icon: const Icon(Icons.delete,
-                                            size: 20),
+                                        icon: Icon(Icons.delete,
+                                            size: AppConstants.widthPercentage(context, AppConstants.smallIconSize)),
                                         onPressed: () {
                                           _showDeleteDialog(context, absence);
                                         },
@@ -459,10 +473,10 @@ class _AbsenceScreenState extends State<AbsenceScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Absences par étudiant',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
@@ -485,19 +499,20 @@ class _AbsenceScreenState extends State<AbsenceScreen> {
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          etudiant.value,
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                          ),
+                                      Text(
+                                        etudiant.value,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
                                         ),
-                                        Text(
-                                          _classes[etudiant.key] ?? '',
-                                          style: const TextStyle(
-                                            color: AppTheme.textSecondary,
-                                            fontSize: 12,
-                                          ),
+                                      ),
+                                      Text(
+                                        _classes[etudiant.key] ?? '',
+                                        style: TextStyle(
+                                          color: AppTheme.textSecondary,
+                                          fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
                                         ),
+                                      ),
                                       ],
                                     ),
                                   ),
@@ -512,9 +527,10 @@ class _AbsenceScreenState extends State<AbsenceScreen> {
                                     ),
                                     child: Text(
                                       '$justifiees',
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         color: AppTheme.successColor,
                                         fontWeight: FontWeight.bold,
+                                        fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
                                       ),
                                     ),
                                   ),
@@ -530,9 +546,10 @@ class _AbsenceScreenState extends State<AbsenceScreen> {
                                     ),
                                     child: Text(
                                       '$nonJustifiees',
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         color: AppTheme.errorColor,
                                         fontWeight: FontWeight.bold,
+                                        fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
                                       ),
                                     ),
                                   ),
@@ -548,9 +565,10 @@ class _AbsenceScreenState extends State<AbsenceScreen> {
                                     ),
                                     child: Text(
                                       '${absencesEtudiant.length}',
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         color: AppTheme.primaryColor,
                                         fontWeight: FontWeight.bold,
+                                        fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
                                       ),
                                     ),
                                   ),
@@ -562,34 +580,32 @@ class _AbsenceScreenState extends State<AbsenceScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 32),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Action Buttons
-                    Row(
+                    ResponsiveGrid(
+                      customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenItems),
                       children: [
-                        Expanded(
-                          child: SecondaryButton(
-                            text: 'Exporter rapport',
-                            onPressed: () {
-                              // TODO: Exporter rapport
-                            },
-                            icon: Icons.description,
-                          ),
+                        SecondaryButton(
+                          text: 'Exporter rapport',
+                          onPressed: () {
+                            // TODO: Exporter rapport
+                          },
+                          icon: Icons.description,
+                          fullWidth: true,
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: PrimaryButton(
-                            text: 'Notifier les parents',
-                            onPressed: () {
-                              // TODO: Notifier parents
-                            },
-                            icon: Icons.notifications_active,
-                          ),
+                        PrimaryButton(
+                          text: 'Notifier les parents',
+                          onPressed: () {
+                            // TODO: Notifier parents
+                          },
+                          icon: Icons.notifications_active,
+                          fullWidth: true,
                         ),
                       ],
                     ),
                     
-                    const SizedBox(height: 16),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                     
                     SecondaryButton(
                       text: 'Générer statistiques',
@@ -615,12 +631,27 @@ class _AbsenceScreenState extends State<AbsenceScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Justifier l\'absence'),
-        content: const Text('Voulez-vous marquer cette absence comme justifiée ?'),
+        title: Text(
+          'Justifier l\'absence',
+          style: TextStyle(
+            fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
+          ),
+        ),
+        content: Text(
+          'Voulez-vous marquer cette absence comme justifiée ?',
+          style: TextStyle(
+            fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
+          ),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Annuler'),
+            child: Text(
+              'Annuler',
+              style: TextStyle(
+                fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
+              ),
+            ),
           ),
           PrimaryButton(
             text: 'Justifier',
@@ -628,8 +659,13 @@ class _AbsenceScreenState extends State<AbsenceScreen> {
               // TODO: Justifier via ViewModel
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Absence justifiée'),
+                SnackBar(
+                  content: Text(
+                    'Absence justifiée',
+                    style: TextStyle(
+                      fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
+                    ),
+                  ),
                   backgroundColor: AppTheme.successColor,
                 ),
               );
@@ -645,12 +681,27 @@ class _AbsenceScreenState extends State<AbsenceScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Supprimer l\'absence'),
-        content: const Text('Êtes-vous sûr de vouloir supprimer cette absence ? Cette action est irréversible.'),
+        title: Text(
+          'Supprimer l\'absence',
+          style: TextStyle(
+            fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
+          ),
+        ),
+        content: Text(
+          'Êtes-vous sûr de vouloir supprimer cette absence ? Cette action est irréversible.',
+          style: TextStyle(
+            fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
+          ),
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Annuler'),
+            child: Text(
+              'Annuler',
+              style: TextStyle(
+                fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
+              ),
+            ),
           ),
           PrimaryButton(
             text: 'Supprimer',
@@ -658,8 +709,13 @@ class _AbsenceScreenState extends State<AbsenceScreen> {
               // TODO: Supprimer via ViewModel
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Absence supprimée'),
+                SnackBar(
+                  content: Text(
+                    'Absence supprimée',
+                    style: TextStyle(
+                      fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
+                    ),
+                  ),
                   backgroundColor: AppTheme.errorColor,
                 ),
               );

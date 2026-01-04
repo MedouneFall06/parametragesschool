@@ -4,6 +4,8 @@ import 'package:parametragesschool/widgets/stateless_widgets/page_header.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/primary_button.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/secondary_button.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/info_card.dart';
+import 'package:parametragesschool/core/constant/constants.dart';
+import 'package:parametragesschool/core/responsive/responsive_grid.dart';
 // TODO: Importer les services de rapports
 
 class AutoReportsScreen extends StatefulWidget {
@@ -56,7 +58,7 @@ class _AutoReportsScreenState extends State<AutoReportsScreen> {
             const PageHeader(title: 'Rapports automatiques'),
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.paddingAll)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -65,15 +67,15 @@ class _AutoReportsScreenState extends State<AutoReportsScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Créer un nouveau rapport',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           PrimaryButton(
                             text: 'Nouveau rapport automatique',
                             onPressed: () {
@@ -86,72 +88,76 @@ class _AutoReportsScreenState extends State<AutoReportsScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Rapports programmés
-                    const Text(
+                    Text(
                       'Rapports programmés',
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                         fontWeight: FontWeight.w600,
                         color: AppTheme.textPrimary,
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                     
                     ..._scheduledReports.map((report) {
                       return Column(
                         children: [
-                          _buildReportCard(report),
+                          _buildReportCard(context, report),
                           if (_scheduledReports.indexOf(report) < _scheduledReports.length - 1)
-                            const SizedBox(height: 12),
+                            SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                         ],
                       );
                     }).toList(),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Modèles de rapports
                     InfoCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Modèles disponibles',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 12),
-                          const Text(
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                          Text(
                             'Choisissez un modèle prédéfini pour créer rapidement un rapport',
                             style: TextStyle(
                               color: AppTheme.textSecondary,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
                             ),
                           ),
-                          const SizedBox(height: 16),
-                          Wrap(
-                            spacing: 12,
-                            runSpacing: 12,
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                          ResponsiveGrid(
+                            customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenItems),
                             children: [
                               _buildTemplateCard(
+                                context: context,
                                 name: 'Rapport de notes',
                                 icon: Icons.assignment,
                                 color: AppTheme.primaryColor,
                               ),
                               _buildTemplateCard(
+                                context: context,
                                 name: 'Rapport d\'absences',
                                 icon: Icons.person_off,
                                 color: AppTheme.accentColor,
                               ),
                               _buildTemplateCard(
+                                context: context,
                                 name: 'Bulletin scolaire',
                                 icon: Icons.school,
                                 color: AppTheme.secondaryColor,
                               ),
                               _buildTemplateCard(
+                                context: context,
                                 name: 'Statistiques de classe',
                                 icon: Icons.assessment,
                                 color: AppTheme.infoColor,
@@ -162,25 +168,33 @@ class _AutoReportsScreenState extends State<AutoReportsScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Paramètres d'envoi
                     InfoCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Paramètres d\'envoi',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           SwitchListTile(
-                            title: const Text('Notifications par email'),
-                            subtitle: const Text('Envoyer des notifications quand un rapport est généré'),
+                            title: Text('Notifications par email',
+                              style: TextStyle(
+                                fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
+                              ),
+                            ),
+                            subtitle: Text('Envoyer des notifications quand un rapport est généré',
+                              style: TextStyle(
+                                fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
+                              ),
+                            ),
                             value: true,
                             onChanged: (value) {
                               // TODO: Implémenter
@@ -189,8 +203,16 @@ class _AutoReportsScreenState extends State<AutoReportsScreen> {
                           ),
                           const Divider(),
                           SwitchListTile(
-                            title: const Text('Archive automatique'),
-                            subtitle: const Text('Conserver une copie de tous les rapports envoyés'),
+                            title: Text('Archive automatique',
+                              style: TextStyle(
+                                fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
+                              ),
+                            ),
+                            subtitle: Text('Conserver une copie de tous les rapports envoyés',
+                              style: TextStyle(
+                                fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
+                              ),
+                            ),
                             value: true,
                             onChanged: (value) {
                               // TODO: Implémenter
@@ -199,8 +221,16 @@ class _AutoReportsScreenState extends State<AutoReportsScreen> {
                           ),
                           const Divider(),
                           SwitchListTile(
-                            title: const Text('Validation avant envoi'),
-                            subtitle: const Text('Requérir une validation manuelle avant l\'envoi'),
+                            title: Text('Validation avant envoi',
+                              style: TextStyle(
+                                fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
+                              ),
+                            ),
+                            subtitle: Text('Requérir une validation manuelle avant l\'envoi',
+                              style: TextStyle(
+                                fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
+                              ),
+                            ),
                             value: false,
                             onChanged: (value) {
                               // TODO: Implémenter
@@ -211,34 +241,32 @@ class _AutoReportsScreenState extends State<AutoReportsScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 32),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Actions globales
-                    Row(
+                    ResponsiveGrid(
+                      customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenItems),
                       children: [
-                        Expanded(
-                          child: PrimaryButton(
-                            text: 'Tester tous les rapports',
-                            onPressed: () {
-                              // TODO: Tester
-                            },
-                            icon: Icons.play_arrow,
-                          ),
+                        PrimaryButton(
+                          text: 'Tester tous les rapports',
+                          onPressed: () {
+                            // TODO: Tester
+                          },
+                          icon: Icons.play_arrow,
+                          fullWidth: true,
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: SecondaryButton(
-                            text: 'Exporter la configuration',
-                            onPressed: () {
-                              // TODO: Exporter
-                            },
-                            icon: Icons.download,
-                          ),
+                        SecondaryButton(
+                          text: 'Exporter la configuration',
+                          onPressed: () {
+                            // TODO: Exporter
+                          },
+                          icon: Icons.download,
+                          fullWidth: true,
                         ),
                       ],
                     ),
                     
-                    const SizedBox(height: 16),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                     
                     SecondaryButton(
                       text: 'Historique des rapports envoyés',
@@ -249,7 +277,7 @@ class _AutoReportsScreenState extends State<AutoReportsScreen> {
                       icon: Icons.history,
                     ),
                     
-                    const SizedBox(height: 32),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                   ],
                 ),
               ),
@@ -260,10 +288,10 @@ class _AutoReportsScreenState extends State<AutoReportsScreen> {
     );
   }
 
-  Widget _buildReportCard(Map<String, dynamic> report) {
+  Widget _buildReportCard(BuildContext context, Map<String, dynamic> report) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.cardPadding)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -276,25 +304,25 @@ class _AutoReportsScreenState extends State<AutoReportsScreen> {
                     children: [
                       Text(
                         report['name'],
-                        style: const TextStyle(
-                          fontSize: 16,
+                        style: TextStyle(
+                          fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                       Row(
                         children: [
                           Icon(
                             _getReportIcon(report['type']),
-                            size: 14,
+                            size: AppConstants.widthPercentage(context, AppConstants.smallIconSize),
                             color: AppTheme.textSecondary,
                           ),
-                          const SizedBox(width: 4),
+                          SizedBox(width: AppConstants.widthPercentage(context, AppConstants.spacingSmall)),
                           Text(
                             _getFrequencyText(report['frequency']),
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: AppTheme.textSecondary,
-                              fontSize: 12,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
                             ),
                           ),
                         ],
@@ -313,17 +341,17 @@ class _AutoReportsScreenState extends State<AutoReportsScreen> {
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
             Row(
               children: [
-                const Icon(Icons.email, size: 14, color: AppTheme.textSecondary),
-                const SizedBox(width: 4),
+                Icon(Icons.email, size: AppConstants.widthPercentage(context, AppConstants.smallIconSize), color: AppTheme.textSecondary),
+                SizedBox(width: AppConstants.widthPercentage(context, AppConstants.spacingSmall)),
                 Expanded(
                   child: Text(
                     'Destinataires: ${(report['recipients'] as List).join(', ')}',
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: AppTheme.textSecondary,
-                      fontSize: 12,
+                      fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -331,55 +359,48 @@ class _AutoReportsScreenState extends State<AutoReportsScreen> {
               ],
             ),
             if (report['lastSent'] != null) ...[
-              const SizedBox(height: 4),
+              SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
               Row(
                 children: [
-                  const Icon(Icons.access_time, size: 14, color: AppTheme.textSecondary),
-                  const SizedBox(width: 4),
+                  Icon(Icons.access_time, size: AppConstants.widthPercentage(context, AppConstants.smallIconSize), color: AppTheme.textSecondary),
+                  SizedBox(width: AppConstants.widthPercentage(context, AppConstants.spacingSmall)),
                   Text(
                     'Dernier envoi: ${report['lastSent']}',
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: AppTheme.textSecondary,
-                      fontSize: 12,
+                      fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
                     ),
                   ),
                 ],
               ),
             ],
-            const SizedBox(height: 12),
-            Row(
+            SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+            ResponsiveGrid(
+              customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenItems),
               children: [
-                Expanded(
-                  child: SecondaryButton(
-                    text: 'Modifier',
-                    onPressed: () {
-                      _editReport(report);
-                    },
-                    fullWidth: true,
-                    icon: Icons.edit,
-                  ),
+                SecondaryButton(
+                  text: 'Modifier',
+                  onPressed: () {
+                    _editReport(report);
+                  },
+                  fullWidth: true,
+                  icon: Icons.edit,
                 ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: SecondaryButton(
-                    text: 'Tester',
-                    onPressed: () {
-                      _testReport(report);
-                    },
-                    fullWidth: true,
-                    icon: Icons.play_arrow,
-                  ),
+                SecondaryButton(
+                  text: 'Tester',
+                  onPressed: () {
+                    _testReport(report);
+                  },
+                  fullWidth: true,
+                  icon: Icons.play_arrow,
                 ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: SecondaryButton(
-                    text: 'Supprimer',
-                    onPressed: () {
-                      _deleteReport(report);
-                    },
-                    fullWidth: true,
-                    icon: Icons.delete,
-                  ),
+                SecondaryButton(
+                  text: 'Supprimer',
+                  onPressed: () {
+                    _deleteReport(report);
+                  },
+                  fullWidth: true,
+                  icon: Icons.delete,
                 ),
               ],
             ),
@@ -390,6 +411,7 @@ class _AutoReportsScreenState extends State<AutoReportsScreen> {
   }
 
   Widget _buildTemplateCard({
+    required BuildContext context,
     required String name,
     required IconData icon,
     required Color color,
@@ -399,23 +421,24 @@ class _AutoReportsScreenState extends State<AutoReportsScreen> {
         _createFromTemplate(name);
       },
       child: Container(
-        width: 120,
-        padding: const EdgeInsets.all(12),
+        width: AppConstants.widthPercentage(context, AppConstants.minCardWidth),
+        padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.cardPadding)),
         decoration: BoxDecoration(
           color: color.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(AppConstants.borderRadius),
           border: Border.all(color: color.withOpacity(0.3)),
         ),
         child: Column(
           children: [
-            Icon(icon, color: color, size: 32),
-            const SizedBox(height: 8),
+            Icon(icon, color: color, size: AppConstants.widthPercentage(context, AppConstants.smallIconSize)),
+            SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
             Text(
               name,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontWeight: FontWeight.w500,
                 color: AppTheme.textPrimary,
+                fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
               ),
             ),
           ],

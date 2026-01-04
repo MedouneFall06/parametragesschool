@@ -9,6 +9,8 @@ import 'package:parametragesschool/widgets/stateless_widgets/stat_card.dart';
 import 'package:parametragesschool/models/classe_model.dart';
 // ignore: unused_import
 import 'package:parametragesschool/models/departement_model.dart';
+import 'package:parametragesschool/core/constant/constants.dart';
+import 'package:parametragesschool/core/responsive/responsive_grid.dart';
 
 // TODO: Transformer en ConsumerStatefulWidget avec Riverpod
 // TODO: Créer ClasseViewModel
@@ -100,19 +102,8 @@ class _ClasseScreenState extends State<ClasseScreen> {
 
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
-      // Le retour est maintenant gerer par le page_header
-      // L'AppBar est ici pour gérer le bouton de retour
-      // appBar: AppBar(
-      //   backgroundColor: Colors.transparent,
-      //   elevation: 0,
-      //   automaticallyImplyLeading: true,
-      //   iconTheme: IconThemeData(
-      //     color: AppTheme.textPrimary,
-      //   ),
-      // ),
-      // // Le body contient tout le reste de la page
       body: SafeArea(
-        top: false, // Important pour éviter un double espace en haut
+        top: false,
         child: Column(
           children: [
             const PageHeader(
@@ -121,33 +112,29 @@ class _ClasseScreenState extends State<ClasseScreen> {
             ),
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.paddingAll)),
                 child: Column(
                   children: [
                     // Statistics
-                    Row(
+                    ResponsiveGrid(
+                      customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenStats),
                       children: [
-                        Expanded(
-                          child: StatCard(
-                            title: 'Classes totales',
-                            value: _classes.length.toString(),
-                            icon: Icons.class_,
-                            color: AppTheme.primaryColor,
-                          ),
+                        StatCard(
+                          title: 'Classes totales',
+                          value: _classes.length.toString(),
+                          icon: Icons.class_,
+                          color: AppTheme.primaryColor,
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: StatCard(
-                            title: 'Étudiants total',
-                            value: totalEtudiants.toString(),
-                            icon: Icons.people,
-                            color: AppTheme.accentColor,
-                          ),
+                        StatCard(
+                          title: 'Étudiants total',
+                          value: totalEtudiants.toString(),
+                          icon: Icons.people,
+                          color: AppTheme.accentColor,
                         ),
                       ],
                     ),
 
-                    const SizedBox(height: 12),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
 
                     StatCard(
                       title: 'Moyenne par classe',
@@ -157,109 +144,113 @@ class _ClasseScreenState extends State<ClasseScreen> {
                       color: AppTheme.secondaryColor,
                     ),
 
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
 
                     // Filters
                     InfoCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Filtres',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 16),
-                          Row(
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                          ResponsiveGrid(
+                            customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenItems),
                             children: [
-                              Expanded(
-                                child: DropdownButtonFormField<String?>(
-                                  value: _selectedNiveau,
-                                  decoration: const InputDecoration(
-                                    labelText: 'Niveau (optionnel)',
-                                    border: OutlineInputBorder(),
-                                    filled: true,
-                                    fillColor: Colors.white,
+                              DropdownButtonFormField<String?>(
+                                value: _selectedNiveau,
+                                decoration: InputDecoration(
+                                  labelText: 'Niveau (optionnel)',
+                                  labelStyle: TextStyle(fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize)),
+                                  contentPadding: EdgeInsets.symmetric(
+                                    horizontal: AppConstants.widthPercentage(context, AppConstants.cardPadding),
+                                    vertical: AppConstants.heightPercentage(context, AppConstants.spacingSmall),
                                   ),
-                                  items: [
-                                    const DropdownMenuItem(
-                                      value: null,
-                                      child: Text('Tous les niveaux'),
-                                    ),
-                                    ...['Terminale', 'Première', 'Seconde']
-                                        .map((niveau) {
-                                      return DropdownMenuItem(
-                                        value: niveau,
-                                        child: Text(niveau),
-                                      );
-                                    }).toList(),
-                                  ],
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _selectedNiveau = value;
-                                    });
-                                  },
+                                  border: const OutlineInputBorder(),
+                                  filled: true,
+                                  fillColor: Colors.white,
                                 ),
+                                items: [
+                                  const DropdownMenuItem(
+                                    value: null,
+                                    child: Text('Tous les niveaux'),
+                                  ),
+                                  ...['Terminale', 'Première', 'Seconde']
+                                      .map((niveau) {
+                                    return DropdownMenuItem(
+                                      value: niveau,
+                                      child: Text(niveau),
+                                    );
+                                  }).toList(),
+                                ],
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedNiveau = value;
+                                  });
+                                },
                               ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: DropdownButtonFormField<String?>(
-                                  value: _selectedDepartement,
-                                  decoration: const InputDecoration(
-                                    labelText: 'Département (optionnel)',
-                                    border: OutlineInputBorder(),
-                                    filled: true,
-                                    fillColor: Colors.white,
+                              DropdownButtonFormField<String?>(
+                                value: _selectedDepartement,
+                                decoration: InputDecoration(
+                                  labelText: 'Département (optionnel)',
+                                  labelStyle: TextStyle(fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize)),
+                                  contentPadding: EdgeInsets.symmetric(
+                                    horizontal: AppConstants.widthPercentage(context, AppConstants.cardPadding),
+                                    vertical: AppConstants.heightPercentage(context, AppConstants.spacingSmall),
                                   ),
-                                  items: [
-                                    const DropdownMenuItem(
-                                      value: null,
-                                      child: Text('Tous les départements'),
-                                    ),
-                                    ..._departements.entries.map((entry) {
-                                      return DropdownMenuItem(
-                                        value: entry.key,
-                                        child: Text(entry.value),
-                                      );
-                                    }).toList(),
-                                  ],
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _selectedDepartement = value;
-                                    });
-                                  },
+                                  border: const OutlineInputBorder(),
+                                  filled: true,
+                                  fillColor: Colors.white,
                                 ),
+                                items: [
+                                  const DropdownMenuItem(
+                                    value: null,
+                                    child: Text('Tous les départements'),
+                                  ),
+                                  ..._departements.entries.map((entry) {
+                                    return DropdownMenuItem(
+                                      value: entry.key,
+                                      child: Text(entry.value),
+                                    );
+                                  }).toList(),
+                                ],
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedDepartement = value;
+                                  });
+                                },
                               ),
                             ],
                           ),
-                          const SizedBox(height: 12),
-                          Row(
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                          ResponsiveGrid(
+                            customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenItems),
                             children: [
-                              Expanded(
-                                child: SecondaryButton(
-                                  text: 'Réinitialiser',
-                                  onPressed: () {
-                                    setState(() {
-                                      _selectedNiveau = null;
-                                      _selectedDepartement = null;
-                                    });
-                                  },
-                                  icon: Icons.filter_alt_off,
-                                ),
+                              SecondaryButton(
+                                text: 'Réinitialiser',
+                                onPressed: () {
+                                  setState(() {
+                                    _selectedNiveau = null;
+                                    _selectedDepartement = null;
+                                  });
+                                },
+                                icon: Icons.filter_alt_off,
+                                fullWidth: true,
                               ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: PrimaryButton(
-                                  text: 'Nouvelle classe',
-                                  onPressed: () {
-                                    context.goNamed('classe_details',
-                                        pathParameters: {'id': 'new'});
-                                  },
-                                  icon: Icons.add,
-                                ),
+                              PrimaryButton(
+                                text: 'Nouvelle classe',
+                                onPressed: () {
+                                  context.goNamed('classe_details',
+                                      pathParameters: {'id': 'new'});
+                                },
+                                icon: Icons.add,
+                                fullWidth: true,
                               ),
                             ],
                           ),
@@ -267,7 +258,7 @@ class _ClasseScreenState extends State<ClasseScreen> {
                       ),
                     ),
 
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
 
                     // Classes List
                     InfoCard(
@@ -279,8 +270,8 @@ class _ClasseScreenState extends State<ClasseScreen> {
                             children: [
                               Text(
                                 'Classes (${filteredClasses.length})',
-                                style: const TextStyle(
-                                  fontSize: 18,
+                                style: TextStyle(
+                                  fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                                   fontWeight: FontWeight.w600,
                                   color: AppTheme.textPrimary,
                                 ),
@@ -294,26 +285,27 @@ class _ClasseScreenState extends State<ClasseScreen> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           if (filteredClasses.isEmpty)
-                            const Padding(
-                              padding: EdgeInsets.all(32),
+                            Padding(
+                              padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.paddingAll)),
                               child: Text(
                                 'Aucune classe ne correspond aux filtres',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: AppTheme.textSecondary,
+                                  fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
                                 ),
                               ),
                             )
                           else
                             ...filteredClasses.map((classe) {
                               return Card(
-                                margin: const EdgeInsets.only(bottom: 12),
+                                margin: EdgeInsets.only(bottom: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                                 child: ListTile(
                                   leading: Container(
-                                    width: 50,
-                                    height: 50,
+                                    width: AppConstants.widthPercentage(context, AppConstants.avatarSize),
+                                    height: AppConstants.widthPercentage(context, AppConstants.avatarSize),
                                     decoration: BoxDecoration(
                                       color: _getClasseColor(classe.niveau),
                                       shape: BoxShape.circle,
@@ -321,37 +313,38 @@ class _ClasseScreenState extends State<ClasseScreen> {
                                     child: Center(
                                       child: Text(
                                         _getClasseInitials(classe.nom),
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 16,
+                                          fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                                         ),
                                       ),
                                     ),
                                   ),
                                   title: Text(
                                     classe.nom,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontWeight: FontWeight.w600,
+                                      fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                                     ),
                                   ),
                                   subtitle: Column(
                                     crossAxisAlignment:
                                     CrossAxisAlignment.start,
                                     children: [
-                                      const SizedBox(height: 4),
+                                      SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                                       Text(
                                         '${classe.niveau} • ${_departements[classe.departementId] ?? 'Département inconnu'}',
-                                        style: const TextStyle(
-                                          fontSize: 14,
+                                        style: TextStyle(
+                                          fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
                                         ),
                                       ),
-                                      const SizedBox(height: 4),
+                                      SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                                       Text(
                                         'Effectif: ${_effectifs[classe.id] ?? 0} étudiants',
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           color: AppTheme.textSecondary,
-                                          fontSize: 13,
+                                          fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
                                         ),
                                       ),
                                     ],
@@ -360,15 +353,15 @@ class _ClasseScreenState extends State<ClasseScreen> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       IconButton(
-                                        icon: const Icon(Icons.people,
-                                            size: 20),
+                                        icon: Icon(Icons.people,
+                                            size: AppConstants.widthPercentage(context, AppConstants.smallIconSize)),
                                         onPressed: () {
                                           // TODO: Naviguer vers la liste des étudiants de la classe
                                         },
                                         color: AppTheme.primaryColor,
                                       ),
                                       IconButton(
-                                        icon: const Icon(Icons.edit, size: 20),
+                                        icon: Icon(Icons.edit, size: AppConstants.widthPercentage(context, AppConstants.smallIconSize)),
                                         onPressed: () {
                                           context.goNamed('classe_details',
                                               pathParameters: {
@@ -389,27 +382,27 @@ class _ClasseScreenState extends State<ClasseScreen> {
                       ),
                     ),
 
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
 
                     // Statistics by Level
                     InfoCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Répartition par niveau',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           ...classesParNiveau.entries.map((entry) {
                             final percentage =
                             (entry.value / _classes.length * 100);
                             return Padding(
-                              padding: const EdgeInsets.only(bottom: 12),
+                              padding: EdgeInsets.only(bottom: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -431,7 +424,7 @@ class _ClasseScreenState extends State<ClasseScreen> {
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(height: 8),
+                                  SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                                   LinearProgressIndicator(
                                     value: entry.value / _classes.length,
                                     backgroundColor: AppTheme.backgroundColor,
@@ -439,7 +432,7 @@ class _ClasseScreenState extends State<ClasseScreen> {
                                       _getNiveauColor(entry.key),
                                     ),
                                     minHeight: 8,
-                                    borderRadius: BorderRadius.circular(4),
+                                    borderRadius: BorderRadius.circular(AppConstants.borderRadius),
                                   ),
                                 ],
                               ),
@@ -449,27 +442,27 @@ class _ClasseScreenState extends State<ClasseScreen> {
                       ),
                     ),
 
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
 
                     // Quick Actions
                     InfoCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Actions rapides',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 16),
-                          Wrap(
-                            spacing: 12,
-                            runSpacing: 12,
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                          ResponsiveGrid(
+                            customSpacing: AppConstants.widthPercentage(context, AppConstants.spacingSmall),
                             children: [
                               _buildQuickAction(
+                                context: context,
                                 icon: Icons.schedule,
                                 label: 'Emploi du temps',
                                 onTap: () {
@@ -477,6 +470,7 @@ class _ClasseScreenState extends State<ClasseScreen> {
                                 },
                               ),
                               _buildQuickAction(
+                                context: context,
                                 icon: Icons.assignment,
                                 label: 'Programmes',
                                 onTap: () {
@@ -484,6 +478,7 @@ class _ClasseScreenState extends State<ClasseScreen> {
                                 },
                               ),
                               _buildQuickAction(
+                                context: context,
                                 icon: Icons.people_alt,
                                 label: 'Affecter enseignants',
                                 onTap: () {
@@ -491,6 +486,7 @@ class _ClasseScreenState extends State<ClasseScreen> {
                                 },
                               ),
                               _buildQuickAction(
+                                context: context,
                                 icon: Icons.bar_chart,
                                 label: 'Statistiques',
                                 onTap: () {
@@ -503,30 +499,28 @@ class _ClasseScreenState extends State<ClasseScreen> {
                       ),
                     ),
 
-                    const SizedBox(height: 32),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
 
                     // Export Options
-                    Row(
+                    ResponsiveGrid(
+                      customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenItems),
                       children: [
-                        Expanded(
-                          child: SecondaryButton(
-                            text: 'Générer rapport',
-                            onPressed: () {},
-                            icon: Icons.description,
-                          ),
+                        SecondaryButton(
+                          text: 'Générer rapport',
+                          onPressed: () {},
+                          icon: Icons.description,
+                          fullWidth: true,
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: SecondaryButton(
-                            text: 'Importer classes',
-                            onPressed: () {},
-                            icon: Icons.upload,
-                          ),
+                        SecondaryButton(
+                          text: 'Importer classes',
+                          onPressed: () {},
+                          icon: Icons.upload,
+                          fullWidth: true,
                         ),
                       ],
                     ),
 
-                    const SizedBox(height: 32),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                   ],
                 ),
               ),
@@ -574,6 +568,7 @@ class _ClasseScreenState extends State<ClasseScreen> {
   }
 
   Widget _buildQuickAction({
+    required BuildContext context,
     required IconData icon,
     required String label,
     required VoidCallback onTap,
@@ -581,11 +576,11 @@ class _ClasseScreenState extends State<ClasseScreen> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 120,
-        padding: const EdgeInsets.all(12),
+        width: AppConstants.widthPercentage(context, AppConstants.minCardWidth),
+        padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.cardPadding)),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppConstants.borderRadius),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.05),
@@ -598,20 +593,20 @@ class _ClasseScreenState extends State<ClasseScreen> {
         child: Column(
           children: [
             Container(
-              width: 40,
-              height: 40,
+              width: AppConstants.widthPercentage(context, AppConstants.avatarSize * 0.8),
+              height: AppConstants.widthPercentage(context, AppConstants.avatarSize * 0.8),
               decoration: BoxDecoration(
                 color: AppTheme.primaryColor.withOpacity(0.1),
                 shape: BoxShape.circle,
               ),
-              child: Icon(icon, color: AppTheme.primaryColor, size: 20),
+              child: Icon(icon, color: AppTheme.primaryColor, size: AppConstants.widthPercentage(context, AppConstants.smallIconSize)),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
             Text(
               label,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 12,
+              style: TextStyle(
+                fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
                 fontWeight: FontWeight.w500,
               ),
             ),

@@ -9,6 +9,43 @@ import 'package:parametragesschool/widgets/stateless_widgets/empty_state_widget.
 import 'package:parametragesschool/models/etudiant_model.dart';
 import 'package:parametragesschool/core/responsive/responsive_grid.dart';
 
+// Constantes modifiables pour le responsive design
+class EtudiantListScreenConstants {
+  // Padding général
+  static const double paddingAll = 0.02;
+  static const double paddingHorizontal = 0.02;
+  static const double paddingVertical = 0.013;
+  static const double paddingBetweenItems = 0.02;
+  static const double paddingBetweenStats = 0.02;
+  static const double paddingBetweenCards = 0.01;
+  
+  // Statistiques
+  static const double statTitleFontSize = 0.025;
+  static const double statIconSize = 0.04;
+  static const double statValueFontSize = 0.045;
+  static const double statSpacing = 0.015;
+  
+  // Cartes d'étudiants
+  static const double studentCardPadding = 0.02;
+  static const double studentAvatarSize = 0.08;
+  static const double studentTitleFontSize = 0.025;
+  static const double studentSubtitleFontSize = 0.018;
+  static const double studentInfoFontSize = 0.016;
+  static const double studentIconSize = 0.025;
+  
+  // Recherche et filtres
+  static const double searchLabelFontSize = 0.025;
+  static const double searchContentPaddingHorizontal = 0.02;
+  static const double searchContentPaddingVertical = 0.015;
+  static const double searchHintFontSize = 0.018;
+  
+  // Espacements
+  static const double spacingSmall = 0.003;
+  static const double spacingMedium = 0.006;
+  static const double spacingLarge = 0.01;
+  static const double spacingExtraLarge = 0.015;
+}
+
 class EtudiantListScreen extends StatefulWidget {
   const EtudiantListScreen({super.key});
 
@@ -97,9 +134,6 @@ class _EtudiantListScreenState extends State<EtudiantListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Détecter la taille de l'écran
-    final bool isSmallScreen = MediaQuery.of(context).size.width < 600;
-    
     // Filtrage local
     List<Etudiant> filteredEtudiants = _etudiants.where((etudiant) {
       bool matchesSearch = '${etudiant.prenom} ${etudiant.nom} ${etudiant.matricule}'
@@ -128,12 +162,12 @@ class _EtudiantListScreenState extends State<EtudiantListScreen> {
             Expanded(
               child: Column(
                 children: [
-                  // Search and Filters - ADAPTÉ AU RESPONSIVE
+                  // Search and Filters
                   Padding(
-                    padding: EdgeInsets.all(isSmallScreen ? 12 : 16),
+                    padding: EdgeInsets.all(MediaQuery.of(context).size.width * EtudiantListScreenConstants.paddingAll),
                     child: Column(
                       children: [
-                        // Search Bar - TAILLE ADAPTATIVE
+                        // Search Bar
                         TextField(
                           decoration: InputDecoration(
                             hintText: 'Rechercher un étudiant...',
@@ -152,12 +186,12 @@ class _EtudiantListScreenState extends State<EtudiantListScreen> {
                             filled: true,
                             fillColor: Colors.white,
                             contentPadding: EdgeInsets.symmetric(
-                              horizontal: isSmallScreen ? 12 : 16,
-                              vertical: isSmallScreen ? 14 : 16,
+                              horizontal: MediaQuery.of(context).size.width * EtudiantListScreenConstants.searchContentPaddingHorizontal,
+                              vertical: MediaQuery.of(context).size.height * EtudiantListScreenConstants.searchContentPaddingVertical,
                             ),
                           ),
                           style: TextStyle(
-                            fontSize: isSmallScreen ? 14 : 16,
+                            fontSize: MediaQuery.of(context).size.width * EtudiantListScreenConstants.searchHintFontSize,
                           ),
                           onChanged: (value) {
                             setState(() {
@@ -166,192 +200,108 @@ class _EtudiantListScreenState extends State<EtudiantListScreen> {
                           },
                         ),
                         
-                        const SizedBox(height: 12),
+                        SizedBox(height: MediaQuery.of(context).size.height * EtudiantListScreenConstants.spacingSmall),
                         
-                        // FILTRES EN COLONNE SI ÉCRAN PETIT
-                        if (isSmallScreen) ...[
-                          // Version mobile : une colonne
-                          Column(
-                            children: [
-                              _buildFilterDropdown(
-                                label: 'Filtrer par classe',
-                                value: _selectedClass,
-                                items: [
-                                  const DropdownMenuItem(
-                                    value: null,
-                                    child: Text('Toutes les classes'),
-                                  ),
-                                  ..._classes.entries.map((entry) {
-                                    return DropdownMenuItem(
-                                      value: entry.key,
-                                      child: Text(entry.value),
-                                    );
-                                  }).toList(),
-                                ],
-                                onChanged: (value) {
-                                  setState(() {
-                                    _selectedClass = value;
-                                  });
-                                },
-                                isSmallScreen: isSmallScreen,
+                        // Filters
+                        ResponsiveGrid(
+                          customSpacing: MediaQuery.of(context).size.width * EtudiantListScreenConstants.paddingBetweenItems,
+                          children: [
+                            DropdownButtonFormField<String?>(
+                              value: _selectedClass,
+                              decoration: InputDecoration(
+                                labelText: 'Filtrer par classe',
+                                labelStyle: TextStyle(fontSize: MediaQuery.of(context).size.width * EtudiantListScreenConstants.searchLabelFontSize),
+                                border: const OutlineInputBorder(),
+                                filled: true,
+                                fillColor: Colors.white,
                               ),
-                              
-                              const SizedBox(height: 12),
-                              
-                              _buildFilterDropdown(
-                                label: 'Statut parent',
-                                value: _selectedParentStatus,
-                                items: const [
-                                  DropdownMenuItem(
-                                    value: null,
-                                    child: Text('Tous'),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: 'with_parent',
-                                    child: Text('Avec parent'),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: 'without_parent',
-                                    child: Text('Sans parent'),
-                                  ),
-                                ],
-                                onChanged: (value) {
-                                  setState(() {
-                                    _selectedParentStatus = value;
-                                  });
-                                },
-                                isSmallScreen: isSmallScreen,
-                              ),
-                            ],
-                          ),
-                        ] else ...[
-                          // Version desktop/tablette : deux colonnes
-                          Row(
-                            children: [
-                              Expanded(
-                                child: _buildFilterDropdown(
-                                  label: 'Filtrer par classe',
-                                  value: _selectedClass,
-                                  items: [
-                                    const DropdownMenuItem(
-                                      value: null,
-                                      child: Text('Toutes les classes'),
-                                    ),
-                                    ..._classes.entries.map((entry) {
-                                      return DropdownMenuItem(
-                                        value: entry.key,
-                                        child: Text(entry.value),
-                                      );
-                                    }).toList(),
-                                  ],
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _selectedClass = value;
-                                    });
-                                  },
-                                  isSmallScreen: isSmallScreen,
+                              items: [
+                                const DropdownMenuItem(
+                                  value: null,
+                                  child: Text('Toutes les classes'),
                                 ),
+                                ..._classes.entries.map((entry) {
+                                  return DropdownMenuItem(
+                                    value: entry.key,
+                                    child: Text(entry.value),
+                                  );
+                                }).toList(),
+                              ],
+                              onChanged: (value) {
+                                setState(() {
+                                  _selectedClass = value;
+                                });
+                              },
+                            ),
+                            DropdownButtonFormField<String?>(
+                              value: _selectedParentStatus,
+                              decoration: InputDecoration(
+                                labelText: 'Statut parent',
+                                labelStyle: TextStyle(fontSize: MediaQuery.of(context).size.width * EtudiantListScreenConstants.searchLabelFontSize),
+                                border: const OutlineInputBorder(),
+                                filled: true,
+                                fillColor: Colors.white,
                               ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: _buildFilterDropdown(
-                                  label: 'Statut parent',
-                                  value: _selectedParentStatus,
-                                  items: const [
-                                    DropdownMenuItem(
-                                      value: null,
-                                      child: Text('Tous'),
-                                    ),
-                                    DropdownMenuItem(
-                                      value: 'with_parent',
-                                      child: Text('Avec parent'),
-                                    ),
-                                    DropdownMenuItem(
-                                      value: 'without_parent',
-                                      child: Text('Sans parent'),
-                                    ),
-                                  ],
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _selectedParentStatus = value;
-                                    });
-                                  },
-                                  isSmallScreen: isSmallScreen,
+                              items: const [
+                                DropdownMenuItem(
+                                  value: null,
+                                  child: Text('Tous'),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
+                                DropdownMenuItem(
+                                  value: 'with_parent',
+                                  child: Text('Avec parent'),
+                                ),
+                                DropdownMenuItem(
+                                  value: 'without_parent',
+                                  child: Text('Sans parent'),
+                                ),
+                              ],
+                              onChanged: (value) {
+                                setState(() {
+                                  _selectedParentStatus = value;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
                         
-                        const SizedBox(height: 12),
+                        SizedBox(height: MediaQuery.of(context).size.height * EtudiantListScreenConstants.spacingSmall),
                         
-                        // Quick Actions - ADAPTÉ AU RESPONSIVE
-                        if (isSmallScreen) ...[
-                          // Version mobile : boutons en colonne
-                          Column(
-                            children: [
-                              SecondaryButton(
-                                text: 'Réinitialiser',
-                                onPressed: () {
-                                  setState(() {
-                                    _searchQuery = '';
-                                    _selectedClass = null;
-                                    _selectedParentStatus = null;
-                                  });
-                                },
-                                icon: Icons.filter_alt_off,
-                                fullWidth: true,
-                              ),
-                              const SizedBox(height: 8),
-                              PrimaryButton(
-                                text: 'Exporter',
-                                onPressed: () {
-                                  // TODO: Exporter la liste
-                                },
-                                icon: Icons.download,
-                                fullWidth: true,
-                              ),
-                            ],
-                          ),
-                        ] else ...[
-                          // Version desktop/tablette : boutons en ligne
-                          Row(
-                            children: [
-                              Expanded(
-                                child: SecondaryButton(
-                                  text: 'Réinitialiser',
-                                  onPressed: () {
-                                    setState(() {
-                                      _searchQuery = '';
-                                      _selectedClass = null;
-                                      _selectedParentStatus = null;
-                                    });
-                                  },
-                                  icon: Icons.filter_alt_off,
-                                ),
-                              ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: PrimaryButton(
-                                  text: 'Exporter',
-                                  onPressed: () {
-                                    // TODO: Exporter la liste
-                                  },
-                                  icon: Icons.download,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                        // Quick Actions
+                        ResponsiveGrid(
+                          customSpacing: MediaQuery.of(context).size.width * EtudiantListScreenConstants.paddingBetweenItems,
+                          children: [
+                            SecondaryButton(
+                              text: 'Réinitialiser',
+                              onPressed: () {
+                                setState(() {
+                                  _searchQuery = '';
+                                  _selectedClass = null;
+                                  _selectedParentStatus = null;
+                                });
+                              },
+                              icon: Icons.filter_alt_off,
+                              fullWidth: true,
+                            ),
+                            PrimaryButton(
+                              text: 'Exporter',
+                              onPressed: () {
+                                // TODO: Exporter la liste
+                              },
+                              icon: Icons.download,
+                              fullWidth: true,
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
                   
-                  // Results Counter - TEXTE ADAPTATIF
+                  // Results Counter
                   Container(
                     padding: EdgeInsets.symmetric(
-                      horizontal: isSmallScreen ? 12 : 16,
-                      vertical: 8,
+                      horizontal: MediaQuery.of(context).size.width * EtudiantListScreenConstants.paddingHorizontal,
+                      vertical: MediaQuery.of(context).size.height * EtudiantListScreenConstants.spacingSmall,
                     ),
                     color: AppTheme.backgroundColor,
                     child: Row(
@@ -362,21 +312,21 @@ class _EtudiantListScreenState extends State<EtudiantListScreen> {
                           style: TextStyle(
                             color: AppTheme.textSecondary,
                             fontWeight: FontWeight.w500,
-                            fontSize: isSmallScreen ? 13 : 14,
+                            fontSize: MediaQuery.of(context).size.width * EtudiantListScreenConstants.statTitleFontSize,
                           ),
                         ),
                         Text(
                           'Total: ${_etudiants.length}',
                           style: TextStyle(
                             color: AppTheme.textSecondary,
-                            fontSize: isSmallScreen ? 13 : 14,
+                            fontSize: MediaQuery.of(context).size.width * EtudiantListScreenConstants.statTitleFontSize,
                           ),
                         ),
                       ],
                     ),
                   ),
                   
-                  // Students List - RESPONSIVEGRID
+                  // Students List
                   Expanded(
                     child: filteredEtudiants.isEmpty
                         ? EmptyStateWidget(
@@ -396,9 +346,9 @@ class _EtudiantListScreenState extends State<EtudiantListScreen> {
                           )
                         : SingleChildScrollView(
                             child: Padding(
-                              padding: EdgeInsets.all(isSmallScreen ? 12 : 16),
+                              padding: EdgeInsets.all(MediaQuery.of(context).size.width * EtudiantListScreenConstants.paddingAll),
                               child: ResponsiveGrid(
-                                spacing: isSmallScreen ? 8 : 12,
+                                customSpacing: MediaQuery.of(context).size.width * EtudiantListScreenConstants.paddingBetweenCards,
                                 children: filteredEtudiants.map((etudiant) {
                                   return EtudiantCard(
                                     etudiant: etudiant,
@@ -432,7 +382,7 @@ class _EtudiantListScreenState extends State<EtudiantListScreen> {
         foregroundColor: Colors.white,
         child: Icon(
           Icons.person_add,
-          size: isSmallScreen ? 20 : 24,
+          size: MediaQuery.of(context).size.width * EtudiantListScreenConstants.studentIconSize,
         ),
       ),
     );
@@ -444,30 +394,27 @@ class _EtudiantListScreenState extends State<EtudiantListScreen> {
     required String? value,
     required List<DropdownMenuItem<String?>> items,
     required ValueChanged<String?> onChanged,
-    required bool isSmallScreen,
   }) {
     return DropdownButtonFormField<String?>(
       value: value,
       decoration: InputDecoration(
         labelText: label,
+        labelStyle: TextStyle(fontSize: MediaQuery.of(context).size.width * EtudiantListScreenConstants.searchLabelFontSize),
         border: const OutlineInputBorder(),
         filled: true,
         fillColor: Colors.white,
         contentPadding: EdgeInsets.symmetric(
-          horizontal: isSmallScreen ? 12 : 16,
-          vertical: isSmallScreen ? 14 : 16,
-        ),
-        labelStyle: TextStyle(
-          fontSize: isSmallScreen ? 14 : 16,
+          horizontal: MediaQuery.of(context).size.width * EtudiantListScreenConstants.searchContentPaddingHorizontal,
+          vertical: MediaQuery.of(context).size.height * EtudiantListScreenConstants.searchContentPaddingVertical,
         ),
       ),
       items: items,
       onChanged: onChanged,
       style: TextStyle(
-        fontSize: isSmallScreen ? 14 : 16,
+        fontSize: MediaQuery.of(context).size.width * EtudiantListScreenConstants.searchHintFontSize,
       ),
       isExpanded: true,
-      iconSize: isSmallScreen ? 20 : 24,
+      iconSize: MediaQuery.of(context).size.width * EtudiantListScreenConstants.studentIconSize,
     );
   }
 }

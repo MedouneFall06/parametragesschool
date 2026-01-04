@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
+import '../../core/constant/constants.dart';
 
 class StatCard extends StatelessWidget {
   final String title;
@@ -19,7 +20,7 @@ class StatCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.cardPadding)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -28,19 +29,19 @@ class StatCard extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
-                    fontSize: 14,
+                  style: TextStyle(
+                    fontSize: MediaQuery.of(context).size.width * 0.025,
                     color: AppTheme.textSecondary,
                   ),
                 ),
-                Icon(icon, color: color),
+                Icon(icon, color: AppTheme.primaryColor, size: MediaQuery.of(context).size.width * 0.04),
               ],
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.01),
             Text(
               value,
-              style: const TextStyle(
-                fontSize: 24,
+              style: TextStyle(
+                fontSize: MediaQuery.of(context).size.width * 0.045,
                 fontWeight: FontWeight.bold,
                 color: AppTheme.textPrimary,
               ),

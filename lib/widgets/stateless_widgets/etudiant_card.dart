@@ -16,13 +16,10 @@ class EtudiantCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // FORCER l'adaptation radicale pour petits écrans
     final width = MediaQuery.of(context).size.width;
-    final bool isVerySmallScreen = width < 400; // iPhone SE, petits Android
-    final bool isSmallScreen = width < 600;     // Mobiles standards
     
     return Card(
-      margin: EdgeInsets.zero, // CRITIQUE : ResponsiveGrid gère l'espace
+      margin: EdgeInsets.zero,
       elevation: 1,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
@@ -32,17 +29,17 @@ class EtudiantCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         child: Container(
           constraints: BoxConstraints(
-            minHeight: 0, // Permet de rétrécir
+            minHeight: 0,
             maxHeight: double.infinity,
           ),
-          padding: EdgeInsets.all(isVerySmallScreen ? 8 : isSmallScreen ? 10 : 12),
+          padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.015),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // AVATAR - TAILLE DYNAMIQUE RADICALE
+              // AVATAR - TAILLE DYNAMIQUE
               Container(
-                width: isVerySmallScreen ? 32 : isSmallScreen ? 36 : 40,
-                height: isVerySmallScreen ? 32 : isSmallScreen ? 36 : 40,
+                width: MediaQuery.of(context).size.width * 0.08,
+                height: MediaQuery.of(context).size.width * 0.08,
                 decoration: BoxDecoration(
                   color: _getAvatarColor(etudiant.id),
                   shape: BoxShape.circle,
@@ -51,7 +48,7 @@ class EtudiantCard extends StatelessWidget {
                   child: Text(
                     _getInitiales(etudiant.prenom, etudiant.nom),
                     style: TextStyle(
-                      fontSize: isVerySmallScreen ? 12 : isSmallScreen ? 13 : 14,
+                      fontSize: MediaQuery.of(context).size.width * 0.025,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
@@ -59,20 +56,20 @@ class EtudiantCard extends StatelessWidget {
                 ),
               ),
               
-              SizedBox(width: isVerySmallScreen ? 8 : isSmallScreen ? 10 : 12),
+              SizedBox(width: MediaQuery.of(context).size.width * 0.02),
               
-              // CONTENU PRINCIPAL - AVEC CONTRAINTES STRICTES
+              // CONTENU PRINCIPAL
               Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // NOM PRÉNOM - TAILLE DYNAMIQUE
+                    // NOM PRÉNOM
                     Text(
                       "${etudiant.prenom} ${etudiant.nom}",
                       style: TextStyle(
-                        fontSize: isVerySmallScreen ? 13 : isSmallScreen ? 14 : 15,
+                        fontSize: MediaQuery.of(context).size.width * 0.03,
                         fontWeight: FontWeight.w600,
                         color: AppTheme.textPrimary,
                         height: 1.2,
@@ -81,43 +78,40 @@ class EtudiantCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     
-                    SizedBox(height: isVerySmallScreen ? 2 : 3),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.002),
                     
                     // MATRICULE
                     _buildCompactInfoRow(
                       icon: Icons.badge,
                       text: etudiant.matricule,
-                      isVerySmallScreen: isVerySmallScreen,
-                      isSmallScreen: isSmallScreen,
+                      context: context,
                     ),
                     
-                    // CLASSE (seulement si place)
+                    // CLASSE
                     if (nomClasse != null && nomClasse!.isNotEmpty) 
                       _buildCompactInfoRow(
                         icon: Icons.school,
                         text: nomClasse!,
-                        isVerySmallScreen: isVerySmallScreen,
-                        isSmallScreen: isSmallScreen,
+                        context: context,
                       ),
                     
-                    // STATUT PARENT (seulement sur écrans assez larges)
-                    if (!isVerySmallScreen && width > 350)
+                    // STATUT PARENT
+                    if (width > 350)
                       _buildParentStatusCompact(
                         etudiant: etudiant,
-                        isVerySmallScreen: isVerySmallScreen,
-                        isSmallScreen: isSmallScreen,
+                        context: context,
                       ),
                   ],
                 ),
               ),
               
-              // FLÈCHE (seulement si assez de place)
+              // FLÈCHE
               if (onTap != null && width > 300) ...[
-                SizedBox(width: isVerySmallScreen ? 4 : 6),
+                SizedBox(width: MediaQuery.of(context).size.width * 0.01),
                 Icon(
                   Icons.chevron_right,
                   color: AppTheme.primaryColor,
-                  size: isVerySmallScreen ? 16 : isSmallScreen ? 18 : 20,
+                  size: MediaQuery.of(context).size.width * 0.04,
                 ),
               ],
             ],
@@ -130,25 +124,24 @@ class EtudiantCard extends StatelessWidget {
   Widget _buildCompactInfoRow({
     required IconData icon,
     required String text,
-    required bool isVerySmallScreen,
-    required bool isSmallScreen,
+    required BuildContext context,
   }) {
     return Padding(
-      padding: EdgeInsets.only(bottom: isVerySmallScreen ? 1 : 2),
+      padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.001),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Icon(
             icon,
-            size: isVerySmallScreen ? 10 : isSmallScreen ? 11 : 12,
+            size: MediaQuery.of(context).size.width * 0.02,
             color: AppTheme.textSecondary,
           ),
-          SizedBox(width: isVerySmallScreen ? 3 : 4),
+          SizedBox(width: MediaQuery.of(context).size.width * 0.008),
           Expanded(
             child: Text(
               text,
               style: TextStyle(
-                fontSize: isVerySmallScreen ? 11 : isSmallScreen ? 12 : 13,
+                fontSize: MediaQuery.of(context).size.width * 0.022,
                 color: AppTheme.textSecondary,
                 height: 1.1,
               ),
@@ -163,27 +156,26 @@ class EtudiantCard extends StatelessWidget {
 
   Widget _buildParentStatusCompact({
     required Etudiant etudiant,
-    required bool isVerySmallScreen,
-    required bool isSmallScreen,
+    required BuildContext context,
   }) {
     final hasParent = etudiant.parentId != null && etudiant.parentId!.isNotEmpty;
     
     return Padding(
-      padding: EdgeInsets.only(top: isVerySmallScreen ? 1 : 2),
+      padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.001),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Icon(
             hasParent ? Icons.family_restroom : Icons.person_off,
-            size: isVerySmallScreen ? 10 : isSmallScreen ? 11 : 12,
+            size: MediaQuery.of(context).size.width * 0.02,
             color: hasParent ? AppTheme.successColor : AppTheme.textSecondary,
           ),
-          SizedBox(width: isVerySmallScreen ? 3 : 4),
+          SizedBox(width: MediaQuery.of(context).size.width * 0.008),
           Expanded(
             child: Text(
               hasParent ? "Parent lié" : "Non lié",
               style: TextStyle(
-                fontSize: isVerySmallScreen ? 10 : isSmallScreen ? 11 : 12,
+                fontSize: MediaQuery.of(context).size.width * 0.02,
                 color: hasParent ? AppTheme.successColor : AppTheme.textSecondary,
                 fontStyle: FontStyle.italic,
                 height: 1.1,
@@ -196,6 +188,7 @@ class EtudiantCard extends StatelessWidget {
       ),
     );
   }
+
 
   String _getInitiales(String prenom, String nom) {
     String initiales = "";

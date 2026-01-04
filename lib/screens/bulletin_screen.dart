@@ -10,6 +10,8 @@ import 'package:parametragesschool/widgets/stateless_widgets/stat_card.dart';
 import 'package:parametragesschool/models/bulletin_model.dart';
 import 'package:parametragesschool/models/etudiant_model.dart';
 import 'package:parametragesschool/models/note_model.dart';
+import 'package:parametragesschool/core/constant/constants.dart';
+import 'package:parametragesschool/core/responsive/responsive_grid.dart';
 
 // TODO: Transformer en StatefulWidget avec Provider
 // TODO: Créer BulletinViewModel
@@ -108,33 +110,29 @@ class _BulletinScreenState extends State<BulletinScreen> {
             ),
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.paddingAll)),
                 child: Column(
                   children: [
                     // Statistics
-                    Row(
+                    ResponsiveGrid(
+                      customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenStats),
                       children: [
-                        Expanded(
-                          child: StatCard(
-                            title: 'Moyenne classe',
-                            value: moyenneClasse.toStringAsFixed(1),
-                            icon: Icons.school,
-                            color: AppTheme.primaryColor,
-                          ),
+                        StatCard(
+                          title: 'Moyenne classe',
+                          value: moyenneClasse.toStringAsFixed(1),
+                          icon: Icons.school,
+                          color: AppTheme.primaryColor,
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: StatCard(
-                            title: 'Meilleure moyenne',
-                            value: meilleureMoyenne.toStringAsFixed(1),
-                            icon: Icons.emoji_events,
-                            color: AppTheme.accentColor,
-                          ),
+                        StatCard(
+                          title: 'Meilleure moyenne',
+                          value: meilleureMoyenne.toStringAsFixed(1),
+                          icon: Icons.emoji_events,
+                          color: AppTheme.accentColor,
                         ),
                       ],
                     ),
                     
-                    const SizedBox(height: 12),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                     
                     StatCard(
                       title: 'Bulletins générés',
@@ -143,109 +141,105 @@ class _BulletinScreenState extends State<BulletinScreen> {
                       color: AppTheme.secondaryColor,
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Selection
                     InfoCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Sélection du bulletin',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 16),
-                          Row(
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                          ResponsiveGrid(
+                            customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenItems),
                             children: [
-                              Expanded(
-                                child: DropdownButtonFormField<String?>(
-                                  value: _selectedEtudiant,
-                                  decoration: const InputDecoration(
-                                    labelText: 'Étudiant',
-                                    border: OutlineInputBorder(),
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                  ),
-                                  items: [
-                                    const DropdownMenuItem(
-                                      value: null,
-                                      child: Text('Sélectionner un étudiant'),
-                                    ),
-                                    ..._etudiants.entries.map((entry) {
-                                      return DropdownMenuItem(
-                                        value: entry.key,
-                                        child: Text(entry.value),
-                                      );
-                                    }).toList(),
-                                  ],
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _selectedEtudiant = value;
-                                      _showDetails = value != null;
-                                    });
-                                  },
+                              DropdownButtonFormField<String?>(
+                                value: _selectedEtudiant,
+                                decoration: InputDecoration(
+                                  labelText: 'Étudiant',
+                                  labelStyle: TextStyle(fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize)),
+                                  border: const OutlineInputBorder(),
+                                  filled: true,
+                                  fillColor: Colors.white,
                                 ),
+                                items: [
+                                  const DropdownMenuItem(
+                                    value: null,
+                                    child: Text('Sélectionner un étudiant'),
+                                  ),
+                                  ..._etudiants.entries.map((entry) {
+                                    return DropdownMenuItem(
+                                      value: entry.key,
+                                      child: Text(entry.value),
+                                    );
+                                  }).toList(),
+                                ],
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedEtudiant = value;
+                                    _showDetails = value != null;
+                                  });
+                                },
                               ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: DropdownButtonFormField<String?>(
-                                  value: _selectedAnnee,
-                                  decoration: const InputDecoration(
-                                    labelText: 'Année scolaire',
-                                    border: OutlineInputBorder(),
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                  ),
-                                  items: const [
-                                    DropdownMenuItem(
-                                      value: "2023-2024",
-                                      child: Text('2023-2024'),
-                                    ),
-                                    DropdownMenuItem(
-                                      value: "2022-2023",
-                                      child: Text('2022-2023'),
-                                    ),
-                                    DropdownMenuItem(
-                                      value: "2021-2022",
-                                      child: Text('2021-2022'),
-                                    ),
-                                  ],
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _selectedAnnee = value;
-                                    });
-                                  },
+                              DropdownButtonFormField<String?>(
+                                value: _selectedAnnee,
+                                decoration: InputDecoration(
+                                  labelText: 'Année scolaire',
+                                  labelStyle: TextStyle(fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize)),
+                                  border: const OutlineInputBorder(),
+                                  filled: true,
+                                  fillColor: Colors.white,
                                 ),
+                                items: const [
+                                  DropdownMenuItem(
+                                    value: "2023-2024",
+                                    child: Text('2023-2024'),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: "2022-2023",
+                                    child: Text('2022-2023'),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: "2021-2022",
+                                    child: Text('2021-2022'),
+                                  ),
+                                ],
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedAnnee = value;
+                                  });
+                                },
                               ),
                             ],
                           ),
-                          const SizedBox(height: 12),
-                          Row(
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                          ResponsiveGrid(
+                            customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenItems),
                             children: [
-                              Expanded(
-                                child: SecondaryButton(
-                                  text: 'Générer tous',
-                                  onPressed: () {
-                                    // TODO: Générer tous les bulletins
-                                  },
-                                  icon: Icons.autorenew,
-                                ),
+                              SecondaryButton(
+                                text: 'Générer tous',
+                                onPressed: () {
+                                  // TODO: Générer tous les bulletins
+                                },
+                                icon: Icons.autorenew,
+                                fullWidth: true,
                               ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: PrimaryButton(
-                                  text: 'Recalculer',
-                                  onPressed: _selectedEtudiant != null
-                                      ? () {
-                                          // TODO: Recalculer le bulletin
-                                        }
-                                      : null,
-                                  icon: Icons.calculate,
-                                ),
+                              PrimaryButton(
+                                text: 'Recalculer',
+                                onPressed: _selectedEtudiant != null
+                                    ? () {
+                                        // TODO: Recalculer le bulletin
+                                      }
+                                    : null,
+                                icon: Icons.calculate,
+                                fullWidth: true,
                               ),
                             ],
                           ),
@@ -253,33 +247,33 @@ class _BulletinScreenState extends State<BulletinScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Bulletin Details
                     if (_showDetails && selectedBulletin != null) ...[
-                      _buildBulletinHeader(selectedBulletin),
-                      const SizedBox(height: 24),
+                      _buildBulletinHeader(context, selectedBulletin),
+                      SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                       
                       // Matières détaillées
                       InfoCard(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
+                            Text(
                               'Détail par matière',
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                                 fontWeight: FontWeight.w600,
                                 color: AppTheme.textPrimary,
                               ),
                             ),
-                            const SizedBox(height: 16),
+                            SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                             ..._detailsBulletins[_selectedEtudiant]!.map((detail) {
                               return Padding(
-                                padding: const EdgeInsets.only(bottom: 16),
+                                padding: EdgeInsets.only(bottom: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                                 child: Card(
                                   child: Padding(
-                                    padding: const EdgeInsets.all(16),
+                                    padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.cardPadding)),
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
@@ -288,57 +282,58 @@ class _BulletinScreenState extends State<BulletinScreen> {
                                           children: [
                                             Text(
                                               detail['matiere'],
-                                              style: const TextStyle(
-                                                fontSize: 16,
+                                              style: TextStyle(
+                                                fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                                                 fontWeight: FontWeight.w600,
                                               ),
                                             ),
                                             Container(
-                                              padding: const EdgeInsets.symmetric(
-                                                horizontal: 12,
-                                                vertical: 6,
+                                              padding: EdgeInsets.symmetric(
+                                                horizontal: AppConstants.widthPercentage(context, AppConstants.cardPadding),
+                                                vertical: AppConstants.heightPercentage(context, AppConstants.spacingSmall),
                                               ),
                                               decoration: BoxDecoration(
                                                 color: _getNoteColor(detail['note']),
-                                                borderRadius: BorderRadius.circular(20),
+                                                borderRadius: BorderRadius.circular(AppConstants.borderRadius),
                                               ),
                                               child: Text(
                                                 detail['note'].toString(),
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.bold,
-                                                  fontSize: 16,
+                                                  fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                                                 ),
                                               ),
                                             ),
                                           ],
                                         ),
-                                        const SizedBox(height: 8),
+                                        SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                                         Row(
                                           children: [
                                             Chip(
                                               label: Text(
                                                 'Coef. ${detail['coefficient']}',
-                                                style: const TextStyle(fontSize: 12),
+                                                style: TextStyle(fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize)),
                                               ),
                                               backgroundColor: AppTheme.primaryColor.withOpacity(0.1),
                                             ),
-                                            const SizedBox(width: 8),
+                                            SizedBox(width: AppConstants.widthPercentage(context, AppConstants.spacingSmall)),
                                             Chip(
                                               label: Text(
                                                 'Points: ${(detail['note'] * detail['coefficient']).toStringAsFixed(1)}',
-                                                style: const TextStyle(fontSize: 12),
+                                                style: TextStyle(fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize)),
                                               ),
                                               backgroundColor: AppTheme.accentColor.withOpacity(0.1),
                                             ),
                                           ],
                                         ),
-                                        const SizedBox(height: 8),
+                                        SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                                         Text(
                                           'Appréciation: ${detail['appreciation']}',
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             color: AppTheme.textSecondary,
                                             fontStyle: FontStyle.italic,
+                                            fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
                                           ),
                                         ),
                                       ],
@@ -351,34 +346,36 @@ class _BulletinScreenState extends State<BulletinScreen> {
                         ),
                       ),
                       
-                      const SizedBox(height: 24),
+                      SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                       
                       // Résumé et classement
                       InfoCard(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
+                            Text(
                               'Résumé et classement',
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                                 fontWeight: FontWeight.w600,
                                 color: AppTheme.textPrimary,
                               ),
                             ),
-                            const SizedBox(height: 16),
+                            SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                             Row(
                               children: [
                                 Expanded(
                                   child: _buildSummaryItem(
+                                    context: context,
                                     label: 'Moyenne générale',
                                     value: selectedBulletin.moyenneGenerale.toStringAsFixed(2),
                                     color: _getMoyenneColor(selectedBulletin.moyenneGenerale),
                                   ),
                                 ),
-                                const SizedBox(width: 12),
+                                SizedBox(width: AppConstants.widthPercentage(context, AppConstants.paddingBetweenItems)),
                                 Expanded(
                                   child: _buildSummaryItem(
+                                    context: context,
                                     label: 'Rang dans la classe',
                                     value: '5ème/32',
                                     color: AppTheme.infoColor,
@@ -386,19 +383,21 @@ class _BulletinScreenState extends State<BulletinScreen> {
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 12),
+                            SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                             Row(
                               children: [
                                 Expanded(
                                   child: _buildSummaryItem(
+                                    context: context,
                                     label: 'Total des points',
                                     value: '452.5',
                                     color: AppTheme.primaryColor,
                                   ),
                                 ),
-                                const SizedBox(width: 12),
+                                SizedBox(width: AppConstants.widthPercentage(context, AppConstants.paddingBetweenItems)),
                                 Expanded(
                                   child: _buildSummaryItem(
+                                    context: context,
                                     label: 'Mentions',
                                     value: 'Très Bien',
                                     color: AppTheme.successColor,
@@ -410,51 +409,54 @@ class _BulletinScreenState extends State<BulletinScreen> {
                         ),
                       ),
                       
-                      const SizedBox(height: 24),
+                      SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                       
                       // Appréciations générales
                       InfoCard(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
+                            Text(
                               'Appréciations générales',
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                                 fontWeight: FontWeight.w600,
                                 color: AppTheme.textPrimary,
                               ),
                             ),
-                            const SizedBox(height: 16),
-                            const Text(
+                            SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                            Text(
                               'Élève sérieux et assidu qui fournit un travail régulier. '
                               'Excellents résultats en sciences, particulièrement en mathématiques. '
                               'Continue sur cette voie pour le baccalauréat.',
                               style: TextStyle(
                                 color: AppTheme.textSecondary,
                                 height: 1.5,
+                                fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
                               ),
                             ),
-                            const SizedBox(height: 16),
-                            const Text(
+                            SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                            Text(
                               'Signature du professeur principal:',
                               style: TextStyle(
                                 fontWeight: FontWeight.w500,
+                                fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
                               ),
                             ),
-                            const SizedBox(height: 8),
+                            SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                             Container(
-                              height: 50,
+                              height: AppConstants.heightPercentage(context, AppConstants.avatarSize),
                               decoration: BoxDecoration(
                                 border: Border.all(color: AppTheme.textSecondary.withOpacity(0.3)),
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(AppConstants.borderRadius),
                               ),
-                              child: const Center(
+                              child: Center(
                                 child: Text(
                                   'M. Diallo, Professeur principal',
                                   style: TextStyle(
                                     fontStyle: FontStyle.italic,
                                     color: AppTheme.textSecondary,
+                                    fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
                                   ),
                                 ),
                               ),
@@ -463,34 +465,32 @@ class _BulletinScreenState extends State<BulletinScreen> {
                         ),
                       ),
                       
-                      const SizedBox(height: 32),
+                      SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                       
                       // Action Buttons
-                      Row(
+                      ResponsiveGrid(
+                        customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenItems),
                         children: [
-                          Expanded(
-                            child: SecondaryButton(
-                              text: 'Imprimer',
-                              onPressed: () {
-                                // TODO: Imprimer le bulletin
-                              },
-                              icon: Icons.print,
-                            ),
+                          SecondaryButton(
+                            text: 'Imprimer',
+                            onPressed: () {
+                              // TODO: Imprimer le bulletin
+                            },
+                            icon: Icons.print,
+                            fullWidth: true,
                           ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: PrimaryButton(
-                              text: 'Exporter PDF',
-                              onPressed: () {
-                                // TODO: Exporter en PDF
-                              },
-                              icon: Icons.picture_as_pdf,
-                            ),
+                          PrimaryButton(
+                            text: 'Exporter PDF',
+                            onPressed: () {
+                              // TODO: Exporter en PDF
+                            },
+                            icon: Icons.picture_as_pdf,
+                            fullWidth: true,
                           ),
                         ],
                       ),
                       
-                      const SizedBox(height: 12),
+                      SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                       
                       SecondaryButton(
                         text: 'Envoyer aux parents',
@@ -501,34 +501,34 @@ class _BulletinScreenState extends State<BulletinScreen> {
                         fullWidth: true,
                       ),
                       
-                      const SizedBox(height: 32),
+                      SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     ] else if (_selectedEtudiant == null) ...[
                       // Empty State
                       Container(
-                        padding: const EdgeInsets.all(32),
+                        padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.paddingAll)),
                         child: Column(
                           children: [
                             Icon(
                               Icons.description,
-                              size: 80,
+                              size: AppConstants.widthPercentage(context, AppConstants.avatarSize),
                               color: AppTheme.textSecondary.withOpacity(0.3),
                             ),
-                            const SizedBox(height: 24),
-                            const Text(
+                            SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
+                            Text(
                               'Sélectionnez un étudiant',
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                                 fontWeight: FontWeight.w600,
                                 color: AppTheme.textPrimary,
                               ),
                             ),
-                            const SizedBox(height: 12),
-                            const Text(
+                            SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                            Text(
                               'Choisissez un étudiant pour voir son bulletin scolaire.',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: AppTheme.textSecondary,
-                                fontSize: 16,
+                                fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
                               ),
                             ),
                           ],
@@ -545,76 +545,77 @@ class _BulletinScreenState extends State<BulletinScreen> {
     );
   }
 
-  Widget _buildBulletinHeader(Bulletin bulletin) {
+  Widget _buildBulletinHeader(BuildContext context, Bulletin bulletin) {
     return InfoCard(
       child: Column(
         children: [
           Row(
             children: [
               Container(
-                width: 60,
-                height: 60,
+                width: AppConstants.widthPercentage(context, AppConstants.avatarSize),
+                height: AppConstants.widthPercentage(context, AppConstants.avatarSize),
                 decoration: BoxDecoration(
                   color: AppTheme.primaryColor,
                   shape: BoxShape.circle,
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.school,
                   color: Colors.white,
-                  size: 30,
+                  size: AppConstants.widthPercentage(context, AppConstants.smallIconSize),
                 ),
               ),
-              const SizedBox(width: 16),
+              SizedBox(width: AppConstants.widthPercentage(context, AppConstants.spacingSmall)),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       _etudiants[bulletin.etudiantId] ?? 'Étudiant inconnu',
-                      style: const TextStyle(
-                        fontSize: 18,
+                      style: TextStyle(
+                        fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                     Text(
                       'Année scolaire $_selectedAnnee',
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: AppTheme.textSecondary,
+                        fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
                       ),
                     ),
                   ],
                 ),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 8,
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppConstants.widthPercentage(context, AppConstants.cardPadding),
+                  vertical: AppConstants.heightPercentage(context, AppConstants.spacingSmall),
                 ),
                 decoration: BoxDecoration(
                   color: _getMoyenneColor(bulletin.moyenneGenerale),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(AppConstants.borderRadius),
                 ),
                 child: Text(
                   bulletin.moyenneGenerale.toStringAsFixed(2),
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.white,
-                    fontSize: 24,
+                    fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
           const Divider(),
-          const SizedBox(height: 16),
+          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _buildBulletinInfo('Date', '15 Jan 2024'),
-              _buildBulletinInfo('Trimestre', '1er Trimestre'),
-              _buildBulletinInfo('Statut', 'Validé'),
+              _buildBulletinInfo(context, 'Date', '15 Jan 2024'),
+              _buildBulletinInfo(context, 'Trimestre', '1er Trimestre'),
+              _buildBulletinInfo(context, 'Statut', 'Validé'),
             ],
           ),
         ],
@@ -622,21 +623,22 @@ class _BulletinScreenState extends State<BulletinScreen> {
     );
   }
 
-  Widget _buildBulletinInfo(String label, String value) {
+  Widget _buildBulletinInfo(BuildContext context, String label, String value) {
     return Column(
       children: [
         Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             color: AppTheme.textSecondary,
-            fontSize: 12,
+            fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
           ),
         ),
-        const SizedBox(height: 4),
+        SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
         Text(
           value,
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: FontWeight.w600,
+            fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
           ),
         ),
       ],
@@ -644,15 +646,16 @@ class _BulletinScreenState extends State<BulletinScreen> {
   }
 
   Widget _buildSummaryItem({
+    required BuildContext context,
     required String label,
     required String value,
     required Color color,
   }) {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.cardPadding)),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppConstants.borderRadius),
         border: Border.all(color: color.withOpacity(0.3)),
       ),
       child: Column(
@@ -662,16 +665,16 @@ class _BulletinScreenState extends State<BulletinScreen> {
             label,
             style: TextStyle(
               color: AppTheme.textSecondary,
-              fontSize: 12,
+              fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
           Text(
             value,
             style: TextStyle(
               color: color,
-              fontSize: 20,
+              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
               fontWeight: FontWeight.bold,
             ),
             textAlign: TextAlign.center,

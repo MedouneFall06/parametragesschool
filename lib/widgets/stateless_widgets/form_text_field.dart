@@ -38,13 +38,13 @@ class FormTextField extends StatelessWidget {
       children: [
         Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: FontWeight.w500,
             color: AppTheme.textPrimary,
-            fontSize: 14,
+            fontSize: MediaQuery.of(context).size.width * 0.016,
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: MediaQuery.of(context).size.height * 0.007),
         TextFormField(
           controller: controller,
           keyboardType: keyboardType,
@@ -55,17 +55,22 @@ class FormTextField extends StatelessWidget {
           enabled: enabled,
           decoration: InputDecoration(
             hintText: hintText,
+            hintStyle: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.014),
             prefixIcon: prefixIcon != null
-                ? Icon(prefixIcon, color: AppTheme.textSecondary)
+                ? Icon(prefixIcon, color: AppTheme.textSecondary, size: MediaQuery.of(context).size.width * 0.02)
                 : null,
             suffixIcon: suffixIcon != null
                 ? IconButton(
-                    icon: Icon(suffixIcon, color: AppTheme.textSecondary),
+                    icon: Icon(suffixIcon, color: AppTheme.textSecondary, size: MediaQuery.of(context).size.width * 0.02),
                     onPressed: onSuffixPressed,
                   )
                 : null,
             filled: true,
             fillColor: enabled ? Colors.white : Colors.grey[100],
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width * 0.02,
+              vertical: MediaQuery.of(context).size.height * 0.012,
+            ),
           ),
         ),
       ],

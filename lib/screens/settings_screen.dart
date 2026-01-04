@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+// ignore: depend_on_referenced_packages
+//import 'package:provider/provider.dart';
 import 'package:parametragesschool/core/theme/app_theme.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/page_header.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/primary_button.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/info_card.dart';
+import 'package:parametragesschool/core/responsive/responsive_grid.dart';
+import 'package:parametragesschool/core/constant/constants.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
 
+  @override
+  ConsumerState<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +27,7 @@ class SettingsScreen extends StatelessWidget {
             const PageHeader(title: 'Paramètres'),
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.paddingAll)),
                 child: Column(
                   children: [
                     // Account Settings
@@ -25,16 +35,17 @@ class SettingsScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Compte',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           _buildSettingItem(
+                            context: context,
                             icon: Icons.person,
                             title: 'Profil',
                             subtitle: 'Modifier vos informations personnelles',
@@ -44,6 +55,7 @@ class SettingsScreen extends StatelessWidget {
                           ),
                           const Divider(),
                           _buildSettingItem(
+                            context: context,
                             icon: Icons.security,
                             title: 'Sécurité',
                             subtitle: 'Mot de passe et authentification',
@@ -53,52 +65,56 @@ class SettingsScreen extends StatelessWidget {
                           ),
                           const Divider(),
                           _buildSettingItem(
+                            context: context,
                             icon: Icons.notifications,
                             title: 'Notifications',
                             subtitle: 'Gérer les alertes et notifications',
                             onTap: () {
-                              Navigator.pushNamed(context, '/notification-settings');
+                              // TODO: Naviguer vers notification-settings
                             },
                           ),
                         ],
                       ),
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // App Settings
                     InfoCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Application',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           _buildSettingItem(
+                            context: context,
                             icon: Icons.palette,
                             title: 'Apparence',
                             subtitle: 'Thème, couleurs et polices',
                             onTap: () {
-                              Navigator.pushNamed(context, '/appearance-settings');
+                              // TODO: Naviguer vers appearance-settings
                             },
                           ),
                           const Divider(),
                           _buildSettingItem(
+                            context: context,
                             icon: Icons.language,
                             title: 'Langue',
                             subtitle: 'Langue d\'affichage',
                             onTap: () {
-                              Navigator.pushNamed(context, '/language-settings');
+                              // TODO: Naviguer vers language-settings
                             },
                           ),
                           const Divider(),
                           _buildSettingItem(
+                            context: context,
                             icon: Icons.storage,
                             title: 'Stockage',
                             subtitle: 'Gérer le cache et les données',
@@ -110,86 +126,83 @@ class SettingsScreen extends StatelessWidget {
                       ),
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Privacy & Support
                     InfoCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Confidentialité et support',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           _buildSettingItem(
+                            context: context,
                             icon: Icons.privacy_tip,
                             title: 'Confidentialité',
                             subtitle: 'Politique de confidentialité',
                             onTap: () {
-                              Navigator.pushNamed(
-                                context, 
-                                '/privacy-policy',
-                                arguments: {'showConsent': false},
-                              );
+                              // TODO: Naviguer vers privacy-policy
                             },
                           ),
                           const Divider(),
                           _buildSettingItem(
+                            context: context,
                             icon: Icons.description,
                             title: 'Conditions d\'utilisation',
                             subtitle: 'Lire les conditions',
                             onTap: () {
-                              Navigator.pushNamed(
-                                context, 
-                                '/terms',
-                                arguments: {'showAcceptButton': false},
-                              );
+                              // TODO: Naviguer vers terms
                             },
                           ),
                           const Divider(),
                           _buildSettingItem(
+                            context: context,
                             icon: Icons.help,
                             title: 'Aide et support',
                             subtitle: 'FAQ et contact support',
                             onTap: () {
-                              Navigator.pushNamed(context, '/help-support');
+                              // TODO: Naviguer vers help-support
                             },
                           ),
                           const Divider(),
                           _buildSettingItem(
+                            context: context,
                             icon: Icons.info,
                             title: 'À propos',
                             subtitle: 'Informations sur l\'application',
                             onTap: () {
-                              Navigator.pushNamed(context, '/about');
+                              // TODO: Naviguer vers about
                             },
                           ),
                         ],
                       ),
                     ),
                     
-                    const SizedBox(height: 32),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Advanced Settings
                     InfoCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Paramètres avancés',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           _buildSettingItem(
+                            context: context,
                             icon: Icons.sync,
                             title: 'Synchronisation',
                             subtitle: 'Paramètres de sync hors ligne',
@@ -199,6 +212,7 @@ class SettingsScreen extends StatelessWidget {
                           ),
                           const Divider(),
                           _buildSettingItem(
+                            context: context,
                             icon: Icons.backup,
                             title: 'Sauvegarde',
                             subtitle: 'Exporter et importer les données',
@@ -208,6 +222,7 @@ class SettingsScreen extends StatelessWidget {
                           ),
                           const Divider(),
                           _buildSettingItem(
+                            context: context,
                             icon: Icons.developer_mode,
                             title: 'Développeur',
                             subtitle: 'Options de développement',
@@ -219,34 +234,35 @@ class SettingsScreen extends StatelessWidget {
                       ),
                     ),
                     
-                    const SizedBox(height: 32),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // App Version
                     Container(
-                      padding: const EdgeInsets.all(16),
+                      padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.cardPadding)),
                       decoration: BoxDecoration(
                         color: AppTheme.primaryColor.withOpacity(0.05),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Row(
                         children: [
-                          const Icon(Icons.apps, color: AppTheme.primaryColor),
-                          const SizedBox(width: 12),
+                          Icon(Icons.apps, color: AppTheme.primaryColor, size: AppConstants.widthPercentage(context, AppConstants.smallIconSize)),
+                          SizedBox(width: AppConstants.widthPercentage(context, AppConstants.spacingSmall)),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
+                                Text(
                                   'Paramétrages School',
                                   style: TextStyle(
                                     fontWeight: FontWeight.w600,
+                                    fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                                   ),
                                 ),
-                                const SizedBox(height: 4),
+                                SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                                 Text(
                                   'Version 1.0.0 • Build 2024.01.001',
                                   style: TextStyle(
-                                    fontSize: 12,
+                                    fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
                                     color: AppTheme.textSecondary,
                                   ),
                                 ),
@@ -264,34 +280,32 @@ class SettingsScreen extends StatelessWidget {
                       ),
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                     
                     // Action Buttons
-                    Row(
+                    ResponsiveGrid(
+                      customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenItems),
                       children: [
-                        Expanded(
-                          child: PrimaryButton(
-                            text: 'Réinitialiser tout',
-                            onPressed: () {
-                              _showResetDialog(context);
-                            },
-                            icon: Icons.restart_alt,
-                          ),
+                        PrimaryButton(
+                          text: 'Réinitialiser tout',
+                          onPressed: () {
+                            _showResetDialog(context);
+                          },
+                          icon: Icons.restart_alt,
+                          fullWidth: true,
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: PrimaryButton(
-                            text: 'Exporter config',
-                            onPressed: () {
-                              // Exporter configuration
-                            },
-                            icon: Icons.download,
-                          ),
+                        PrimaryButton(
+                          text: 'Exporter config',
+                          onPressed: () {
+                            // Exporter configuration
+                          },
+                          icon: Icons.download,
+                          fullWidth: true,
                         ),
                       ],
                     ),
                     
-                    const SizedBox(height: 32),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                   ],
                 ),
               ),
@@ -303,6 +317,7 @@ class SettingsScreen extends StatelessWidget {
   }
 
   Widget _buildSettingItem({
+    required BuildContext context,
     required IconData icon,
     required String title,
     required String subtitle,
@@ -310,19 +325,29 @@ class SettingsScreen extends StatelessWidget {
   }) {
     return ListTile(
       leading: Container(
-        width: 40,
-        height: 40,
+        width: AppConstants.widthPercentage(context, AppConstants.avatarSize),
+        height: AppConstants.widthPercentage(context, AppConstants.avatarSize),
         decoration: BoxDecoration(
           color: AppTheme.primaryColor.withOpacity(0.1),
           shape: BoxShape.circle,
         ),
-        child: Icon(icon, color: AppTheme.primaryColor),
+        child: Icon(icon, color: AppTheme.primaryColor, size: AppConstants.widthPercentage(context, AppConstants.smallIconSize)),
       ),
-      title: Text(title),
-      subtitle: Text(subtitle),
-      trailing: const Icon(Icons.chevron_right, color: AppTheme.textSecondary),
+      title: Text(
+        title,
+        style: TextStyle(
+          fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
+        ),
+      ),
+      subtitle: Text(
+        subtitle,
+        style: TextStyle(
+          fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
+        ),
+      ),
+      trailing: Icon(Icons.chevron_right, color: AppTheme.textSecondary, size: AppConstants.widthPercentage(context, AppConstants.smallIconSize)),
       onTap: onTap,
-      contentPadding: const EdgeInsets.symmetric(vertical: 8),
+      contentPadding: EdgeInsets.symmetric(vertical: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
     );
   }
 
@@ -330,23 +355,41 @@ class SettingsScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Réinitialiser les paramètres'),
-        content: const Text(
+        title: Text(
+          'Réinitialiser les paramètres',
+          style: TextStyle(
+            fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
+          ),
+        ),
+        content: Text(
           'Cette action réinitialisera tous les paramètres aux valeurs par défaut. '
           'Êtes-vous sûr de vouloir continuer ?',
+          style: TextStyle(
+            fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
+          ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Annuler'),
+            child: Text(
+              'Annuler',
+              style: TextStyle(
+                fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
+              ),
+            ),
           ),
           PrimaryButton(
             text: 'Réinitialiser',
             onPressed: () {
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Paramètres réinitialisés'),
+                SnackBar(
+                  content: Text(
+                    'Paramètres réinitialisés',
+                    style: TextStyle(
+                      fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
+                    ),
+                  ),
                 ),
               );
             },

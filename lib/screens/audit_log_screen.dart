@@ -3,8 +3,9 @@ import 'package:parametragesschool/core/theme/app_theme.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/page_header.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/primary_button.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/secondary_button.dart';
-// ignore: unused_import
 import 'package:parametragesschool/widgets/stateless_widgets/info_card.dart';
+import 'package:parametragesschool/core/constant/constants.dart';
+import 'package:parametragesschool/core/responsive/responsive_grid.dart';
 // TODO: Importer les modèles d'audit
 
 class AuditLogScreen extends StatefulWidget {
@@ -80,82 +81,78 @@ class _AuditLogScreenState extends State<AuditLogScreen> {
                 children: [
                   // Filtres
                   Container(
-                    padding: const EdgeInsets.all(16),
+                    padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.cardPadding)),
                     color: Colors.white,
-                    child: Row(
+                    child: ResponsiveGrid(
+                      customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenItems),
                       children: [
-                        Expanded(
-                          child: DropdownButtonFormField<String>(
-                            value: _selectedFilter,
-                            decoration: const InputDecoration(
-                              labelText: 'Filtrer par type',
-                              border: OutlineInputBorder(),
-                              filled: true,
-                              fillColor: Colors.white,
-                            ),
-                            items: const [
-                              DropdownMenuItem(
-                                value: 'all',
-                                child: Text('Tous les logs'),
-                              ),
-                              DropdownMenuItem(
-                                value: 'login',
-                                child: Text('Connexions'),
-                              ),
-                              DropdownMenuItem(
-                                value: 'modification',
-                                child: Text('Modifications'),
-                              ),
-                              DropdownMenuItem(
-                                value: 'deletion',
-                                child: Text('Suppressions'),
-                              ),
-                              DropdownMenuItem(
-                                value: 'system',
-                                child: Text('Système'),
-                              ),
-                            ],
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedFilter = value!;
-                              });
-                            },
+                        DropdownButtonFormField<String>(
+                          value: _selectedFilter,
+                          decoration: InputDecoration(
+                            labelText: 'Filtrer par type',
+                            border: const OutlineInputBorder(),
+                            filled: true,
+                            fillColor: Colors.white,
                           ),
+                          items: const [
+                            DropdownMenuItem(
+                              value: 'all',
+                              child: Text('Tous les logs'),
+                            ),
+                            DropdownMenuItem(
+                              value: 'login',
+                              child: Text('Connexions'),
+                            ),
+                            DropdownMenuItem(
+                              value: 'modification',
+                              child: Text('Modifications'),
+                            ),
+                            DropdownMenuItem(
+                              value: 'deletion',
+                              child: Text('Suppressions'),
+                            ),
+                            DropdownMenuItem(
+                              value: 'system',
+                              child: Text('Système'),
+                            ),
+                          ],
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedFilter = value!;
+                            });
+                          },
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: DropdownButtonFormField<String>(
-                            value: _selectedTimeRange,
-                            decoration: const InputDecoration(
-                              labelText: 'Période',
-                              border: OutlineInputBorder(),
-                              filled: true,
-                              fillColor: Colors.white,
-                            ),
-                            items: const [
-                              DropdownMenuItem(
-                                value: 'today',
-                                child: Text('Aujourd\'hui'),
-                              ),
-                              DropdownMenuItem(
-                                value: 'week',
-                                child: Text('7 derniers jours'),
-                              ),
-                              DropdownMenuItem(
-                                value: 'month',
-                                child: Text('30 derniers jours'),
-                              ),
-                              DropdownMenuItem(
-                                value: 'all',
-                                child: Text('Tout l\'historique'),
-                              ),
-                            ],
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedTimeRange = value!;
-                              });
-                            },
+                        DropdownButtonFormField<String>(
+                          value: _selectedTimeRange,
+                          decoration: InputDecoration(
+                            labelText: 'Période',
+                            border: const OutlineInputBorder(),
+                            filled: true,
+                            fillColor: Colors.white,
                           ),
+                          items: const [
+                            DropdownMenuItem(
+                              value: 'today',
+                              child: Text('Aujourd\'hui'),
+                            ),
+                            DropdownMenuItem(
+                              value: 'week',
+                              child: Text('7 derniers jours'),
+                            ),
+                            DropdownMenuItem(
+                              value: 'month',
+                              child: Text('30 derniers jours'),
+                            ),
+                            DropdownMenuItem(
+                              value: 'all',
+                              child: Text('Tout l\'historique'),
+                            ),
+                          ],
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedTimeRange = value!;
+                            });
+                          },
                         ),
                       ],
                     ),
@@ -163,29 +160,31 @@ class _AuditLogScreenState extends State<AuditLogScreen> {
                   
                   // Statistiques
                   Container(
-                    padding: const EdgeInsets.all(16),
+                    padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.cardPadding)),
                     color: Colors.white,
-                    child: Row(
+                    child: ResponsiveGrid(
+                      customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenStats),
                       children: [
                         _buildStatItem(
+                          context: context,
                           label: 'Total logs',
                           value: '1,248',
                           color: AppTheme.primaryColor,
                         ),
-                        const SizedBox(width: 16),
                         _buildStatItem(
+                          context: context,
                           label: 'Aujourd\'hui',
                           value: '42',
                           color: AppTheme.accentColor,
                         ),
-                        const SizedBox(width: 16),
                         _buildStatItem(
+                          context: context,
                           label: 'Alertes',
                           value: '5',
                           color: AppTheme.warningColor,
                         ),
-                        const SizedBox(width: 16),
                         _buildStatItem(
+                          context: context,
                           label: 'Erreurs',
                           value: '2',
                           color: AppTheme.errorColor,
@@ -200,35 +199,33 @@ class _AuditLogScreenState extends State<AuditLogScreen> {
                       itemCount: _auditLogs.length,
                       itemBuilder: (context, index) {
                         final log = _auditLogs[index];
-                        return _buildLogItem(log);
+                        return _buildLogItem(context, log);
                       },
                     ),
                   ),
                   
                   // Actions
                   Container(
-                    padding: const EdgeInsets.all(16),
+                    padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.cardPadding)),
                     color: Colors.white,
-                    child: Row(
+                    child: ResponsiveGrid(
+                      customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenItems),
                       children: [
-                        Expanded(
-                          child: PrimaryButton(
-                            text: 'Exporter les logs',
-                            onPressed: () {
-                              _exportLogs();
-                            },
-                            icon: Icons.download,
-                          ),
+                        PrimaryButton(
+                          text: 'Exporter les logs',
+                          onPressed: () {
+                            _exportLogs();
+                          },
+                          icon: Icons.download,
+                          fullWidth: true,
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: SecondaryButton(
-                            text: 'Effacer anciens logs',
-                            onPressed: () {
-                              _showClearLogsDialog(context);
-                            },
-                            icon: Icons.delete_sweep,
-                          ),
+                        SecondaryButton(
+                          text: 'Effacer anciens logs',
+                          onPressed: () {
+                            _showClearLogsDialog(context);
+                          },
+                          icon: Icons.delete_sweep,
+                          fullWidth: true,
                         ),
                       ],
                     ),
@@ -243,16 +240,17 @@ class _AuditLogScreenState extends State<AuditLogScreen> {
   }
 
   Widget _buildStatItem({
+    required BuildContext context,
     required String label,
     required String value,
     required Color color,
   }) {
     return Expanded(
       child: Container(
-        padding: const EdgeInsets.all(12),
+        padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.cardPadding)),
         decoration: BoxDecoration(
           color: color.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(AppConstants.borderRadius),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -260,16 +258,16 @@ class _AuditLogScreenState extends State<AuditLogScreen> {
             Text(
               value,
               style: TextStyle(
-                fontSize: 20,
+                fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                 fontWeight: FontWeight.bold,
                 color: color,
               ),
             ),
-            const SizedBox(height: 4),
+            SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
             Text(
               label,
-              style: const TextStyle(
-                fontSize: 12,
+              style: TextStyle(
+                fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
                 color: AppTheme.textSecondary,
               ),
             ),
@@ -279,11 +277,14 @@ class _AuditLogScreenState extends State<AuditLogScreen> {
     );
   }
 
-  Widget _buildLogItem(Map<String, dynamic> log) {
+  Widget _buildLogItem(BuildContext context, Map<String, dynamic> log) {
     return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      margin: EdgeInsets.symmetric(
+        horizontal: AppConstants.widthPercentage(context, AppConstants.cardPadding),
+        vertical: AppConstants.heightPercentage(context, AppConstants.spacingSmall),
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.cardPadding)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -293,22 +294,25 @@ class _AuditLogScreenState extends State<AuditLogScreen> {
                 Expanded(
                   child: Text(
                     log['action'],
-                    style: const TextStyle(
-                      fontSize: 16,
+                    style: TextStyle(
+                      fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: AppConstants.widthPercentage(context, AppConstants.spacingSmall),
+                    vertical: AppConstants.heightPercentage(context, AppConstants.spacingSmall),
+                  ),
                   decoration: BoxDecoration(
                     color: _getLevelColor(log['level']).withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(AppConstants.borderRadius),
                   ),
                   child: Text(
                     log['level'].toUpperCase(),
                     style: TextStyle(
-                      fontSize: 10,
+                      fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
                       fontWeight: FontWeight.w600,
                       color: _getLevelColor(log['level']),
                     ),
@@ -316,70 +320,67 @@ class _AuditLogScreenState extends State<AuditLogScreen> {
                 ),
               ],
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
             Text(
               log['details'],
-              style: const TextStyle(
+              style: TextStyle(
                 color: AppTheme.textSecondary,
+                fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
               ),
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
             Row(
               children: [
-                const Icon(Icons.person, size: 14, color: AppTheme.textSecondary),
-                const SizedBox(width: 4),
+                Icon(Icons.person, size: AppConstants.widthPercentage(context, AppConstants.smallIconSize), color: AppTheme.textSecondary),
+                SizedBox(width: AppConstants.widthPercentage(context, AppConstants.spacingSmall)),
                 Text(
                   log['user'],
-                  style: const TextStyle(
-                    fontSize: 12,
+                  style: TextStyle(
+                    fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
                     color: AppTheme.textSecondary,
                   ),
                 ),
-                const SizedBox(width: 16),
-                const Icon(Icons.access_time, size: 14, color: AppTheme.textSecondary),
-                const SizedBox(width: 4),
+                SizedBox(width: AppConstants.widthPercentage(context, AppConstants.spacingSmall)),
+                Icon(Icons.access_time, size: AppConstants.widthPercentage(context, AppConstants.smallIconSize), color: AppTheme.textSecondary),
+                SizedBox(width: AppConstants.widthPercentage(context, AppConstants.spacingSmall)),
                 Text(
                   log['timestamp'],
-                  style: const TextStyle(
-                    fontSize: 12,
+                  style: TextStyle(
+                    fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
                     color: AppTheme.textSecondary,
                   ),
                 ),
-                const SizedBox(width: 16),
-                const Icon(Icons.computer, size: 14, color: AppTheme.textSecondary),
-                const SizedBox(width: 4),
+                SizedBox(width: AppConstants.widthPercentage(context, AppConstants.spacingSmall)),
+                Icon(Icons.computer, size: AppConstants.widthPercentage(context, AppConstants.smallIconSize), color: AppTheme.textSecondary),
+                SizedBox(width: AppConstants.widthPercentage(context, AppConstants.spacingSmall)),
                 Text(
                   log['ip'],
-                  style: const TextStyle(
-                    fontSize: 12,
+                  style: TextStyle(
+                    fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
                     color: AppTheme.textSecondary,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 8),
-            Row(
+            SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+            ResponsiveGrid(
+              customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenItems),
               children: [
-                Expanded(
-                  child: SecondaryButton(
-                    text: 'Voir détails',
-                    onPressed: () {
-                      _showLogDetails(log);
-                    },
-                    fullWidth: true,
-                    icon: Icons.visibility,
-                  ),
+                SecondaryButton(
+                  text: 'Voir détails',
+                  onPressed: () {
+                    _showLogDetails(context, log);
+                  },
+                  fullWidth: true,
+                  icon: Icons.visibility,
                 ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: SecondaryButton(
-                    text: 'Exporter',
-                    onPressed: () {
-                      _exportSingleLog(log);
-                    },
-                    fullWidth: true,
-                    icon: Icons.download,
-                  ),
+                SecondaryButton(
+                  text: 'Exporter',
+                  onPressed: () {
+                    _exportSingleLog(log);
+                  },
+                  fullWidth: true,
+                  icon: Icons.download,
                 ),
               ],
             ),
@@ -433,22 +434,27 @@ class _AuditLogScreenState extends State<AuditLogScreen> {
     );
   }
 
-  void _showLogDetails(Map<String, dynamic> log) {
+  void _showLogDetails(BuildContext context, Map<String, dynamic> log) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Détails du log'),
+        title: Text(
+          'Détails du log',
+          style: TextStyle(
+            fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
+          ),
+        ),
         content: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildDetailRow('Action:', log['action']),
-              _buildDetailRow('Utilisateur:', log['user']),
-              _buildDetailRow('Détails:', log['details']),
-              _buildDetailRow('Date/Heure:', log['timestamp']),
-              _buildDetailRow('Adresse IP:', log['ip']),
-              _buildDetailRow('Niveau:', log['level']),
-              _buildDetailRow('ID:', log['id']),
+              _buildDetailRow(context, 'Action:', log['action']),
+              _buildDetailRow(context, 'Utilisateur:', log['user']),
+              _buildDetailRow(context, 'Détails:', log['details']),
+              _buildDetailRow(context, 'Date/Heure:', log['timestamp']),
+              _buildDetailRow(context, 'Adresse IP:', log['ip']),
+              _buildDetailRow(context, 'Niveau:', log['level']),
+              _buildDetailRow(context, 'ID:', log['id']),
             ],
           ),
         ),
@@ -463,23 +469,25 @@ class _AuditLogScreenState extends State<AuditLogScreen> {
     );
   }
 
-  Widget _buildDetailRow(String label, String value) {
+  Widget _buildDetailRow(BuildContext context, String label, String value) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: EdgeInsets.only(bottom: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               fontWeight: FontWeight.w600,
               color: AppTheme.textPrimary,
+              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
             ),
           ),
           Text(
             value,
-            style: const TextStyle(
+            style: TextStyle(
               color: AppTheme.textSecondary,
+              fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
             ),
           ),
         ],

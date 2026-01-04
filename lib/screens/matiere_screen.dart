@@ -9,6 +9,44 @@ import 'package:parametragesschool/widgets/stateless_widgets/stat_card.dart';
 import 'package:parametragesschool/models/matiere_model.dart';
 // ignore: unused_import
 import 'package:parametragesschool/models/departement_model.dart';
+import 'package:parametragesschool/core/responsive/responsive_grid.dart';
+
+// Constantes modifiables pour le responsive design
+class MatiereScreenConstants {
+  // Padding général
+  static const double paddingAll = 0.02;
+  static const double paddingHorizontal = 0.02;
+  static const double paddingVertical = 0.013;
+  static const double paddingBetweenItems = 0.02;
+  static const double paddingBetweenStats = 0.02;
+  static const double paddingBetweenCards = 0.01;
+  
+  // Statistiques
+  static const double statTitleFontSize = 0.025;
+  static const double statIconSize = 0.04;
+  static const double statValueFontSize = 0.045;
+  static const double statSpacing = 0.015;
+  
+  // Cartes de matières
+  static const double matiereCardPadding = 0.02;
+  static const double matiereAvatarSize = 0.08;
+  static const double matiereTitleFontSize = 0.025;
+  static const double matiereSubtitleFontSize = 0.018;
+  static const double matiereCoefficientFontSize = 0.016;
+  static const double matiereIconSize = 0.025;
+  
+  // Recherche et filtres
+  static const double searchLabelFontSize = 0.025;
+  static const double searchContentPaddingHorizontal = 0.02;
+  static const double searchContentPaddingVertical = 0.015;
+  static const double searchHintFontSize = 0.018;
+  
+  // Espacements
+  static const double spacingSmall = 0.003;
+  static const double spacingMedium = 0.006;
+  static const double spacingLarge = 0.01;
+  static const double spacingExtraLarge = 0.015;
+}
 
 // TODO: Transformer en ConsumerStatefulWidget avec Riverpod
 // TODO: Créer MatiereViewModel
@@ -77,19 +115,8 @@ class _MatiereScreenState extends State<MatiereScreen> {
 
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
-      // Pas la peine, le page_header gere le retour
-      // ==================== AJOUT DE L'APPBAR ====================
-      // appBar: AppBar(
-      //   backgroundColor: Colors.transparent,
-      //   elevation: 0,
-      //   automaticallyImplyLeading: true,
-      //   iconTheme: IconThemeData(
-      //     color: AppTheme.textPrimary,
-      //   ),
-      // ),
-      // // ==========================================================
-       body: SafeArea(
-        top: false, // Important pour éviter un double espace en haut
+      body: SafeArea(
+        top: false,
         child: Column(
           children: [
             const PageHeader(
@@ -98,33 +125,29 @@ class _MatiereScreenState extends State<MatiereScreen> {
             ),
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(MediaQuery.of(context).size.width * MatiereScreenConstants.paddingAll),
                 child: Column(
                   children: [
                     // Statistics
-                    Row(
+                    ResponsiveGrid(
+                      customSpacing: MediaQuery.of(context).size.width * MatiereScreenConstants.paddingBetweenStats,
                       children: [
-                        Expanded(
-                          child: StatCard(
-                            title: 'Matières totales',
-                            value: _matieres.length.toString(),
-                            icon: Icons.menu_book,
-                            color: AppTheme.primaryColor,
-                          ),
+                        StatCard(
+                          title: 'Matières totales',
+                          value: _matieres.length.toString(),
+                          icon: Icons.menu_book,
+                          color: AppTheme.primaryColor,
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: StatCard(
-                            title: 'Coefficient total',
-                            value: totalCoefficient.toStringAsFixed(1),
-                            icon: Icons.calculate,
-                            color: AppTheme.accentColor,
-                          ),
+                        StatCard(
+                          title: 'Coefficient total',
+                          value: totalCoefficient.toStringAsFixed(1),
+                          icon: Icons.calculate,
+                          color: AppTheme.accentColor,
                         ),
                       ],
                     ),
 
-                    const SizedBox(height: 12),
+                    SizedBox(height: MediaQuery.of(context).size.height * MatiereScreenConstants.spacingSmall),
 
                     StatCard(
                       title: 'Moyenne coefficient',
@@ -133,26 +156,27 @@ class _MatiereScreenState extends State<MatiereScreen> {
                       color: AppTheme.secondaryColor,
                     ),
 
-                    const SizedBox(height: 24),
+                    SizedBox(height: MediaQuery.of(context).size.height * MatiereScreenConstants.spacingExtraLarge),
 
                     // Search and Filters
                     InfoCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Recherche et filtres',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: MediaQuery.of(context).size.width * MatiereScreenConstants.statTitleFontSize,
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: MediaQuery.of(context).size.height * MatiereScreenConstants.spacingMedium),
                           // Search Bar
                           TextField(
                             decoration: InputDecoration(
                               hintText: 'Rechercher une matière...',
+                              hintStyle: TextStyle(fontSize: MediaQuery.of(context).size.width * MatiereScreenConstants.searchHintFontSize),
                               prefixIcon: const Icon(Icons.search),
                               suffixIcon: _searchQuery.isNotEmpty
                                   ? IconButton(
@@ -174,49 +198,46 @@ class _MatiereScreenState extends State<MatiereScreen> {
                               });
                             },
                           ),
-                          const SizedBox(height: 12),
-                          Row(
+                          SizedBox(height: MediaQuery.of(context).size.height * MatiereScreenConstants.spacingMedium),
+                          ResponsiveGrid(
+                            customSpacing: MediaQuery.of(context).size.width * MatiereScreenConstants.paddingBetweenItems,
                             children: [
-                              Expanded(
-                                child: DropdownButtonFormField<String?>(
-                                  value: _selectedDepartement,
-                                  decoration: const InputDecoration(
-                                    labelText: 'Département (optionnel)',
-                                    border: OutlineInputBorder(),
-                                    filled: true,
-                                    fillColor: Colors.white,
+                              DropdownButtonFormField<String?>(
+                                value: _selectedDepartement,
+                                decoration: InputDecoration(
+                                  labelText: 'Département (optionnel)',
+                                  labelStyle: TextStyle(fontSize: MediaQuery.of(context).size.width * MatiereScreenConstants.searchLabelFontSize),
+                                  border: const OutlineInputBorder(),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                ),
+                                items: [
+                                  const DropdownMenuItem(
+                                    value: null,
+                                    child: Text('Tous les départements'),
                                   ),
-                                  items: [
-                                    const DropdownMenuItem(
-                                      value: null,
-                                      child: Text('Tous les départements'),
-                                    ),
-                                    ..._departements.entries.map((entry) {
-                                      return DropdownMenuItem(
-                                        value: entry.key,
-                                        child: Text(entry.value),
-                                      );
-                                    }).toList(),
-                                  ],
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _selectedDepartement = value;
-                                    });
-                                  },
-                                ),
+                                  ..._departements.entries.map((entry) {
+                                    return DropdownMenuItem(
+                                      value: entry.key,
+                                      child: Text(entry.value),
+                                    );
+                                  }).toList(),
+                                ],
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedDepartement = value;
+                                  });
+                                },
                               ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: SecondaryButton(
-                                  text: 'Réinitialiser',
-                                  onPressed: () {
-                                    setState(() {
-                                      _searchQuery = '';
-                                      _selectedDepartement = null;
-                                    });
-                                  },
-                                  icon: Icons.filter_alt_off,
-                                ),
+                              SecondaryButton(
+                                text: 'Réinitialiser',
+                                onPressed: () {
+                                  setState(() {
+                                    _searchQuery = '';
+                                    _selectedDepartement = null;
+                                  });
+                                },
+                                icon: Icons.filter_alt_off,
                               ),
                             ],
                           ),
@@ -224,7 +245,7 @@ class _MatiereScreenState extends State<MatiereScreen> {
                       ),
                     ),
 
-                    const SizedBox(height: 24),
+                    SizedBox(height: MediaQuery.of(context).size.height * MatiereScreenConstants.spacingExtraLarge),
 
                     // Matières List
                     InfoCard(
@@ -236,8 +257,8 @@ class _MatiereScreenState extends State<MatiereScreen> {
                             children: [
                               Text(
                                 'Matières (${filteredMatieres.length})',
-                                style: const TextStyle(
-                                  fontSize: 18,
+                                style: TextStyle(
+                                  fontSize: MediaQuery.of(context).size.width * MatiereScreenConstants.statTitleFontSize,
                                   fontWeight: FontWeight.w600,
                                   color: AppTheme.textPrimary,
                                 ),
@@ -253,26 +274,27 @@ class _MatiereScreenState extends State<MatiereScreen> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: MediaQuery.of(context).size.height * MatiereScreenConstants.spacingMedium),
                           if (filteredMatieres.isEmpty)
-                            const Padding(
-                              padding: EdgeInsets.all(32),
+                            Padding(
+                              padding: EdgeInsets.all(MediaQuery.of(context).size.width * MatiereScreenConstants.paddingAll),
                               child: Text(
                                 'Aucune matière ne correspond aux critères',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: AppTheme.textSecondary,
+                                  fontSize: MediaQuery.of(context).size.width * MatiereScreenConstants.matiereSubtitleFontSize,
                                 ),
                               ),
                             )
                           else
                             ...filteredMatieres.map((matiere) {
                               return Card(
-                                margin: const EdgeInsets.only(bottom: 12),
+                                margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * MatiereScreenConstants.paddingBetweenCards),
                                 child: ListTile(
                                   leading: Container(
-                                    width: 50,
-                                    height: 50,
+                                    width: MediaQuery.of(context).size.width * MatiereScreenConstants.matiereAvatarSize,
+                                    height: MediaQuery.of(context).size.width * MatiereScreenConstants.matiereAvatarSize,
                                     decoration: BoxDecoration(
                                       color: _getMatiereColor(matiere.nom),
                                       shape: BoxShape.circle,
@@ -280,42 +302,42 @@ class _MatiereScreenState extends State<MatiereScreen> {
                                     child: Center(
                                       child: Text(
                                         _getMatiereInitials(matiere.nom),
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 16,
+                                          fontSize: MediaQuery.of(context).size.width * MatiereScreenConstants.matiereTitleFontSize,
                                         ),
                                       ),
                                     ),
                                   ),
                                   title: Text(
                                     matiere.nom,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontWeight: FontWeight.w600,
+                                      fontSize: MediaQuery.of(context).size.width * MatiereScreenConstants.matiereTitleFontSize,
                                     ),
                                   ),
                                   subtitle: Column(
                                     crossAxisAlignment:
                                     CrossAxisAlignment.start,
                                     children: [
-                                      const SizedBox(height: 4),
+                                      SizedBox(height: MediaQuery.of(context).size.height * MatiereScreenConstants.spacingSmall),
                                       Row(
                                         children: [
-                                          const Icon(Icons.scale, size: 14),
-                                          const SizedBox(width: 4),
+                                          Icon(Icons.scale, size: MediaQuery.of(context).size.width * MatiereScreenConstants.matiereIconSize),
+                                          SizedBox(width: MediaQuery.of(context).size.width * MatiereScreenConstants.spacingSmall),
                                           Text(
                                             'Coefficient: ${matiere.coefficient}',
-                                            style:
-                                            const TextStyle(fontSize: 14),
+                                            style: TextStyle(fontSize: MediaQuery.of(context).size.width * MatiereScreenConstants.matiereCoefficientFontSize),
                                           ),
                                         ],
                                       ),
-                                      const SizedBox(height: 4),
+                                      SizedBox(height: MediaQuery.of(context).size.height * MatiereScreenConstants.spacingSmall),
                                       Text(
                                         _getDepartementForMatiere(matiere.id),
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           color: AppTheme.textSecondary,
-                                          fontSize: 13,
+                                          fontSize: MediaQuery.of(context).size.width * MatiereScreenConstants.matiereSubtitleFontSize,
                                         ),
                                       ),
                                     ],
@@ -324,8 +346,7 @@ class _MatiereScreenState extends State<MatiereScreen> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       IconButton(
-                                        icon:
-                                        const Icon(Icons.edit, size: 20),
+                                        icon: Icon(Icons.edit, size: MediaQuery.of(context).size.width * MatiereScreenConstants.matiereIconSize),
                                         onPressed: () {
                                           // Naviguer vers l'édition
                                           context.goNamed('matiere_details',
@@ -336,8 +357,7 @@ class _MatiereScreenState extends State<MatiereScreen> {
                                         color: AppTheme.primaryColor,
                                       ),
                                       IconButton(
-                                        icon: const Icon(Icons.delete,
-                                            size: 20),
+                                        icon: Icon(Icons.delete, size: MediaQuery.of(context).size.width * MatiereScreenConstants.matiereIconSize),
                                         onPressed: () {
                                           _showDeleteDialog(context, matiere);
                                         },

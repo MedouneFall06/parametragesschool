@@ -7,6 +7,44 @@ import 'package:parametragesschool/widgets/stateless_widgets/info_card.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/empty_state_widget.dart';
 import 'package:parametragesschool/models/absence_model.dart';
 import 'package:parametragesschool/models/etudiant_model.dart';
+import 'package:parametragesschool/core/responsive/responsive_grid.dart';
+
+// Constantes modifiables pour le responsive design
+class AbsenceListScreenConstants {
+  // Padding général
+  static const double paddingAll = 0.02;
+  static const double paddingHorizontal = 0.02;
+  static const double paddingVertical = 0.013;
+  static const double paddingBetweenItems = 0.02;
+  static const double paddingBetweenStats = 0.02;
+  static const double paddingBetweenCards = 0.01;
+  
+  // Statistiques
+  static const double statTitleFontSize = 0.025;
+  static const double statIconSize = 0.04;
+  static const double statValueFontSize = 0.045;
+  static const double statSpacing = 0.015;
+  
+  // Cartes d'absences
+  static const double absenceCardPadding = 0.02;
+  static const double absenceTitleFontSize = 0.025;
+  static const double absenceDateFontSize = 0.018;
+  static const double absenceMotifFontSize = 0.018;
+  static const double absenceStatusFontSize = 0.016;
+  static const double absenceIconSize = 0.025;
+  
+  // Filtres et sélection
+  static const double filterLabelFontSize = 0.025;
+  static const double filterContentPaddingHorizontal = 0.02;
+  static const double filterContentPaddingVertical = 0.015;
+  static const double datePickerFontSize = 0.018;
+  
+  // Espacements
+  static const double spacingSmall = 0.003;
+  static const double spacingMedium = 0.006;
+  static const double spacingLarge = 0.01;
+  static const double spacingExtraLarge = 0.015;
+}
 
 class AbsenceListScreen extends StatefulWidget {
   const AbsenceListScreen({super.key});
@@ -113,7 +151,7 @@ class _AbsenceListScreenState extends State<AbsenceListScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            PageHeader(
+            const PageHeader(
               title: 'Gestion des absences',
               subtitle: 'Suivi des présences et absences',
             ),
@@ -137,34 +175,33 @@ class _AbsenceListScreenState extends State<AbsenceListScreen> {
       children: [
         // Filters and Stats
         Padding(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(MediaQuery.of(context).size.width * AbsenceListScreenConstants.paddingAll),
           child: Column(
             children: [
-              Row(
+              ResponsiveGrid(
+                customSpacing: MediaQuery.of(context).size.width * AbsenceListScreenConstants.paddingBetweenItems,
                 children: [
-                  Expanded(
-                    child: DropdownButtonFormField<String>(
-                      value: _selectedFilter,
-                      decoration: const InputDecoration(
-                        labelText: 'Filtrer par',
-                        border: OutlineInputBorder(),
-                        filled: true,
-                        fillColor: Colors.white,
-                      ),
-                      items: const [
-                        DropdownMenuItem(value: 'all', child: Text('Toutes les absences')),
-                        DropdownMenuItem(value: 'justified', child: Text('Justifiées')),
-                        DropdownMenuItem(value: 'unjustified', child: Text('Non justifiées')),
-                        DropdownMenuItem(value: 'today', child: Text('Aujourd\'hui')),
-                      ],
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedFilter = value!;
-                        });
-                      },
+                  DropdownButtonFormField<String>(
+                    value: _selectedFilter,
+                    decoration: InputDecoration(
+                      labelText: 'Filtrer par',
+                      labelStyle: TextStyle(fontSize: MediaQuery.of(context).size.width * AbsenceListScreenConstants.filterLabelFontSize),
+                      border: const OutlineInputBorder(),
+                      filled: true,
+                      fillColor: Colors.white,
                     ),
+                    items: [
+                      DropdownMenuItem(value: 'all', child: Text('Toutes les absences')),
+                      DropdownMenuItem(value: 'justified', child: Text('Justifiées')),
+                      DropdownMenuItem(value: 'unjustified', child: Text('Non justifiées')),
+                      DropdownMenuItem(value: 'today', child: Text('Aujourd\'hui')),
+                    ],
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedFilter = value!;
+                      });
+                    },
                   ),
-                  const SizedBox(width: 12),
                   PrimaryButton(
                     text: 'Nouvelle',
                     onPressed: () {
@@ -175,14 +212,13 @@ class _AbsenceListScreenState extends State<AbsenceListScreen> {
                 ],
               ),
               
-              const SizedBox(height: 16),
+              SizedBox(height: MediaQuery.of(context).size.height * AbsenceListScreenConstants.spacingMedium),
               
-              Row(
+              ResponsiveGrid(
+                customSpacing: MediaQuery.of(context).size.width * AbsenceListScreenConstants.paddingBetweenStats,
                 children: [
                   _buildStatCard('Total', _absences.length.toString(), Icons.list),
-                  const SizedBox(width: 12),
                   _buildStatCard('Justifiées', justifiedCount.toString(), Icons.check_circle),
-                  const SizedBox(width: 12),
                   _buildStatCard('Non justifiées', unjustifiedCount.toString(), Icons.cancel),
                 ],
               ),
@@ -192,22 +228,23 @@ class _AbsenceListScreenState extends State<AbsenceListScreen> {
         
         // Date Picker
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * AbsenceListScreenConstants.paddingHorizontal),
           child: InfoCard(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   'Sélectionner une date',
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
+                    fontSize: MediaQuery.of(context).size.width * AbsenceListScreenConstants.statTitleFontSize,
                   ),
                 ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
+                SizedBox(height: MediaQuery.of(context).size.height * AbsenceListScreenConstants.spacingSmall),
+                  ResponsiveGrid(
+                    customSpacing: MediaQuery.of(context).size.width * AbsenceListScreenConstants.paddingBetweenItems,
+                    children: [
+                      ElevatedButton(
                         onPressed: () async {
                           final DateTime? picked = await showDatePicker(
                             context: context,
@@ -228,27 +265,26 @@ class _AbsenceListScreenState extends State<AbsenceListScreen> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Icon(Icons.calendar_today, size: 16),
-                            const SizedBox(width: 8),
+                            Icon(Icons.calendar_today, size: MediaQuery.of(context).size.width * AbsenceListScreenConstants.absenceIconSize),
+                            SizedBox(width: MediaQuery.of(context).size.width * AbsenceListScreenConstants.spacingSmall),
                             Text(
                               '${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}',
+                              style: TextStyle(fontSize: MediaQuery.of(context).size.width * AbsenceListScreenConstants.datePickerFontSize),
                             ),
                           ],
                         ),
                       ),
-                    ),
-                    const SizedBox(width: 12),
-                    SecondaryButton(
-                      text: 'Aujourd\'hui',
-                      onPressed: () {
-                        setState(() {
-                          _selectedDate = DateTime.now();
-                        });
-                      },
-                      fullWidth: false,
-                    ),
-                  ],
-                ),
+                      SecondaryButton(
+                        text: 'Aujourd\'hui',
+                        onPressed: () {
+                          setState(() {
+                            _selectedDate = DateTime.now();
+                          });
+                        },
+                        fullWidth: false,
+                      ),
+                    ],
+                  ),
               ],
             ),
           ),
@@ -271,7 +307,7 @@ class _AbsenceListScreenState extends State<AbsenceListScreen> {
                   },
                 )
               : ListView.builder(
-                  padding: const EdgeInsets.all(16),
+                  padding: EdgeInsets.all(MediaQuery.of(context).size.width * AbsenceListScreenConstants.paddingAll),
                   itemCount: filteredAbsences.length,
                   itemBuilder: (context, index) {
                     final absence = filteredAbsences[index];
@@ -294,19 +330,19 @@ class _AbsenceListScreenState extends State<AbsenceListScreen> {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
-                    fontSize: 14,
+                  style: TextStyle(
+                    fontSize: MediaQuery.of(context).size.width * AbsenceListScreenConstants.statTitleFontSize,
                     color: AppTheme.textSecondary,
                   ),
                 ),
-                Icon(icon, color: AppTheme.primaryColor),
+                Icon(icon, color: AppTheme.primaryColor, size: MediaQuery.of(context).size.width * AbsenceListScreenConstants.statIconSize),
               ],
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: MediaQuery.of(context).size.height * AbsenceListScreenConstants.statSpacing),
             Text(
               value,
-              style: const TextStyle(
-                fontSize: 20,
+              style: TextStyle(
+                fontSize: MediaQuery.of(context).size.width * AbsenceListScreenConstants.statValueFontSize,
                 fontWeight: FontWeight.bold,
                 color: AppTheme.textPrimary,
               ),
@@ -319,9 +355,9 @@ class _AbsenceListScreenState extends State<AbsenceListScreen> {
 
   Widget _buildAbsenceCard(Absence absence) {
     return Card(
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * AbsenceListScreenConstants.paddingBetweenCards),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(MediaQuery.of(context).size.width * AbsenceListScreenConstants.absenceCardPadding),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -334,24 +370,28 @@ class _AbsenceListScreenState extends State<AbsenceListScreen> {
                     children: [
                       Text(
                         _getEtudiantName(absence.etudiantId),
-                        style: const TextStyle(
-                          fontSize: 16,
+                        style: TextStyle(
+                          fontSize: MediaQuery.of(context).size.width * AbsenceListScreenConstants.absenceTitleFontSize,
                           fontWeight: FontWeight.w600,
                           color: AppTheme.textPrimary,
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      SizedBox(height: MediaQuery.of(context).size.height * AbsenceListScreenConstants.spacingSmall),
                       Text(
                         '${absence.date.day}/${absence.date.month}/${absence.date.year}',
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: AppTheme.textSecondary,
+                          fontSize: MediaQuery.of(context).size.width * AbsenceListScreenConstants.absenceDateFontSize,
                         ),
                       ),
                     ],
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width * AbsenceListScreenConstants.absenceCardPadding,
+                    vertical: MediaQuery.of(context).size.height * AbsenceListScreenConstants.spacingSmall,
+                  ),
                   decoration: BoxDecoration(
                     color: absence.justifie 
                         ? AppTheme.successColor.withOpacity(0.1)
@@ -370,55 +410,57 @@ class _AbsenceListScreenState extends State<AbsenceListScreen> {
                           ? AppTheme.successColor
                           : AppTheme.errorColor,
                       fontWeight: FontWeight.w600,
+                      fontSize: MediaQuery.of(context).size.width * AbsenceListScreenConstants.absenceStatusFontSize,
                     ),
                   ),
                 ),
               ],
             ),
             
-            const SizedBox(height: 12),
+            SizedBox(height: MediaQuery.of(context).size.height * AbsenceListScreenConstants.spacingMedium),
             
             Text(
               'Motif: ${absence.motif}',
-              style: const TextStyle(
+              style: TextStyle(
                 color: AppTheme.textSecondary,
+                fontSize: MediaQuery.of(context).size.width * AbsenceListScreenConstants.absenceMotifFontSize,
               ),
             ),
             
-            const SizedBox(height: 12),
+            SizedBox(height: MediaQuery.of(context).size.height * AbsenceListScreenConstants.spacingMedium),
             
-            Row(
-              children: [
-                Expanded(
-                  child: SecondaryButton(
+              ResponsiveGrid(
+                customSpacing: MediaQuery.of(context).size.width * AbsenceListScreenConstants.spacingSmall,
+                children: [
+                  SecondaryButton(
                     text: absence.justifie ? 'Marquer non justifiée' : 'Justifier',
                     onPressed: () {
                       _toggleJustification(absence);
                     },
                     fullWidth: true,
                     icon: absence.justifie ? Icons.cancel : Icons.check_circle,
+                    iconSize: MediaQuery.of(context).size.width * AbsenceListScreenConstants.absenceIconSize,
                   ),
-                ),
-                const SizedBox(width: 8),
-                SecondaryButton(
-                  text: 'Éditer',
-                  onPressed: () {
-                    // TODO: Éditer l'absence
-                  },
-                  fullWidth: true,
-                  icon: Icons.edit,
-                ),
-                const SizedBox(width: 8),
-                SecondaryButton(
-                  text: 'Supprimer',
-                  onPressed: () {
-                    _showDeleteDialog(absence);
-                  },
-                  fullWidth: true,
-                  icon: Icons.delete,
-                ),
-              ],
-            ),
+                  SecondaryButton(
+                    text: 'Éditer',
+                    onPressed: () {
+                      // TODO: Éditer l'absence
+                    },
+                    fullWidth: true,
+                    icon: Icons.edit,
+                    iconSize: MediaQuery.of(context).size.width * AbsenceListScreenConstants.absenceIconSize,
+                  ),
+                  SecondaryButton(
+                    text: 'Supprimer',
+                    onPressed: () {
+                      _showDeleteDialog(absence);
+                    },
+                    fullWidth: true,
+                    icon: Icons.delete,
+                    iconSize: MediaQuery.of(context).size.width * AbsenceListScreenConstants.absenceIconSize,
+                  ),
+                ],
+              ),
           ],
         ),
       ),

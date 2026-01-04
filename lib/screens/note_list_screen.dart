@@ -9,6 +9,49 @@ import 'package:parametragesschool/models/note_model.dart';
 import 'package:parametragesschool/models/etudiant_model.dart';
 import 'package:parametragesschool/models/matiere_model.dart';
 
+// Constantes modifiables pour le responsive design
+class NoteListConstants {
+  // Padding général
+  static const double paddingAll = 0.02;
+  static const double paddingHorizontal = 0.02;
+  static const double paddingVertical = 0.013;
+  static const double paddingBetweenItems = 0.02;
+  static const double paddingBetweenStats = 0.02;
+  static const double paddingBetweenNotes = 0.01;
+  
+  // Filtre dropdown
+  static const double filterLabelFontSize = 0.05;
+  static const double filterContentPaddingHorizontal = 0.01;
+  static const double filterContentPaddingVertical = 0.02;
+  static const double filterItemFontSize = 0.03;
+  static const double filterMinHeight = 0.12; // Hauteur minimale pour écrans grands
+  
+  // Statistiques
+  static const double statTitleFontSize = 0.04;//0.025;
+  static const double statIconSize = 0.04;
+  static const double statValueFontSize = 0.05;//0.045;
+  static const double statSpacing = 0.015;
+  
+  // Cartes de notes
+  static const double noteCardPadding = 0.02;
+  static const double noteMatiereFontSize = 0.05;//0.035;
+  static const double noteEtudiantFontSize = 0.05;//0.03;
+  static const double noteValueFontSize = 0.05;//0.035;
+  static const double noteDateFontSize = 0.05;//0.03;
+  static const double noteIconSize = 0.05;//0.018;
+  static const double noteIconSpacing = 0.01;
+  static const double editButtonIconSize = 0.04;
+  static const double deleteButtonIconSize = 0.04;
+  static const double editButtonTextSize = 0.04;
+  static const double deleteButtonTextSize = 0.04;
+  
+  // Espacements
+  static const double spacingSmall = 0.01;
+  static const double spacingMedium = 0.006;
+  static const double spacingLarge = 0.01;
+  static const double spacingExtraLarge = 0.015;
+}
+
 class NoteListScreen extends StatefulWidget {
   const NoteListScreen({super.key});
 
@@ -121,25 +164,37 @@ class _NoteListScreenState extends State<NoteListScreen> {
   Widget _buildContent() {
     return Column(
       children: [
-        // Filters
+        // Filters and Add Button aligned
+        SizedBox(height: MediaQuery.of(context).size.height * NoteListConstants.spacingSmall),
         Padding(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * NoteListConstants.paddingHorizontal),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
                 child: DropdownButtonFormField<String>(
                   value: _selectedFilter,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Filtrer par',
-                    border: OutlineInputBorder(),
+                    labelStyle: TextStyle(fontSize: MediaQuery.of(context).size.width * NoteListConstants.filterLabelFontSize),
+                    contentPadding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * NoteListConstants.filterContentPaddingHorizontal,
+                      vertical: MediaQuery.of(context).size.height * NoteListConstants.filterContentPaddingVertical,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
                     filled: true,
                     fillColor: Colors.white,
+                    constraints: BoxConstraints(
+                      minHeight: MediaQuery.of(context).size.height * NoteListConstants.filterMinHeight,
+                    ),
                   ),
-                  items: const [
-                    DropdownMenuItem(value: 'all', child: Text('Toutes les notes')),
-                    DropdownMenuItem(value: 'recent', child: Text('Notes récentes')),
-                    DropdownMenuItem(value: 'high', child: Text('Notes élevées')),
-                    DropdownMenuItem(value: 'low', child: Text('Notes basses')),
+                  items: [
+                    DropdownMenuItem(value: 'all', child: Text('Toutes les notes', style: TextStyle(fontSize: MediaQuery.of(context).size.width * NoteListConstants.filterItemFontSize))),
+                    DropdownMenuItem(value: 'recent', child: Text('Notes récentes', style: TextStyle(fontSize: MediaQuery.of(context).size.width * NoteListConstants.filterItemFontSize))),
+                    DropdownMenuItem(value: 'high', child: Text('Notes élevées', style: TextStyle(fontSize: MediaQuery.of(context).size.width * NoteListConstants.filterItemFontSize))),
+                    DropdownMenuItem(value: 'low', child: Text('Notes basses', style: TextStyle(fontSize: MediaQuery.of(context).size.width * NoteListConstants.filterItemFontSize))),
                   ],
                   onChanged: (value) {
                     setState(() {
@@ -149,35 +204,24 @@ class _NoteListScreenState extends State<NoteListScreen> {
                   },
                 ),
               ),
-              const SizedBox(width: 12),
-              PrimaryButton(
-                text: 'Ajouter',
-                onPressed: () {
-                  // TODO: Naviguer vers écran d'ajout de note
-                },
-                icon: Icons.add,
+              SizedBox(width: MediaQuery.of(context).size.width * NoteListConstants.paddingBetweenItems),
+              Container(
+                margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.01),
+                child: PrimaryButton(
+                  text: 'Ajouter',
+                  onPressed: () {
+                    // TODO: Naviguer vers écran d'ajout de note
+                  },
+                  icon: Icons.add,
+                ),
               ),
             ],
           ),
         ),
         
-        // Statistics
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Row(
-            children: [
-              _buildStatCard('Notes', _notes.length.toString(), Icons.assignment),
-              const SizedBox(width: 12),
-              _buildStatCard('Moyenne', '15.2', Icons.trending_up),
-              const SizedBox(width: 12),
-              _buildStatCard('Élèves', _etudiants.length.toString(), Icons.people),
-            ],
-          ),
-        ),
+        SizedBox(height: MediaQuery.of(context).size.height * NoteListConstants.spacingSmall),
         
-        const SizedBox(height: 16),
-        
-        // Notes List
+        // Notes List with Statistics
         Expanded(
           child: _notes.isEmpty
               ? EmptyStateWidget(
@@ -190,10 +234,30 @@ class _NoteListScreenState extends State<NoteListScreen> {
                   },
                 )
               : ListView.builder(
-                  padding: const EdgeInsets.all(16),
-                  itemCount: _notes.length,
+                  padding: EdgeInsets.all(MediaQuery.of(context).size.width * NoteListConstants.paddingAll),
+                  itemCount: _notes.length + 1, // +1 pour les statistiques en haut de la liste
                   itemBuilder: (context, index) {
-                    final note = _notes[index];
+                    if (index == 0) {
+                      // Afficher les statistiques en haut de la liste défilante
+                      return Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * NoteListConstants.paddingHorizontal),
+                            child: Row(
+                              children: [
+                                _buildStatCard('Notes', _notes.length.toString(), Icons.assignment),
+                                SizedBox(width: MediaQuery.of(context).size.width * NoteListConstants.paddingBetweenStats),
+                                _buildStatCard('Moyenne', '15.2', Icons.trending_up),
+                                SizedBox(width: MediaQuery.of(context).size.width * NoteListConstants.paddingBetweenStats),
+                                _buildStatCard('Élèves', _etudiants.length.toString(), Icons.people),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: MediaQuery.of(context).size.height * NoteListConstants.spacingSmall),
+                        ],
+                      );
+                    }
+                    final note = _notes[index - 1];
                     return _buildNoteCard(note);
                   },
                 ),
@@ -213,19 +277,19 @@ class _NoteListScreenState extends State<NoteListScreen> {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
-                    fontSize: 14,
+                  style: TextStyle(
+                    fontSize: MediaQuery.of(context).size.width * NoteListConstants.statTitleFontSize,
                     color: AppTheme.textSecondary,
                   ),
                 ),
-                Icon(icon, color: AppTheme.primaryColor),
+                Icon(icon, color: AppTheme.primaryColor, size: MediaQuery.of(context).size.width * NoteListConstants.statIconSize),
               ],
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: MediaQuery.of(context).size.height * NoteListConstants.statSpacing),
             Text(
               value,
-              style: const TextStyle(
-                fontSize: 20,
+              style: TextStyle(
+                fontSize: MediaQuery.of(context).size.width * NoteListConstants.statValueFontSize,
                 fontWeight: FontWeight.bold,
                 color: AppTheme.textPrimary,
               ),
@@ -238,64 +302,68 @@ class _NoteListScreenState extends State<NoteListScreen> {
 
   Widget _buildNoteCard(Note note) {
     return Card(
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * NoteListConstants.paddingBetweenNotes),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(MediaQuery.of(context).size.width * NoteListConstants.paddingAll),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        _getMatiereName(note.matiereId),
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: AppTheme.textPrimary,
-                        ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      _getMatiereName(note.matiereId),
+                      style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width * NoteListConstants.noteMatiereFontSize,
+                        fontWeight: FontWeight.w600,
+                        color: AppTheme.textPrimary,
                       ),
-                      const SizedBox(height: 4),
-                      Text(
-                        _getEtudiantName(note.etudiantId),
-                        style: const TextStyle(
-                          color: AppTheme.textSecondary,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: _getNoteColor(note.valeur),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Text(
-                    note.valeur.toStringAsFixed(1),
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
                     ),
+                    SizedBox(height: MediaQuery.of(context).size.height * NoteListConstants.spacingLarge),
+                    Text(
+                      _getEtudiantName(note.etudiantId),
+                      style: TextStyle(
+                        color: AppTheme.textSecondary,
+                        fontSize: MediaQuery.of(context).size.width * NoteListConstants.noteEtudiantFontSize,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width * NoteListConstants.noteCardPadding,
+                  vertical: MediaQuery.of(context).size.height * NoteListConstants.spacingMedium,
+                ),
+                decoration: BoxDecoration(
+                  color: _getNoteColor(note.valeur),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  note.valeur.toStringAsFixed(1),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: MediaQuery.of(context).size.width * NoteListConstants.noteValueFontSize,
                   ),
                 ),
+              ),
               ],
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: MediaQuery.of(context).size.height * NoteListConstants.spacingLarge),
             Row(
               children: [
-                Icon(Icons.calendar_today, size: 14, color: AppTheme.textSecondary),
-                const SizedBox(width: 6),
+                Icon(Icons.calendar_today, size: MediaQuery.of(context).size.width * NoteListConstants.noteDateFontSize, color: AppTheme.textSecondary),
+                SizedBox(width: MediaQuery.of(context).size.width * NoteListConstants.noteIconSpacing),
                 Text(
                   '${note.date.day}/${note.date.month}/${note.date.year}',
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: AppTheme.textSecondary,
-                    fontSize: 12,
+                    fontSize: MediaQuery.of(context).size.width * NoteListConstants.noteDateFontSize,
                   ),
                 ),
                 const Spacer(),
@@ -308,8 +376,10 @@ class _NoteListScreenState extends State<NoteListScreen> {
                       },
                       fullWidth: false,
                       icon: Icons.edit,
+                      iconSize: MediaQuery.of(context).size.width * NoteListConstants.editButtonIconSize,
+                      fontSize: MediaQuery.of(context).size.width * NoteListConstants.editButtonTextSize,
                     ),
-                    const SizedBox(width: 8),
+                    SizedBox(width: MediaQuery.of(context).size.width * NoteListConstants.spacingSmall),
                     SecondaryButton(
                       text: 'Supprimer',
                       onPressed: () {
@@ -317,6 +387,8 @@ class _NoteListScreenState extends State<NoteListScreen> {
                       },
                       fullWidth: false,
                       icon: Icons.delete,
+                      iconSize: MediaQuery.of(context).size.width * NoteListConstants.deleteButtonIconSize,
+                      fontSize: MediaQuery.of(context).size.width * NoteListConstants.deleteButtonTextSize,
                     ),
                   ],
                 ),

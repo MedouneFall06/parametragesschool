@@ -4,6 +4,8 @@ import 'package:parametragesschool/widgets/stateless_widgets/page_header.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/primary_button.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/secondary_button.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/info_card.dart';
+import 'package:parametragesschool/core/constant/constants.dart';
+import 'package:parametragesschool/core/responsive/responsive_grid.dart';
 
 class CafeteriaScreen extends StatefulWidget {
   const CafeteriaScreen({super.key});
@@ -34,7 +36,7 @@ class _CafeteriaScreenState extends State<CafeteriaScreen> {
             ),
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.paddingAll)),
                 child: Column(
                   children: [
                     // TODO: Remplacer par données dynamiques
@@ -45,40 +47,41 @@ class _CafeteriaScreenState extends State<CafeteriaScreen> {
                     InfoCard(
                       child: Column(
                         children: [
-                          Row(
+                          ResponsiveGrid(
+                            customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenItems),
                             children: [
-                              Expanded(
-                                child: ElevatedButton(
-                                  onPressed: () async {
-                                    final DateTime? picked = await showDatePicker(
-                                      context: context,
-                                      initialDate: _selectedDate,
-                                      firstDate: DateTime.now().subtract(const Duration(days: 30)),
-                                      lastDate: DateTime.now().add(const Duration(days: 30)),
-                                    );
-                                    if (picked != null) {
-                                      setState(() {
-                                        _selectedDate = picked;
-                                      });
-                                    }
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.white,
-                                    foregroundColor: AppTheme.textPrimary,
-                                    elevation: 0,
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        '${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}',
+                              ElevatedButton(
+                                onPressed: () async {
+                                  final DateTime? picked = await showDatePicker(
+                                    context: context,
+                                    initialDate: _selectedDate,
+                                    firstDate: DateTime.now().subtract(const Duration(days: 30)),
+                                    lastDate: DateTime.now().add(const Duration(days: 30)),
+                                  );
+                                  if (picked != null) {
+                                    setState(() {
+                                      _selectedDate = picked;
+                                    });
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  foregroundColor: AppTheme.textPrimary,
+                                  elevation: 0,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      '${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}',
+                                      style: TextStyle(
+                                        fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                                       ),
-                                      const Icon(Icons.calendar_today, size: 18),
-                                    ],
-                                  ),
+                                    ),
+                                    Icon(Icons.calendar_today, size: AppConstants.widthPercentage(context, AppConstants.smallIconSize)),
+                                  ],
                                 ),
                               ),
-                              const SizedBox(width: 12),
                               SecondaryButton(
                                 text: 'Aujourd\'hui',
                                 onPressed: () {
@@ -86,26 +89,24 @@ class _CafeteriaScreenState extends State<CafeteriaScreen> {
                                     _selectedDate = DateTime.now();
                                   });
                                 },
-                                fullWidth: false,
+                                fullWidth: true,
                               ),
                             ],
                           ),
-                          const SizedBox(height: 16),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                          ResponsiveGrid(
+                            customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenItems),
                             children: [
-                              _buildMealButton('Petit-déjeuner', 'breakfast'),
-                              const SizedBox(width: 8),
-                              _buildMealButton('Déjeuner', 'lunch'),
-                              const SizedBox(width: 8),
-                              _buildMealButton('Goûter', 'snack'),
+                              _buildMealButton(context, 'Petit-déjeuner', 'breakfast'),
+                              _buildMealButton(context, 'Déjeuner', 'lunch'),
+                              _buildMealButton(context, 'Goûter', 'snack'),
                             ],
                           ),
                         ],
                       ),
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Today's Menu
                     InfoCard(
@@ -117,8 +118,8 @@ class _CafeteriaScreenState extends State<CafeteriaScreen> {
                             children: [
                               Text(
                                 'Menu du ${_mealLabels[_selectedMeal]!}',
-                                style: const TextStyle(
-                                  fontSize: 18,
+                                style: TextStyle(
+                                  fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                                   fontWeight: FontWeight.w600,
                                   color: AppTheme.textPrimary,
                                 ),
@@ -133,9 +134,10 @@ class _CafeteriaScreenState extends State<CafeteriaScreen> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           // TODO: Remplacer par données dynamiques
                           _buildMenuItem(
+                            context: context,
                             name: 'Salade composée',
                             description: 'Salade verte, tomates, concombres',
                             type: 'vegetarian',
@@ -143,6 +145,7 @@ class _CafeteriaScreenState extends State<CafeteriaScreen> {
                           ),
                           const Divider(),
                           _buildMenuItem(
+                            context: context,
                             name: 'Poulet rôti',
                             description: 'Poulet fermier avec légumes de saison',
                             type: 'main',
@@ -150,6 +153,7 @@ class _CafeteriaScreenState extends State<CafeteriaScreen> {
                           ),
                           const Divider(),
                           _buildMenuItem(
+                            context: context,
                             name: 'Purée de pommes de terre',
                             description: 'Purée maison',
                             type: 'side',
@@ -157,6 +161,7 @@ class _CafeteriaScreenState extends State<CafeteriaScreen> {
                           ),
                           const Divider(),
                           _buildMenuItem(
+                            context: context,
                             name: 'Fruit de saison',
                             description: 'Pomme ou banane',
                             type: 'dessert',
@@ -166,57 +171,56 @@ class _CafeteriaScreenState extends State<CafeteriaScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Nutrition Information
                     InfoCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Informations nutritionnelles',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 16),
-                          GridView.count(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 12,
-                            mainAxisSpacing: 12,
-                            childAspectRatio: 1.5,
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                          ResponsiveGrid(
+                            customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenStats),
                             children: [
                               _buildNutritionInfo(
+                                context: context,
                                 label: 'Calories totales',
                                 value: '810 cal',
                                 color: AppTheme.primaryColor,
                               ),
                               _buildNutritionInfo(
+                                context: context,
                                 label: 'Protéines',
                                 value: '42g',
                                 color: AppTheme.accentColor,
                               ),
                               _buildNutritionInfo(
+                                context: context,
                                 label: 'Glucides',
                                 value: '85g',
                                 color: AppTheme.secondaryColor,
                               ),
                               _buildNutritionInfo(
+                                context: context,
                                 label: 'Lipides',
                                 value: '28g',
                                 color: AppTheme.warningColor,
                               ),
                             ],
                           ),
-                          const SizedBox(height: 16),
-                          const Text(
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                          Text(
                             'Ce menu respecte les recommandations nutritionnelles pour les élèves.',
                             style: TextStyle(
-                              fontSize: 12,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
                               color: AppTheme.textSecondary,
                               fontStyle: FontStyle.italic,
                             ),
@@ -225,7 +229,7 @@ class _CafeteriaScreenState extends State<CafeteriaScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Reservations
                     InfoCard(
@@ -235,10 +239,10 @@ class _CafeteriaScreenState extends State<CafeteriaScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(
+                              Text(
                                 'Mes réservations',
                                 style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                                   fontWeight: FontWeight.w600,
                                   color: AppTheme.textPrimary,
                                 ),
@@ -248,13 +252,15 @@ class _CafeteriaScreenState extends State<CafeteriaScreen> {
                                 style: TextStyle(
                                   color: AppTheme.successColor,
                                   fontWeight: FontWeight.w500,
+                                  fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
                                 ),
                               ),
                             ],
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           // TODO: Remplacer par ListView.builder
                           _buildReservationItem(
+                            context: context,
                             date: 'Lundi 15 Janv',
                             meal: 'Déjeuner',
                             status: 'confirmed',
@@ -262,6 +268,7 @@ class _CafeteriaScreenState extends State<CafeteriaScreen> {
                           ),
                           const Divider(),
                           _buildReservationItem(
+                            context: context,
                             date: 'Mardi 16 Janv',
                             meal: 'Déjeuner',
                             status: 'pending',
@@ -269,6 +276,7 @@ class _CafeteriaScreenState extends State<CafeteriaScreen> {
                           ),
                           const Divider(),
                           _buildReservationItem(
+                            context: context,
                             date: 'Mercredi 17 Janv',
                             meal: 'Petit-déjeuner',
                             status: 'cancelled',
@@ -278,33 +286,33 @@ class _CafeteriaScreenState extends State<CafeteriaScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Allergies and Preferences
                     InfoCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Allergies et préférences',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 16),
-                          Wrap(
-                            spacing: 8,
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                          ResponsiveGrid(
+                            customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenItems),
                             children: [
-                              _buildDietaryTag('Sans gluten', true),
-                              _buildDietaryTag('Végétarien', false),
-                              _buildDietaryTag('Sans lactose', true),
-                              _buildDietaryTag('Halal', false),
-                              _buildDietaryTag('Sans porc', true),
+                              _buildDietaryTag(context, 'Sans gluten', true),
+                              _buildDietaryTag(context, 'Végétarien', false),
+                              _buildDietaryTag(context, 'Sans lactose', true),
+                              _buildDietaryTag(context, 'Halal', false),
+                              _buildDietaryTag(context, 'Sans porc', true),
                             ],
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           PrimaryButton(
                             text: 'Gérer les restrictions',
                             onPressed: () {
@@ -317,33 +325,32 @@ class _CafeteriaScreenState extends State<CafeteriaScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Cafeteria Statistics
-                    GridView.count(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 12,
-                      mainAxisSpacing: 12,
-                      childAspectRatio: 1.2,
+                    ResponsiveGrid(
+                      customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenStats),
                       children: [
                         _buildCafeteriaStat(
+                          context: context,
                           label: 'Repas servis',
                           value: '156',
                           period: 'aujourd\'hui',
                         ),
                         _buildCafeteriaStat(
+                          context: context,
                           label: 'Taux de remplissage',
                           value: '78%',
                           period: 'ce midi',
                         ),
                         _buildCafeteriaStat(
+                          context: context,
                           label: 'Satisfaction',
                           value: '4.2/5',
                           period: 'moyenne',
                         ),
                         _buildCafeteriaStat(
+                          context: context,
                           label: 'Gaspillage',
                           value: '12%',
                           period: 'réduit de 5%',
@@ -351,42 +358,40 @@ class _CafeteriaScreenState extends State<CafeteriaScreen> {
                       ],
                     ),
                     
-                    const SizedBox(height: 32),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Meal Planning
                     InfoCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Planning des menus',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 16),
-                          Row(
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                          ResponsiveGrid(
+                            customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenItems),
                             children: [
-                              Expanded(
-                                child: SecondaryButton(
-                                  text: 'Voir semaine',
-                                  onPressed: () {
-                                    // TODO: Voir planning semaine
-                                  },
-                                  icon: Icons.calendar_view_week,
-                                ),
+                              SecondaryButton(
+                                text: 'Voir semaine',
+                                onPressed: () {
+                                  // TODO: Voir planning semaine
+                                },
+                                icon: Icons.calendar_view_week,
+                                fullWidth: true,
                               ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: PrimaryButton(
-                                  text: 'Télécharger menu',
-                                  onPressed: () {
-                                    // TODO: Télécharger menu
-                                  },
-                                  icon: Icons.download,
-                                ),
+                              PrimaryButton(
+                                text: 'Télécharger menu',
+                                onPressed: () {
+                                  // TODO: Télécharger menu
+                                },
+                                icon: Icons.download,
+                                fullWidth: true,
                               ),
                             ],
                           ),
@@ -394,7 +399,7 @@ class _CafeteriaScreenState extends State<CafeteriaScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 32),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                   ],
                 ),
               ),
@@ -405,9 +410,14 @@ class _CafeteriaScreenState extends State<CafeteriaScreen> {
     );
   }
 
-  Widget _buildMealButton(String label, String meal) {
+  Widget _buildMealButton(BuildContext context, String label, String meal) {
     return ChoiceChip(
-      label: Text(label),
+      label: Text(
+        label,
+        style: TextStyle(
+          fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
+        ),
+      ),
       selected: _selectedMeal == meal,
       onSelected: (selected) {
         setState(() {
@@ -417,11 +427,13 @@ class _CafeteriaScreenState extends State<CafeteriaScreen> {
       selectedColor: AppTheme.primaryColor,
       labelStyle: TextStyle(
         color: _selectedMeal == meal ? Colors.white : AppTheme.textPrimary,
+        fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
       ),
     );
   }
 
   Widget _buildMenuItem({
+    required BuildContext context,
     required String name,
     required String description,
     required String type,
@@ -429,8 +441,8 @@ class _CafeteriaScreenState extends State<CafeteriaScreen> {
   }) {
     return ListTile(
       leading: Container(
-        width: 40,
-        height: 40,
+        width: AppConstants.widthPercentage(context, AppConstants.avatarSize * 0.5),
+        height: AppConstants.widthPercentage(context, AppConstants.avatarSize * 0.5),
         decoration: BoxDecoration(
           color: _getMealTypeColor(type).withOpacity(0.1),
           shape: BoxShape.circle,
@@ -438,32 +450,45 @@ class _CafeteriaScreenState extends State<CafeteriaScreen> {
         child: Icon(
           _getMealTypeIcon(type),
           color: _getMealTypeColor(type),
-          size: 20,
+          size: AppConstants.widthPercentage(context, AppConstants.smallIconSize),
         ),
       ),
-      title: Text(name),
-      subtitle: Text(description),
+      title: Text(
+        name,
+        style: TextStyle(
+          fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
+        ),
+      ),
+      subtitle: Text(
+        description,
+        style: TextStyle(
+          fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
+        ),
+      ),
       trailing: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
             calories,
-            style: const TextStyle(
-              fontSize: 12,
+            style: TextStyle(
+              fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
               color: AppTheme.textSecondary,
             ),
           ),
-          const SizedBox(height: 4),
+          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+            padding: EdgeInsets.symmetric(
+              horizontal: AppConstants.widthPercentage(context, AppConstants.spacingSmall),
+              vertical: AppConstants.heightPercentage(context, AppConstants.spacingSmall),
+            ),
             decoration: BoxDecoration(
               color: _getMealTypeColor(type).withOpacity(0.1),
-              borderRadius: BorderRadius.circular(4),
+              borderRadius: BorderRadius.circular(AppConstants.borderRadius),
             ),
             child: Text(
               _getMealTypeLabel(type),
               style: TextStyle(
-                fontSize: 10,
+                fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
                 color: _getMealTypeColor(type),
                 fontWeight: FontWeight.w600,
               ),
@@ -475,15 +500,16 @@ class _CafeteriaScreenState extends State<CafeteriaScreen> {
   }
 
   Widget _buildNutritionInfo({
+    required BuildContext context,
     required String label,
     required String value,
     required Color color,
   }) {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.cardPadding)),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppConstants.borderRadius),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -491,16 +517,16 @@ class _CafeteriaScreenState extends State<CafeteriaScreen> {
           Text(
             label,
             style: TextStyle(
-              fontSize: 12,
+              fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
               color: color,
               fontWeight: FontWeight.w600,
             ),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
           Text(
             value,
-            style: const TextStyle(
-              fontSize: 20,
+            style: TextStyle(
+              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
               fontWeight: FontWeight.bold,
               color: AppTheme.textPrimary,
             ),
@@ -511,6 +537,7 @@ class _CafeteriaScreenState extends State<CafeteriaScreen> {
   }
 
   Widget _buildReservationItem({
+    required BuildContext context,
     required String date,
     required String meal,
     required String status,
@@ -518,8 +545,8 @@ class _CafeteriaScreenState extends State<CafeteriaScreen> {
   }) {
     return ListTile(
       leading: Container(
-        width: 40,
-        height: 40,
+        width: AppConstants.widthPercentage(context, AppConstants.avatarSize * 0.5),
+        height: AppConstants.widthPercentage(context, AppConstants.avatarSize * 0.5),
         decoration: BoxDecoration(
           color: _getReservationColor(status).withOpacity(0.1),
           shape: BoxShape.circle,
@@ -527,20 +554,34 @@ class _CafeteriaScreenState extends State<CafeteriaScreen> {
         child: Icon(
           Icons.restaurant,
           color: _getReservationColor(status),
+          size: AppConstants.widthPercentage(context, AppConstants.smallIconSize),
         ),
       ),
-      title: Text('$date - $meal'),
-      subtitle: Text(students),
+      title: Text(
+        '$date - $meal',
+        style: TextStyle(
+          fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
+        ),
+      ),
+      subtitle: Text(
+        students,
+        style: TextStyle(
+          fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
+        ),
+      ),
       trailing: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        padding: EdgeInsets.symmetric(
+          horizontal: AppConstants.widthPercentage(context, AppConstants.spacingSmall),
+          vertical: AppConstants.heightPercentage(context, AppConstants.spacingSmall),
+        ),
         decoration: BoxDecoration(
           color: _getReservationColor(status).withOpacity(0.1),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppConstants.borderRadius),
         ),
         child: Text(
           _getReservationLabel(status),
           style: TextStyle(
-            fontSize: 12,
+            fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
             color: _getReservationColor(status),
             fontWeight: FontWeight.w600,
           ),
@@ -549,9 +590,14 @@ class _CafeteriaScreenState extends State<CafeteriaScreen> {
     );
   }
 
-  Widget _buildDietaryTag(String label, bool active) {
+  Widget _buildDietaryTag(BuildContext context, String label, bool active) {
     return FilterChip(
-      label: Text(label),
+      label: Text(
+        label,
+        style: TextStyle(
+          fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
+        ),
+      ),
       selected: active,
       onSelected: (selected) {
         // TODO: Modifier préférence
@@ -562,15 +608,16 @@ class _CafeteriaScreenState extends State<CafeteriaScreen> {
   }
 
   Widget _buildCafeteriaStat({
+    required BuildContext context,
     required String label,
     required String value,
     required String period,
   }) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.cardPadding)),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppConstants.borderRadius),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
@@ -584,25 +631,25 @@ class _CafeteriaScreenState extends State<CafeteriaScreen> {
         children: [
           Text(
             label,
-            style: const TextStyle(
-              fontSize: 14,
+            style: TextStyle(
+              fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
               color: AppTheme.textSecondary,
             ),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
           Text(
             value,
-            style: const TextStyle(
-              fontSize: 24,
+            style: TextStyle(
+              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
               fontWeight: FontWeight.bold,
               color: AppTheme.textPrimary,
             ),
           ),
-          const SizedBox(height: 4),
+          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
           Text(
             period,
-            style: const TextStyle(
-              fontSize: 12,
+            style: TextStyle(
+              fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
               color: AppTheme.accentColor,
             ),
           ),

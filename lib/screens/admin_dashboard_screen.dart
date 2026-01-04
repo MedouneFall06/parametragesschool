@@ -4,6 +4,8 @@ import 'package:parametragesschool/widgets/stateless_widgets/page_header.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/stat_card.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/primary_button.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/info_card.dart';
+import 'package:parametragesschool/core/constant/constants.dart';
+import 'package:parametragesschool/core/responsive/responsive_grid.dart';
 
 class AdminDashboardScreen extends StatelessWidget {
   const AdminDashboardScreen({super.key});
@@ -21,7 +23,7 @@ class AdminDashboardScreen extends StatelessWidget {
             ),
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.paddingAll)),
                 child: Column(
                   children: [
                     // TODO: Remplacer par données dynamiques
@@ -29,13 +31,8 @@ class AdminDashboardScreen extends StatelessWidget {
                     // TODO: Connecter à l'API admin
                     
                     // Statistics Grid
-                    GridView.count(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 12,
-                      mainAxisSpacing: 12,
-                      childAspectRatio: 1.2,
+                    ResponsiveGrid(
+                      customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenStats),
                       children: [
                         StatCard(
                           title: 'Utilisateurs',
@@ -64,41 +61,45 @@ class AdminDashboardScreen extends StatelessWidget {
                       ],
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // System Status
                     InfoCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'État du système',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           _buildStatusItem(
+                            context: context,
                             label: 'Serveur API',
                             status: 'En ligne',
                             isOnline: true,
                           ),
                           const Divider(),
                           _buildStatusItem(
+                            context: context,
                             label: 'Base de données',
                             status: 'Opérationnel',
                             isOnline: true,
                           ),
                           const Divider(),
                           _buildStatusItem(
+                            context: context,
                             label: 'Stockage fichiers',
                             status: '92% utilisé',
                             isOnline: true,
                           ),
                           const Divider(),
                           _buildStatusItem(
+                            context: context,
                             label: 'Sauvegarde',
                             status: 'Hier 02:00',
                             isOnline: true,
@@ -107,27 +108,27 @@ class AdminDashboardScreen extends StatelessWidget {
                       ),
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Quick Actions
                     InfoCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Actions rapides',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 16),
-                          Wrap(
-                            spacing: 12,
-                            runSpacing: 12,
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                          ResponsiveGrid(
+                            customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenItems),
                             children: [
                               _buildQuickAction(
+                                context: context,
                                 icon: Icons.person_add,
                                 label: 'Nouvel utilisateur',
                                 onTap: () {
@@ -135,6 +136,7 @@ class AdminDashboardScreen extends StatelessWidget {
                                 },
                               ),
                               _buildQuickAction(
+                                context: context,
                                 icon: Icons.backup,
                                 label: 'Sauvegarde',
                                 onTap: () {
@@ -142,6 +144,7 @@ class AdminDashboardScreen extends StatelessWidget {
                                 },
                               ),
                               _buildQuickAction(
+                                context: context,
                                 icon: Icons.bar_chart,
                                 label: 'Rapports',
                                 onTap: () {
@@ -149,6 +152,7 @@ class AdminDashboardScreen extends StatelessWidget {
                                 },
                               ),
                               _buildQuickAction(
+                                context: context,
                                 icon: Icons.settings,
                                 label: 'Configuration',
                                 onTap: () {
@@ -161,7 +165,7 @@ class AdminDashboardScreen extends StatelessWidget {
                       ),
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Recent Activity
                     InfoCard(
@@ -171,10 +175,10 @@ class AdminDashboardScreen extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(
+                              Text(
                                 'Activité récente',
                                 style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                                   fontWeight: FontWeight.w600,
                                   color: AppTheme.textPrimary,
                                 ),
@@ -188,21 +192,24 @@ class AdminDashboardScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           // TODO: Remplacer par ListView.builder avec données dynamiques
                           _buildActivityItem(
+                            context: context,
                             user: 'Admin System',
                             action: 'Sauvegarde automatique',
                             time: 'Il y a 2 heures',
                           ),
                           const Divider(),
                           _buildActivityItem(
+                            context: context,
                             user: 'Jean Dupont',
                             action: 'Création d\'une nouvelle classe',
                             time: 'Il y a 3 heures',
                           ),
                           const Divider(),
                           _buildActivityItem(
+                            context: context,
                             user: 'Marie Martin',
                             action: 'Importation d\'étudiants',
                             time: 'Il y a 5 heures',
@@ -211,34 +218,32 @@ class AdminDashboardScreen extends StatelessWidget {
                       ),
                     ),
                     
-                    const SizedBox(height: 32),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // System Actions
-                    Row(
+                    ResponsiveGrid(
+                      customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenItems),
                       children: [
-                        Expanded(
-                          child: PrimaryButton(
-                            text: 'Maintenance système',
-                            onPressed: () {
-                              // TODO: Ouvrir modal maintenance
-                            },
-                            icon: Icons.engineering,
-                          ),
+                        PrimaryButton(
+                          text: 'Maintenance système',
+                          onPressed: () {
+                            // TODO: Ouvrir modal maintenance
+                          },
+                          icon: Icons.engineering,
+                          fullWidth: true,
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: PrimaryButton(
-                            text: 'Analytics',
-                            onPressed: () {
-                              // TODO: Naviguer vers analytics
-                            },
-                            icon: Icons.analytics,
-                          ),
+                        PrimaryButton(
+                          text: 'Analytics',
+                          onPressed: () {
+                            // TODO: Naviguer vers analytics
+                          },
+                          icon: Icons.analytics,
+                          fullWidth: true,
                         ),
                       ],
                     ),
                     
-                    const SizedBox(height: 32),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                   ],
                 ),
               ),
@@ -250,49 +255,61 @@ class AdminDashboardScreen extends StatelessWidget {
   }
 
   Widget _buildStatusItem({
+    required BuildContext context,
     required String label,
     required String status,
     required bool isOnline,
   }) {
     return ListTile(
       leading: Container(
-        width: 12,
-        height: 12,
+        width: AppConstants.widthPercentage(context, AppConstants.spacingSmall),
+        height: AppConstants.widthPercentage(context, AppConstants.spacingSmall),
         decoration: BoxDecoration(
           color: isOnline ? AppTheme.successColor : AppTheme.errorColor,
           shape: BoxShape.circle,
         ),
       ),
-      title: Text(label),
-      subtitle: Text(status),
+      title: Text(
+        label,
+        style: TextStyle(
+          fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
+        ),
+      ),
+      subtitle: Text(
+        status,
+        style: TextStyle(
+          fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
+        ),
+      ),
     );
   }
 
   Widget _buildQuickAction({
+    required BuildContext context,
     required IconData icon,
     required String label,
     required VoidCallback onTap,
   }) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(AppConstants.borderRadius),
       child: Container(
-        width: 120,
-        padding: const EdgeInsets.all(12),
+        width: AppConstants.widthPercentage(context, AppConstants.minCardWidth),
+        padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.cardPadding)),
         decoration: BoxDecoration(
           color: AppTheme.primaryColor.withOpacity(0.05),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppConstants.borderRadius),
           border: Border.all(color: AppTheme.primaryColor.withOpacity(0.1)),
         ),
         child: Column(
           children: [
-            Icon(icon, color: AppTheme.primaryColor, size: 24),
-            const SizedBox(height: 8),
+            Icon(icon, color: AppTheme.primaryColor, size: AppConstants.widthPercentage(context, AppConstants.iconSize)),
+            SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
             Text(
               label,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 12,
+              style: TextStyle(
+                fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -303,26 +320,37 @@ class AdminDashboardScreen extends StatelessWidget {
   }
 
   Widget _buildActivityItem({
+    required BuildContext context,
     required String user,
     required String action,
     required String time,
   }) {
     return ListTile(
       leading: Container(
-        width: 40,
-        height: 40,
+        width: AppConstants.widthPercentage(context, AppConstants.avatarSize),
+        height: AppConstants.widthPercentage(context, AppConstants.avatarSize),
         decoration: BoxDecoration(
           color: AppTheme.primaryColor.withOpacity(0.1),
           shape: BoxShape.circle,
         ),
-        child: const Icon(Icons.person, color: AppTheme.primaryColor),
+        child: Icon(Icons.person, color: AppTheme.primaryColor, size: AppConstants.widthPercentage(context, AppConstants.smallIconSize)),
       ),
-      title: Text(user),
-      subtitle: Text(action),
+      title: Text(
+        user,
+        style: TextStyle(
+          fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
+        ),
+      ),
+      subtitle: Text(
+        action,
+        style: TextStyle(
+          fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
+        ),
+      ),
       trailing: Text(
         time,
-        style: const TextStyle(
-          fontSize: 12,
+        style: TextStyle(
+          fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
           color: AppTheme.textSecondary,
         ),
       ),

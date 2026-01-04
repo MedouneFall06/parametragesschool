@@ -4,6 +4,8 @@ import 'package:parametragesschool/widgets/stateless_widgets/page_header.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/primary_button.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/secondary_button.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/info_card.dart';
+import 'package:parametragesschool/core/constant/constants.dart';
+import 'package:parametragesschool/core/responsive/responsive_grid.dart';
 
 class ArchiveScreen extends StatefulWidget {
   const ArchiveScreen({super.key});
@@ -38,7 +40,7 @@ class _ArchiveScreenState extends State<ArchiveScreen> {
             ),
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.paddingAll)),
                 child: Column(
                   children: [
                     // TODO: Remplacer par données dynamiques
@@ -50,17 +52,18 @@ class _ArchiveScreenState extends State<ArchiveScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Type d\'archive',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 12),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           Wrap(
-                            spacing: 8,
+                            spacing: AppConstants.widthPercentage(context, AppConstants.spacingSmall),
+                            runSpacing: AppConstants.heightPercentage(context, AppConstants.spacingSmall),
                             children: _archiveTypes.map((type) {
                               return ChoiceChip(
                                 label: Text(_archiveTypeLabels[type] ?? type),
@@ -79,15 +82,16 @@ class _ArchiveScreenState extends State<ArchiveScreen> {
                               );
                             }).toList(),
                           ),
-                          const SizedBox(height: 16),
-                          const Text(
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                          Text(
                             'Année académique',
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               color: AppTheme.textSecondary,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
                             ),
                           ),
-                          const SizedBox(height: 8),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           DropdownButtonFormField<String>(
                             value: _selectedYear,
                             decoration: const InputDecoration(
@@ -111,33 +115,32 @@ class _ArchiveScreenState extends State<ArchiveScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Archive Statistics
-                    GridView.count(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 12,
-                      mainAxisSpacing: 12,
-                      childAspectRatio: 1.2,
+                    ResponsiveGrid(
+                      customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenStats),
                       children: [
                         _buildArchiveStat(
+                          context: context,
                           label: 'Documents archivés',
                           value: '1,245',
                           icon: Icons.archive,
                         ),
                         _buildArchiveStat(
+                          context: context,
                           label: 'Espace utilisé',
                           value: '4.2 GB',
                           icon: Icons.storage,
                         ),
                         _buildArchiveStat(
+                          context: context,
                           label: 'Années disponibles',
                           value: '4',
                           icon: Icons.history,
                         ),
                         _buildArchiveStat(
+                          context: context,
                           label: 'Dernière sauvegarde',
                           value: 'Hier',
                           icon: Icons.backup,
@@ -145,7 +148,7 @@ class _ArchiveScreenState extends State<ArchiveScreen> {
                       ],
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Archived Items List
                     InfoCard(
@@ -157,8 +160,8 @@ class _ArchiveScreenState extends State<ArchiveScreen> {
                             children: [
                               Text(
                                 'Archives ${_archiveTypeLabels[_selectedArchiveType]} ($_selectedYear)',
-                                style: const TextStyle(
-                                  fontSize: 18,
+                                style: TextStyle(
+                                  fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                                   fontWeight: FontWeight.w600,
                                   color: AppTheme.textPrimary,
                                 ),
@@ -167,13 +170,15 @@ class _ArchiveScreenState extends State<ArchiveScreen> {
                                 '45 éléments',
                                 style: TextStyle(
                                   color: AppTheme.textSecondary,
+                                  fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
                                 ),
                               ),
                             ],
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           // TODO: Remplacer par ListView.builder
                           _buildArchiveItem(
+                            context: context,
                             title: 'Promotion Terminale S 2023',
                             type: 'classe',
                             date: 'Juin 2023',
@@ -181,6 +186,7 @@ class _ArchiveScreenState extends State<ArchiveScreen> {
                           ),
                           const Divider(),
                           _buildArchiveItem(
+                            context: context,
                             title: 'Notes trimestre 3 - 2023',
                             type: 'notes',
                             date: 'Mai 2023',
@@ -188,6 +194,7 @@ class _ArchiveScreenState extends State<ArchiveScreen> {
                           ),
                           const Divider(),
                           _buildArchiveItem(
+                            context: context,
                             title: 'Liste élèves diplômés',
                             type: 'document',
                             date: 'Juillet 2023',
@@ -195,6 +202,7 @@ class _ArchiveScreenState extends State<ArchiveScreen> {
                           ),
                           const Divider(),
                           _buildArchiveItem(
+                            context: context,
                             title: 'Évaluations enseignants',
                             type: 'évaluation',
                             date: 'Avril 2023',
@@ -204,46 +212,44 @@ class _ArchiveScreenState extends State<ArchiveScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Archive Actions
                     InfoCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Actions d\'archivage',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 16),
-                          Row(
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                          ResponsiveGrid(
+                            customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenItems),
                             children: [
-                              Expanded(
-                                child: SecondaryButton(
-                                  text: 'Archiver l\'année',
-                                  onPressed: () {
-                                    _showArchiveConfirmation(context);
-                                  },
-                                  icon: Icons.archive,
-                                ),
+                              SecondaryButton(
+                                text: 'Archiver l\'année',
+                                onPressed: () {
+                                  _showArchiveConfirmation(context);
+                                },
+                                icon: Icons.archive,
+                                fullWidth: true,
                               ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: PrimaryButton(
-                                  text: 'Restaurer',
-                                  onPressed: () {
-                                    // TODO: Restaurer archive
-                                  },
-                                  icon: Icons.restore,
-                                ),
+                              PrimaryButton(
+                                text: 'Restaurer',
+                                onPressed: () {
+                                  // TODO: Restaurer archive
+                                },
+                                icon: Icons.restore,
+                                fullWidth: true,
                               ),
                             ],
                           ),
-                          const SizedBox(height: 12),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           PrimaryButton(
                             text: 'Nettoyer les archives',
                             onPressed: () {
@@ -256,57 +262,62 @@ class _ArchiveScreenState extends State<ArchiveScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Storage Analysis
                     InfoCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Analyse du stockage',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           _buildStorageUsage(
+                            context: context,
                             label: 'Documents',
                             usage: 45,
                             size: '2.1 GB',
                             color: AppTheme.primaryColor,
                           ),
-                          const SizedBox(height: 12),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           _buildStorageUsage(
+                            context: context,
                             label: 'Images',
                             usage: 30,
                             size: '1.4 GB',
                             color: AppTheme.accentColor,
                           ),
-                          const SizedBox(height: 12),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           _buildStorageUsage(
+                            context: context,
                             label: 'Base de données',
                             usage: 20,
                             size: '0.9 GB',
                             color: AppTheme.secondaryColor,
                           ),
-                          const SizedBox(height: 12),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           _buildStorageUsage(
+                            context: context,
                             label: 'Autres',
                             usage: 5,
                             size: '0.2 GB',
                             color: AppTheme.warningColor,
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(
+                              Text(
                                 'Total: 4.6 GB / 10 GB',
                                 style: TextStyle(
                                   fontWeight: FontWeight.w500,
+                                  fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
                                 ),
                               ),
                               Text(
@@ -314,6 +325,7 @@ class _ArchiveScreenState extends State<ArchiveScreen> {
                                 style: TextStyle(
                                   color: AppTheme.successColor,
                                   fontWeight: FontWeight.w600,
+                                  fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
                                 ),
                               ),
                             ],
@@ -322,41 +334,43 @@ class _ArchiveScreenState extends State<ArchiveScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Export Options
                     InfoCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Options d\'export',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 16),
-                          Row(
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                          ResponsiveGrid(
+                            customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenItems),
                             children: [
                               _buildExportOption(
+                                context: context,
                                 icon: Icons.cloud_download,
                                 label: 'Cloud',
                                 onTap: () {
                                   // TODO: Exporter vers cloud
                                 },
                               ),
-                              const SizedBox(width: 12),
                               _buildExportOption(
+                                context: context,
                                 icon: Icons.sd_card,
                                 label: 'Support externe',
                                 onTap: () {
                                   // TODO: Exporter vers support externe
                                 },
                               ),
-                              const SizedBox(width: 12),
                               _buildExportOption(
+                                context: context,
                                 icon: Icons.print,
                                 label: 'Impression',
                                 onTap: () {
@@ -369,35 +383,36 @@ class _ArchiveScreenState extends State<ArchiveScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 32),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Retention Policy
                     Container(
-                      padding: const EdgeInsets.all(16),
+                      padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.cardPadding)),
                       decoration: BoxDecoration(
                         color: AppTheme.infoColor.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(AppConstants.borderRadius),
                         border: Border.all(color: AppTheme.infoColor.withOpacity(0.3)),
                       ),
                       child: Row(
                         children: [
-                          Icon(Icons.info, color: AppTheme.infoColor),
-                          const SizedBox(width: 12),
+                          Icon(Icons.info, color: AppTheme.infoColor, size: AppConstants.widthPercentage(context, AppConstants.smallIconSize)),
+                          SizedBox(width: AppConstants.widthPercentage(context, AppConstants.spacingSmall)),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
+                                Text(
                                   'Politique de conservation',
                                   style: TextStyle(
                                     fontWeight: FontWeight.w600,
+                                    fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                                   ),
                                 ),
-                                const SizedBox(height: 4),
+                                SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                                 Text(
                                   'Les archives sont conservées pendant 5 ans conformément à la réglementation.',
                                   style: TextStyle(
-                                    fontSize: 12,
+                                    fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
                                     color: AppTheme.textSecondary,
                                   ),
                                 ),
@@ -408,34 +423,32 @@ class _ArchiveScreenState extends State<ArchiveScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 32),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Advanced Archive Management
-                    Row(
+                    ResponsiveGrid(
+                      customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenItems),
                       children: [
-                        Expanded(
-                          child: SecondaryButton(
-                            text: 'Configurer automatisation',
-                            onPressed: () {
-                              // TODO: Configurer automatisation
-                            },
-                            icon: Icons.settings,
-                          ),
+                        SecondaryButton(
+                          text: 'Configurer automatisation',
+                          onPressed: () {
+                            // TODO: Configurer automatisation
+                          },
+                          icon: Icons.settings,
+                          fullWidth: true,
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: PrimaryButton(
-                            text: 'Rapport d\'archivage',
-                            onPressed: () {
-                              // TODO: Générer rapport
-                            },
-                            icon: Icons.assessment,
-                          ),
+                        PrimaryButton(
+                          text: 'Rapport d\'archivage',
+                          onPressed: () {
+                            // TODO: Générer rapport
+                          },
+                          icon: Icons.assessment,
+                          fullWidth: true,
                         ),
                       ],
                     ),
                     
-                    const SizedBox(height: 32),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                   ],
                 ),
               ),
@@ -447,19 +460,20 @@ class _ArchiveScreenState extends State<ArchiveScreen> {
   }
 
   Widget _buildArchiveStat({
+    required BuildContext context,
     required String label,
     required String value,
     required IconData icon,
   }) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.cardPadding)),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppConstants.borderRadius),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
-            blurRadius: 4,
+            blurRadius: AppConstants.lightShadowBlur,
             offset: const Offset(0, 2),
           ),
         ],
@@ -467,31 +481,31 @@ class _ArchiveScreenState extends State<ArchiveScreen> {
       child: Row(
         children: [
           Container(
-            width: 40,
-            height: 40,
+            width: AppConstants.widthPercentage(context, AppConstants.avatarSize),
+            height: AppConstants.widthPercentage(context, AppConstants.avatarSize),
             decoration: BoxDecoration(
-              color: AppTheme.primaryColor.withOpacity(0.1),
+              color: AppTheme.primaryColor.withOpacity(AppConstants.semiTransparentOpacity),
               shape: BoxShape.circle,
             ),
-            child: Icon(icon, color: AppTheme.primaryColor),
+            child: Icon(icon, color: AppTheme.primaryColor, size: AppConstants.widthPercentage(context, AppConstants.smallIconSize)),
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: AppConstants.widthPercentage(context, AppConstants.spacingSmall)),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   label,
-                  style: const TextStyle(
-                    fontSize: 12,
+                  style: TextStyle(
+                    fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
                     color: AppTheme.textSecondary,
                   ),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                 Text(
                   value,
-                  style: const TextStyle(
-                    fontSize: 20,
+                  style: TextStyle(
+                    fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                     fontWeight: FontWeight.bold,
                     color: AppTheme.textPrimary,
                   ),
@@ -505,6 +519,7 @@ class _ArchiveScreenState extends State<ArchiveScreen> {
   }
 
   Widget _buildArchiveItem({
+    required BuildContext context,
     required String title,
     required String type,
     required String date,
@@ -512,33 +527,48 @@ class _ArchiveScreenState extends State<ArchiveScreen> {
   }) {
     return ListTile(
       leading: Container(
-        width: 40,
-        height: 40,
+        width: AppConstants.widthPercentage(context, AppConstants.avatarSize),
+        height: AppConstants.widthPercentage(context, AppConstants.avatarSize),
         decoration: BoxDecoration(
-          color: AppTheme.primaryColor.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(8),
+          color: AppTheme.primaryColor.withOpacity(AppConstants.semiTransparentOpacity),
+          borderRadius: BorderRadius.circular(AppConstants.borderRadius),
         ),
-        child: const Icon(Icons.archive, color: AppTheme.primaryColor),
+        child: Icon(Icons.archive, color: AppTheme.primaryColor, size: AppConstants.widthPercentage(context, AppConstants.smallIconSize)),
       ),
-      title: Text(title),
+      title: Text(
+        title,
+        style: TextStyle(
+          fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
+        ),
+      ),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Type: $type • Date: $date'),
-          Text('Taille: $size'),
+          Text(
+            'Type: $type • Date: $date',
+            style: TextStyle(
+              fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
+            ),
+          ),
+          Text(
+            'Taille: $size',
+            style: TextStyle(
+              fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
+            ),
+          ),
         ],
       ),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           IconButton(
-            icon: const Icon(Icons.download, size: 20),
+            icon: Icon(Icons.download, size: AppConstants.widthPercentage(context, AppConstants.smallIconSize)),
             onPressed: () {
               // TODO: Télécharger archive
             },
           ),
           IconButton(
-            icon: const Icon(Icons.preview, size: 20),
+            icon: Icon(Icons.preview, size: AppConstants.widthPercentage(context, AppConstants.smallIconSize)),
             onPressed: () {
               // TODO: Prévisualiser
             },
@@ -549,6 +579,7 @@ class _ArchiveScreenState extends State<ArchiveScreen> {
   }
 
   Widget _buildStorageUsage({
+    required BuildContext context,
     required String label,
     required int usage,
     required String size,
@@ -562,43 +593,45 @@ class _ArchiveScreenState extends State<ArchiveScreen> {
           children: [
             Text(
               label,
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.w500,
+                fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
               ),
             ),
             Text(
               size,
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.w600,
+                fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
               ),
             ),
           ],
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
         Stack(
           children: [
             Container(
-              height: 8,
+              height: AppConstants.heightPercentage(context, AppConstants.spacingSmall),
               decoration: BoxDecoration(
                 color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(4),
+                borderRadius: BorderRadius.circular(AppConstants.borderRadius),
               ),
             ),
             Container(
-              height: 8,
+              height: AppConstants.heightPercentage(context, AppConstants.spacingSmall),
               width: MediaQuery.of(context).size.width * (usage / 100) * 0.8,
               decoration: BoxDecoration(
                 color: color,
-                borderRadius: BorderRadius.circular(4),
+                borderRadius: BorderRadius.circular(AppConstants.borderRadius),
               ),
             ),
           ],
         ),
-        const SizedBox(height: 4),
+        SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
         Text(
           '$usage% du stockage total',
           style: TextStyle(
-            fontSize: 12,
+            fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
             color: color,
           ),
         ),
@@ -607,6 +640,7 @@ class _ArchiveScreenState extends State<ArchiveScreen> {
   }
 
   Widget _buildExportOption({
+    required BuildContext context,
     required IconData icon,
     required String label,
     required VoidCallback onTap,
@@ -614,22 +648,23 @@ class _ArchiveScreenState extends State<ArchiveScreen> {
     return Expanded(
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(AppConstants.borderRadius),
         child: Container(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.cardPadding)),
           decoration: BoxDecoration(
-            color: AppTheme.primaryColor.withOpacity(0.05),
-            borderRadius: BorderRadius.circular(8),
+            color: AppTheme.primaryColor.withOpacity(AppConstants.semiTransparentOpacity),
+            borderRadius: BorderRadius.circular(AppConstants.borderRadius),
             border: Border.all(color: AppTheme.primaryColor.withOpacity(0.1)),
           ),
           child: Column(
             children: [
-              Icon(icon, color: AppTheme.primaryColor, size: 30),
-              const SizedBox(height: 8),
+              Icon(icon, color: AppTheme.primaryColor, size: AppConstants.widthPercentage(context, AppConstants.iconSize)),
+              SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
               Text(
                 label,
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.w500,
+                  fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                 ),
               ),
             ],

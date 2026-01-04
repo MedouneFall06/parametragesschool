@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:parametragesschool/core/responsive/responsive_wrapper.dart';
+import 'package:parametragesschool/core/responsive/responsive_grid.dart';
 import 'package:parametragesschool/core/theme/app_theme.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/page_header.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/primary_button.dart';
@@ -98,66 +101,72 @@ class _NoteScreenState extends State<NoteScreen> {
               subtitle: 'Saisie et consultation',
             ),
             Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    // Statistics
-                    Row(
-                      children: [
-                        Expanded(
-                          child: StatCard(
+              child: ResponsiveWrapper(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width < 600 ? MediaQuery.of(context).size.width * 0.04 : 
+                                 MediaQuery.of(context).size.width < 1200 ? MediaQuery.of(context).size.width * 0.02 : MediaQuery.of(context).size.width * 0.015,
+                    vertical: MediaQuery.of(context).size.height * 0.01,
+                  ),
+                  child: Column(
+                    children: [
+                      // Statistics
+                      ResponsiveGrid(
+                        children: [
+                          StatCard(
                             title: 'Moyenne générale',
                             value: moyenneGenerale.toStringAsFixed(2),
                             icon: Icons.assessment,
                             color: AppTheme.primaryColor,
                           ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: StatCard(
+                          StatCard(
                             title: 'Notes totales',
                             value: _notes.length.toString(),
                             icon: Icons.grade,
                             color: AppTheme.accentColor,
                           ),
-                        ),
-                      ],
-                    ),
-                    
-                    const SizedBox(height: 12),
-                    
-                    StatCard(
-                      title: 'Moyenne ${_matieres[_selectedMatiere]}',
-                      value: moyenneMatiere.toStringAsFixed(2),
-                      icon: Icons.school,
-                      color: AppTheme.secondaryColor,
-                    ),
-                    
-                    const SizedBox(height: 24),
-                    
-                    // Filters
-                    InfoCard(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Filtres',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                              color: AppTheme.textPrimary,
+                        ],
+                      ),
+                      
+                      SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                      
+                      StatCard(
+                        title: 'Moyenne ${_matieres[_selectedMatiere]}',
+                        value: moyenneMatiere.toStringAsFixed(2),
+                        icon: Icons.school,
+                        color: AppTheme.secondaryColor,
+                      ),
+                      
+                      SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                      
+                      // Filters
+                      InfoCard(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Filtres',
+                              style: TextStyle(
+                                fontSize: MediaQuery.of(context).size.width * 0.025,
+                                fontWeight: FontWeight.w600,
+                                color: AppTheme.textPrimary,
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 16),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: DropdownButtonFormField<String>(
+                            SizedBox(height: MediaQuery.of(context).size.height * 0.013),
+                            ResponsiveGrid(
+                              children: [
+                                DropdownButtonFormField<String>(
                                   value: _selectedMatiere,
-                                  decoration: const InputDecoration(
+                                  decoration: InputDecoration(
                                     labelText: 'Matière',
-                                    border: OutlineInputBorder(),
+                                    labelStyle: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.014),
+                                    contentPadding: EdgeInsets.symmetric(
+                                      horizontal: MediaQuery.of(context).size.width * 0.02,
+                                      vertical: MediaQuery.of(context).size.height * 0.015,
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
                                     filled: true,
                                     fillColor: Colors.white,
                                   ),
@@ -173,14 +182,18 @@ class _NoteScreenState extends State<NoteScreen> {
                                     });
                                   },
                                 ),
-                              ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: DropdownButtonFormField<String?>(
+                                DropdownButtonFormField<String?>(
                                   value: _selectedEtudiant,
-                                  decoration: const InputDecoration(
+                                  decoration: InputDecoration(
                                     labelText: 'Étudiant (optionnel)',
-                                    border: OutlineInputBorder(),
+                                    labelStyle: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.014),
+                                    contentPadding: EdgeInsets.symmetric(
+                                      horizontal: MediaQuery.of(context).size.width * 0.02,
+                                      vertical: MediaQuery.of(context).size.height * 0.015,
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
                                     filled: true,
                                     fillColor: Colors.white,
                                   ),
@@ -202,259 +215,302 @@ class _NoteScreenState extends State<NoteScreen> {
                                     });
                                   },
                                 ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 16),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: ElevatedButton(
-                                  onPressed: () async {
-                                    final DateTimeRange? picked = await showDateRangePicker(
-                                      context: context,
-                                      firstDate: DateTime(2023, 1, 1),
-                                      lastDate: DateTime(2024, 12, 31),
-                                      currentDate: DateTime.now(),
-                                    );
-                                    if (picked != null) {
-                                      setState(() {
-                                        _dateRange = picked;
-                                      });
-                                    }
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.white,
-                                    foregroundColor: AppTheme.textPrimary,
-                                    elevation: 0,
-                                  ),
-                                  child: Text(
-                                    _dateRange != null
-                                        ? '${_dateRange!.start.day}/${_dateRange!.start.month} - ${_dateRange!.end.day}/${_dateRange!.end.month}'
-                                        : 'Période (optionnel)',
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 12),
-                              SecondaryButton(
-                                text: 'Réinitialiser',
-                                onPressed: () {
-                                  setState(() {
-                                    _selectedEtudiant = null;
-                                    _dateRange = null;
-                                  });
-                                },
-                                icon: Icons.filter_alt_off,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    
-                    const SizedBox(height: 24),
-                    
-                    // Notes List
-                    InfoCard(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                'Liste des notes',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppTheme.textPrimary,
-                                ),
-                              ),
-                              PrimaryButton(
-                                text: 'Nouvelle note',
-                                onPressed: () {
-                                  // TODO: Naviguer vers ajout de note
-                                },
-                                icon: Icons.add,
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 16),
-                          if (notesMatiere.isEmpty)
-                            const Padding(
-                              padding: EdgeInsets.all(32),
-                              child: Text(
-                                'Aucune note pour cette matière',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: AppTheme.textSecondary,
-                                ),
-                              ),
-                            )
-                          else
-                            ...notesMatiere.map((note) {
-                              return Padding(
-                                padding: const EdgeInsets.only(bottom: 12),
-                                child: Card(
-                                  child: ListTile(
-                                    leading: CircleAvatar(
-                                      backgroundColor: _getNoteColor(note.valeur),
-                                      child: Text(
-                                        note.valeur.toStringAsFixed(1),
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                    title: Text(
-                                      _etudiants[note.etudiantId] ?? 'Étudiant inconnu',
-                                      style: const TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    subtitle: Text(
-                                      '${note.date.day}/${note.date.month}/${note.date.year}',
-                                      style: const TextStyle(
-                                        color: AppTheme.textSecondary,
-                                      ),
-                                    ),
-                                    trailing: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        IconButton(
-                                          icon: const Icon(Icons.edit,
-                                              size: 20),
-                                          onPressed: () {
-                                            // TODO: Éditer la note
-                                          },
-                                          color: AppTheme.primaryColor,
-                                        ),
-                                        IconButton(
-                                          icon: const Icon(Icons.delete,
-                                              size: 20),
-                                          onPressed: () {
-                                            _showDeleteDialog(context, note);
-                                          },
-                                          color: AppTheme.errorColor,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              );
-                            }).toList(),
-                        ],
-                      ),
-                    ),
-                    
-                    const SizedBox(height: 24),
-                    
-                    // Statistics by Subject
-                    InfoCard(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Statistiques par matière',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                              color: AppTheme.textPrimary,
+                              ],
                             ),
-                          ),
-                          const SizedBox(height: 16),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      'Répartition des notes',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        color: AppTheme.textSecondary,
+                            SizedBox(height: MediaQuery.of(context).size.height * 0.013),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: ElevatedButton(
+                                    onPressed: () async {
+                                      final DateTimeRange? picked = await showDateRangePicker(
+                                        context: context,
+                                        firstDate: DateTime(2023, 1, 1),
+                                        lastDate: DateTime(2024, 12, 31),
+                                        currentDate: DateTime.now(),
+                                      );
+                                      if (picked != null) {
+                                        setState(() {
+                                          _dateRange = picked;
+                                        });
+                                      }
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.white,
+                                      foregroundColor: AppTheme.textPrimary,
+                                      elevation: 0,
+                                    ),
+                                    child: Text(
+                                      _dateRange != null
+                                          ? '${_dateRange!.start.day}/${_dateRange!.start.month} - ${_dateRange!.end.day}/${_dateRange!.end.month}'
+                                          : 'Période (optionnel)',
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: MediaQuery.of(context).size.width * 0.02),
+                                SecondaryButton(
+                                  text: 'Réinitialiser',
+                                  onPressed: () {
+                                    setState(() {
+                                      _selectedEtudiant = null;
+                                      _dateRange = null;
+                                    });
+                                  },
+                                  icon: Icons.filter_alt_off,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      
+                      SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                      
+                      // Notes List
+                      InfoCard(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Liste des notes',
+                                  style: TextStyle(
+                                    fontSize: MediaQuery.of(context).size.width * 0.025,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppTheme.textPrimary,
+                                  ),
+                                ),
+                                PrimaryButton(
+                                  text: 'Nouvelle note',
+                                  onPressed: () {
+                                    // TODO: Naviguer vers ajout de note
+                                  },
+                                  icon: Icons.add,
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: MediaQuery.of(context).size.height * 0.013),
+                            if (notesMatiere.isEmpty)
+                              const Padding(
+                                padding: EdgeInsets.all(32),
+                                child: Text(
+                                  'Aucune note pour cette matière',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: AppTheme.textSecondary,
+                                  ),
+                                ),
+                              )
+                            else
+                              ...notesMatiere.map((note) {
+                                return Padding(
+                                  padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.01),
+                                  child: Card(
+                                    child: ListTile(
+                                      leading: CircleAvatar(
+                                        radius: MediaQuery.of(context).size.width * 0.05,
+                                        backgroundColor: _getNoteColor(note.valeur),
+                                        child: Text(
+                                          note.valeur.toStringAsFixed(1),
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: MediaQuery.of(context).size.width * 0.015,
+                                          ),
+                                        ),
+                                      ),
+                                      title: Text(
+                                        _etudiants[note.etudiantId] ?? 'Étudiant inconnu',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: MediaQuery.of(context).size.width * 0.016,
+                                        ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      subtitle: Text(
+                                        '${note.date.day}/${note.date.month}/${note.date.year}',
+                                        style: TextStyle(
+                                          color: AppTheme.textSecondary,
+                                          fontSize: MediaQuery.of(context).size.width * 0.012,
+                                        ),
+                                      ),
+                                      trailing: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          IconButton(
+                                            icon: Icon(Icons.edit,
+                                                size: MediaQuery.of(context).size.width * 0.02),
+                                            onPressed: () {
+                                              // TODO: Éditer la note
+                                            },
+                                            color: AppTheme.primaryColor,
+                                            padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.01),
+                                          ),
+                                          IconButton(
+                                            icon: Icon(Icons.delete,
+                                                size: MediaQuery.of(context).size.width * 0.02),
+                                            onPressed: () {
+                                              _showDeleteDialog(context, note);
+                                            },
+                                            color: AppTheme.errorColor,
+                                            padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.01),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                    const SizedBox(height: 8),
-                                    ..._matieres.entries.map((matiere) {
-                                      final matiereNotes = _notes
-                                          .where((n) => n.matiereId == matiere.key)
-                                          .toList();
-                                      final moyenne = matiereNotes.isNotEmpty
-                                          ? matiereNotes.map((n) => n.valeur).reduce((a, b) => a + b) / matiereNotes.length
-                                          : 0.0;
-                                      
-                                      return Padding(
-                                        padding: const EdgeInsets.only(bottom: 8),
-                                        child: Row(
-                                          children: [
-                                            Expanded(
-                                              child: Text(
-                                                matiere.value,
-                                                style: const TextStyle(fontSize: 14),
-                                              ),
-                                            ),
-                                            Container(
-                                              padding: const EdgeInsets.symmetric(
-                                                horizontal: 12,
-                                                vertical: 4,
-                                              ),
-                                              decoration: BoxDecoration(
-                                                color: _getNoteColor(moyenne),
-                                                borderRadius: BorderRadius.circular(20),
-                                              ),
-                                              child: Text(
-                                                moyenne > 0 ? moyenne.toStringAsFixed(1) : '-',
-                                                style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    }).toList(),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                                  ),
+                                );
+                              }).toList(),
+                          ],
+                        ),
                       ),
-                    ),
-                    
-                    const SizedBox(height: 32),
-                    
-                    // Export Options
-                    Row(
-                      children: [
-                        Expanded(
-                          child: SecondaryButton(
-                            text: 'Exporter en PDF',
-                            onPressed: () {
-                              // TODO: Exporter en PDF
-                            },
-                            icon: Icons.picture_as_pdf,
-                          ),
+                      
+                      SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                      
+                      // Statistics by Subject
+                      InfoCard(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Statistiques par matière',
+                              style: TextStyle(
+                                fontSize: MediaQuery.of(context).size.width * 0.025,
+                                fontWeight: FontWeight.w600,
+                                color: AppTheme.textPrimary,
+                              ),
+                            ),
+                            SizedBox(height: MediaQuery.of(context).size.height * 0.013),
+                            ResponsiveGrid(
+                              children: _matieres.entries.map((matiere) {
+                                final matiereNotes = _notes
+                                    .where((n) => n.matiereId == matiere.key)
+                                    .toList();
+                                final moyenne = matiereNotes.isNotEmpty
+                                    ? matiereNotes.map((n) => n.valeur).reduce((a, b) => a + b) / matiereNotes.length
+                                    : 0.0;
+                                
+                                return Container(
+                                  padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.015),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(12),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.05),
+                                        blurRadius: 4,
+                                        offset: const Offset(0, 2),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        matiere.value,
+                                        style: TextStyle(
+                                          fontSize: MediaQuery.of(context).size.width * 0.018,
+                                          fontWeight: FontWeight.w600,
+                                          color: AppTheme.textPrimary,
+                                        ),
+                                      ),
+                                      SizedBox(height: MediaQuery.of(context).size.height * 0.007),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              'Moyenne',
+                                              style: TextStyle(
+                                                fontSize: MediaQuery.of(context).size.width * 0.011,
+                                                color: AppTheme.textSecondary,
+                                              ),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                          Container(
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: MediaQuery.of(context).size.width * 0.015,
+                                              vertical: MediaQuery.of(context).size.height * 0.004,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: _getNoteColor(moyenne),
+                                              borderRadius: BorderRadius.circular(20),
+                                            ),
+                                            child: Text(
+                                              moyenne > 0 ? moyenne.toStringAsFixed(1) : '-',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: MediaQuery.of(context).size.width * 0.011,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          ],
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: SecondaryButton(
-                            text: 'Exporter en Excel',
-                            onPressed: () {
-                              // TODO: Exporter en Excel
-                            },
-                            icon: Icons.table_chart,
-                          ),
+                      ),
+                      
+                      SizedBox(height: MediaQuery.of(context).size.height * 0.025),
+                      
+                      // Export Options
+                      InfoCard(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Supprimer la note',
+                              style: TextStyle(
+                                fontSize: MediaQuery.of(context).size.width * 0.025,
+                                fontWeight: FontWeight.w600,
+                                color: AppTheme.textPrimary,
+                              ),
+                            ),
+                            SizedBox(height: MediaQuery.of(context).size.height * 0.013),
+                            ResponsiveGrid(
+                              children: [
+                                SecondaryButton(
+                                  text: 'Exporter en PDF',
+                                  onPressed: () {
+                                    // TODO: Exporter en PDF
+                                  },
+                                  icon: Icons.picture_as_pdf,
+                                  fullWidth: MediaQuery.of(context).size.width < 600,
+                                ),
+                                SecondaryButton(
+                                  text: 'Exporter en Excel',
+                                  onPressed: () {
+                                    // TODO: Exporter en Excel
+                                  },
+                                  icon: Icons.table_chart,
+                                  fullWidth: MediaQuery.of(context).size.width < 600,
+                                ),
+                                SecondaryButton(
+                                  text: 'Exporter en CSV',
+                                  onPressed: () {
+                                    // TODO: Exporter en CSV
+                                  },
+                                  icon: Icons.download,
+                                  fullWidth: MediaQuery.of(context).size.width < 600,
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                    
-                    const SizedBox(height: 32),
-                  ],
+                      ),
+                      
+                      SizedBox(height: MediaQuery.of(context).size.height * 0.025),
+                    ],
+                  ),
                 ),
               ),
             ),

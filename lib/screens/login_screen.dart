@@ -7,6 +7,7 @@ import 'package:parametragesschool/widgets/stateless_widgets/page_header.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/primary_button.dart';
 // ignore: unused_import
 import 'package:parametragesschool/widgets/stateless_widgets/secondary_button.dart';
+import 'package:parametragesschool/core/constant/constants.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -66,7 +67,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 16),
+                      SizedBox(height: AppConstants.fixedHeightSmall),
                       
                       // Logo de l'application
                       Center(

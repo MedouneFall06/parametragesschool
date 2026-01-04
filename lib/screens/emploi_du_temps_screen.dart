@@ -7,6 +7,44 @@ import 'package:parametragesschool/widgets/stateless_widgets/info_card.dart';
 import 'package:parametragesschool/models/emploi_du_temps_model.dart';
 // ignore: unused_import
 import 'package:parametragesschool/models/classe_model.dart';
+import 'package:parametragesschool/core/responsive/responsive_grid.dart';
+
+// Constantes modifiables pour le responsive design
+class EmploiDuTempsScreenConstants {
+  // Padding général
+  static const double paddingAll = 0.02;
+  static const double paddingHorizontal = 0.02;
+  static const double paddingVertical = 0.013;
+  static const double paddingBetweenItems = 0.02;
+  static const double paddingBetweenStats = 0.02;
+  static const double paddingBetweenCards = 0.01;
+  
+  // Statistiques
+  static const double statTitleFontSize = 0.025;
+  static const double statIconSize = 0.04;
+  static const double statValueFontSize = 0.045;
+  static const double statSpacing = 0.015;
+  
+  // Cartes de séances
+  static const double seanceCardPadding = 0.02;
+  static const double seanceAvatarSize = 0.08;
+  static const double seanceTitleFontSize = 0.025;
+  static const double seanceSubtitleFontSize = 0.018;
+  static const double seanceInfoFontSize = 0.016;
+  static const double seanceIconSize = 0.025;
+  
+  // Recherche et filtres
+  static const double filterLabelFontSize = 0.025;
+  static const double filterContentPaddingHorizontal = 0.02;
+  static const double filterContentPaddingVertical = 0.015;
+  static const double searchHintFontSize = 0.018;
+  
+  // Espacements
+  static const double spacingSmall = 0.003;
+  static const double spacingMedium = 0.006;
+  static const double spacingLarge = 0.01;
+  static const double spacingExtraLarge = 0.015;
+}
 
 // TODO: Transformer en StatefulWidget avec Provider
 // TODO: Créer EmploiDuTempsViewModel
@@ -171,7 +209,7 @@ class _EmploiDuTempsScreenState extends State<EmploiDuTempsScreen> {
             ),
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(MediaQuery.of(context).size.width * EmploiDuTempsScreenConstants.paddingAll),
                 child: Column(
                   children: [
                     // Sélection et filtres
@@ -179,92 +217,88 @@ class _EmploiDuTempsScreenState extends State<EmploiDuTempsScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Sélection',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: MediaQuery.of(context).size.width * EmploiDuTempsScreenConstants.statTitleFontSize,
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 16),
-                          Row(
+                          SizedBox(height: MediaQuery.of(context).size.height * EmploiDuTempsScreenConstants.spacingSmall),
+                          ResponsiveGrid(
+                            customSpacing: MediaQuery.of(context).size.width * EmploiDuTempsScreenConstants.paddingBetweenItems,
                             children: [
-                              Expanded(
-                                child: DropdownButtonFormField<String?>(
-                                  value: _selectedClasse,
-                                  decoration: const InputDecoration(
-                                    labelText: 'Classe',
-                                    border: OutlineInputBorder(),
+                              DropdownButtonFormField<String?>(
+                                value: _selectedClasse,
+                                decoration: InputDecoration(
+                                  labelText: 'Classe',
+                                  labelStyle: TextStyle(fontSize: MediaQuery.of(context).size.width * EmploiDuTempsScreenConstants.filterLabelFontSize),
+                                  border: const OutlineInputBorder(),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                ),
+                                items: [
+                                  ..._classes.entries.map((entry) {
+                                    return DropdownMenuItem(
+                                      value: entry.key,
+                                      child: Text(entry.value),
+                                    );
+                                  }).toList(),
+                                ],
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedClasse = value;
+                                  });
+                                },
+                              ),
+                              if (_vueSemaine)
+                                DropdownButtonFormField<String>(
+                                  value: _selectedJour,
+                                  decoration: InputDecoration(
+                                    labelText: 'Jour',
+                                    labelStyle: TextStyle(fontSize: MediaQuery.of(context).size.width * EmploiDuTempsScreenConstants.filterLabelFontSize),
+                                    border: const OutlineInputBorder(),
                                     filled: true,
                                     fillColor: Colors.white,
                                   ),
-                                  items: [
-                                    ..._classes.entries.map((entry) {
-                                      return DropdownMenuItem(
-                                        value: entry.key,
-                                        child: Text(entry.value),
-                                      );
-                                    }).toList(),
-                                  ],
+                                  items: _jours.map((jour) {
+                                    return DropdownMenuItem(
+                                      value: jour,
+                                      child: Text(jour),
+                                    );
+                                  }).toList(),
                                   onChanged: (value) {
                                     setState(() {
-                                      _selectedClasse = value;
+                                      _selectedJour = value!;
                                     });
                                   },
-                                ),
-                              ),
-                              const SizedBox(width: 12),
-                              if (_vueSemaine)
-                                Expanded(
-                                  child: DropdownButtonFormField<String>(
-                                    value: _selectedJour,
-                                    decoration: const InputDecoration(
-                                      labelText: 'Jour',
-                                      border: OutlineInputBorder(),
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                    ),
-                                    items: _jours.map((jour) {
-                                      return DropdownMenuItem(
-                                        value: jour,
-                                        child: Text(jour),
-                                      );
-                                    }).toList(),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _selectedJour = value!;
-                                      });
-                                    },
-                                  ),
                                 ),
                             ],
                           ),
-                          const SizedBox(height: 12),
-                          Row(
+                          SizedBox(height: MediaQuery.of(context).size.height * EmploiDuTempsScreenConstants.spacingSmall),
+                          ResponsiveGrid(
+                            customSpacing: MediaQuery.of(context).size.width * EmploiDuTempsScreenConstants.paddingBetweenItems,
                             children: [
-                              Expanded(
-                                child: SecondaryButton(
-                                  text: _vueSemaine ? 'Vue semaine' : 'Vue jour',
-                                  onPressed: () {
-                                    setState(() {
-                                      _vueSemaine = !_vueSemaine;
-                                    });
-                                  },
-                                  icon: _vueSemaine
-                                      ? Icons.calendar_view_week
-                                      : Icons.calendar_today,
-                                ),
+                              SecondaryButton(
+                                text: _vueSemaine ? 'Vue semaine' : 'Vue jour',
+                                onPressed: () {
+                                  setState(() {
+                                    _vueSemaine = !_vueSemaine;
+                                  });
+                                },
+                                icon: _vueSemaine
+                                    ? Icons.calendar_view_week
+                                    : Icons.calendar_today,
+                                fullWidth: true,
                               ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: PrimaryButton(
-                                  text: 'Nouvelle séance',
-                                  onPressed: () {
-                                    // TODO: Ajouter séance
-                                  },
-                                  icon: Icons.add,
-                                ),
+                              PrimaryButton(
+                                text: 'Nouvelle séance',
+                                onPressed: () {
+                                  // TODO: Ajouter séance
+                                },
+                                icon: Icons.add,
+                                fullWidth: true,
                               ),
                             ],
                           ),
@@ -272,7 +306,7 @@ class _EmploiDuTempsScreenState extends State<EmploiDuTempsScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: MediaQuery.of(context).size.height * EmploiDuTempsScreenConstants.spacingExtraLarge),
                     
                     // Emploi du temps
                     InfoCard(
@@ -286,8 +320,8 @@ class _EmploiDuTempsScreenState extends State<EmploiDuTempsScreen> {
                                 _vueSemaine
                                     ? 'Emploi du temps - $_selectedJour'
                                     : 'Semaine du 15 Jan 2024',
-                                style: const TextStyle(
-                                  fontSize: 18,
+                                style: TextStyle(
+                                  fontSize: MediaQuery.of(context).size.width * EmploiDuTempsScreenConstants.statTitleFontSize,
                                   fontWeight: FontWeight.w600,
                                   color: AppTheme.textPrimary,
                                 ),
@@ -301,7 +335,7 @@ class _EmploiDuTempsScreenState extends State<EmploiDuTempsScreen> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: MediaQuery.of(context).size.height * EmploiDuTempsScreenConstants.spacingSmall),
                           
                           if (_vueSemaine)
                             _buildDayView(emploiParJour[_selectedJour]!)
@@ -311,62 +345,48 @@ class _EmploiDuTempsScreenState extends State<EmploiDuTempsScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: MediaQuery.of(context).size.height * EmploiDuTempsScreenConstants.spacingExtraLarge),
                     
                     // Statistiques
                     InfoCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Statistiques',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: MediaQuery.of(context).size.width * EmploiDuTempsScreenConstants.statTitleFontSize,
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 16),
-                          Row(
+                          SizedBox(height: MediaQuery.of(context).size.height * EmploiDuTempsScreenConstants.spacingSmall),
+                          ResponsiveGrid(
+                            customSpacing: MediaQuery.of(context).size.width * EmploiDuTempsScreenConstants.paddingBetweenItems,
                             children: [
-                              Expanded(
-                                child: _buildStatItem(
-                                  label: 'Heures totales',
-                                  value: '${seancesFiltrees.length * 2}h',
-                                  icon: Icons.access_time,
-                                  color: AppTheme.primaryColor,
-                                ),
+                              _buildStatItem(
+                                label: 'Heures totales',
+                                value: '${seancesFiltrees.length * 2}h',
+                                icon: Icons.access_time,
+                                color: AppTheme.primaryColor,
                               ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: _buildStatItem(
-                                  label: 'Matières',
-                                  value: '${_getMatieresUniques(seancesFiltrees)}',
-                                  icon: Icons.menu_book,
-                                  color: AppTheme.accentColor,
-                                ),
+                              _buildStatItem(
+                                label: 'Matières',
+                                value: '${_getMatieresUniques(seancesFiltrees)}',
+                                icon: Icons.menu_book,
+                                color: AppTheme.accentColor,
                               ),
-                            ],
-                          ),
-                          const SizedBox(height: 12),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: _buildStatItem(
-                                  label: 'Enseignants',
-                                  value: '${_getEnseignantsUniques(seancesFiltrees)}',
-                                  icon: Icons.people,
-                                  color: AppTheme.secondaryColor,
-                                ),
+                              _buildStatItem(
+                                label: 'Enseignants',
+                                value: '${_getEnseignantsUniques(seancesFiltrees)}',
+                                icon: Icons.people,
+                                color: AppTheme.secondaryColor,
                               ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: _buildStatItem(
-                                  label: 'Séances/semaine',
-                                  value: '${seancesFiltrees.length}',
-                                  icon: Icons.event,
-                                  color: AppTheme.infoColor,
-                                ),
+                              _buildStatItem(
+                                label: 'Séances/semaine',
+                                value: '${seancesFiltrees.length}',
+                                icon: Icons.event,
+                                color: AppTheme.infoColor,
                               ),
                             ],
                           ),
@@ -374,30 +394,30 @@ class _EmploiDuTempsScreenState extends State<EmploiDuTempsScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: MediaQuery.of(context).size.height * EmploiDuTempsScreenConstants.spacingExtraLarge),
                     
                     // Séances à venir
                     InfoCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Séances à venir',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: MediaQuery.of(context).size.width * EmploiDuTempsScreenConstants.statTitleFontSize,
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: MediaQuery.of(context).size.height * EmploiDuTempsScreenConstants.spacingSmall),
                           ...seancesFiltrees.take(3).map((seance) {
                             return Padding(
-                              padding: const EdgeInsets.only(bottom: 12),
+                              padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * EmploiDuTempsScreenConstants.spacingSmall),
                               child: Card(
                                 child: ListTile(
                                   leading: Container(
-                                    width: 40,
-                                    height: 40,
+                                    width: MediaQuery.of(context).size.width * EmploiDuTempsScreenConstants.seanceAvatarSize,
+                                    height: MediaQuery.of(context).size.width * EmploiDuTempsScreenConstants.seanceAvatarSize,
                                     decoration: BoxDecoration(
                                       color: _getJourColor(seance.jour),
                                       shape: BoxShape.circle,
@@ -414,26 +434,27 @@ class _EmploiDuTempsScreenState extends State<EmploiDuTempsScreen> {
                                   ),
                                   title: Text(
                                     _matieres[seance.matiereId] ?? 'Matière inconnue',
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontWeight: FontWeight.w500,
+                                      fontSize: MediaQuery.of(context).size.width * EmploiDuTempsScreenConstants.seanceTitleFontSize,
                                     ),
                                   ),
                                   subtitle: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      const SizedBox(height: 4),
+                                      SizedBox(height: MediaQuery.of(context).size.height * EmploiDuTempsScreenConstants.spacingSmall),
                                       Text(
                                         '${seance.jour} ${seance.heure}',
-                                        style: const TextStyle(
-                                          fontSize: 14,
+                                        style: TextStyle(
+                                          fontSize: MediaQuery.of(context).size.width * EmploiDuTempsScreenConstants.seanceSubtitleFontSize,
                                         ),
                                       ),
-                                      const SizedBox(height: 4),
+                                      SizedBox(height: MediaQuery.of(context).size.height * EmploiDuTempsScreenConstants.spacingSmall),
                                       Text(
                                         _enseignants[seance.enseignantId] ?? 'Enseignant inconnu',
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           color: AppTheme.textSecondary,
-                                          fontSize: 13,
+                                          fontSize: MediaQuery.of(context).size.width * EmploiDuTempsScreenConstants.seanceInfoFontSize,
                                         ),
                                       ),
                                     ],
@@ -459,34 +480,32 @@ class _EmploiDuTempsScreenState extends State<EmploiDuTempsScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 32),
+                    SizedBox(height: MediaQuery.of(context).size.height * EmploiDuTempsScreenConstants.spacingExtraLarge),
                     
                     // Actions
-                    Row(
+                    ResponsiveGrid(
+                      customSpacing: MediaQuery.of(context).size.width * EmploiDuTempsScreenConstants.paddingBetweenItems,
                       children: [
-                        Expanded(
-                          child: SecondaryButton(
-                            text: 'Générer PDF',
-                            onPressed: () {
-                              // TODO: Générer PDF
-                            },
-                            icon: Icons.picture_as_pdf,
-                          ),
+                        SecondaryButton(
+                          text: 'Générer PDF',
+                          onPressed: () {
+                            // TODO: Générer PDF
+                          },
+                          icon: Icons.picture_as_pdf,
+                          fullWidth: true,
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: PrimaryButton(
-                            text: 'Partager',
-                            onPressed: () {
-                              // TODO: Partager emploi du temps
-                            },
-                            icon: Icons.share,
-                          ),
+                        PrimaryButton(
+                          text: 'Partager',
+                          onPressed: () {
+                            // TODO: Partager emploi du temps
+                          },
+                          icon: Icons.share,
+                          fullWidth: true,
                         ),
                       ],
                     ),
                     
-                    const SizedBox(height: 32),
+                    SizedBox(height: MediaQuery.of(context).size.height * EmploiDuTempsScreenConstants.spacingExtraLarge),
                   ],
                 ),
               ),
@@ -662,15 +681,15 @@ class _EmploiDuTempsScreenState extends State<EmploiDuTempsScreen> {
     required Color color,
   }) {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: EdgeInsets.all(MediaQuery.of(context).size.width * EmploiDuTempsScreenConstants.seanceCardPadding),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
         children: [
-          Icon(icon, color: color, size: 20),
-          const SizedBox(width: 12),
+          Icon(icon, color: color, size: MediaQuery.of(context).size.width * EmploiDuTempsScreenConstants.seanceIconSize),
+          SizedBox(width: MediaQuery.of(context).size.width * EmploiDuTempsScreenConstants.spacingSmall),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -679,15 +698,15 @@ class _EmploiDuTempsScreenState extends State<EmploiDuTempsScreen> {
                   label,
                   style: TextStyle(
                     color: AppTheme.textSecondary,
-                    fontSize: 12,
+                    fontSize: MediaQuery.of(context).size.width * EmploiDuTempsScreenConstants.seanceInfoFontSize,
                   ),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: MediaQuery.of(context).size.height * EmploiDuTempsScreenConstants.spacingSmall),
                 Text(
                   value,
                   style: TextStyle(
                     color: color,
-                    fontSize: 18,
+                    fontSize: MediaQuery.of(context).size.width * EmploiDuTempsScreenConstants.seanceSubtitleFontSize,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

@@ -7,6 +7,8 @@ class SecondaryButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final bool fullWidth;
   final IconData? icon;
+  final double? iconSize;
+  final double? fontSize;
   
   const SecondaryButton({
     super.key,
@@ -14,6 +16,8 @@ class SecondaryButton extends StatelessWidget {
     this.onPressed,
     this.fullWidth = false,
     this.icon,
+    this.iconSize,
+    this.fontSize,
   });
   
   @override
@@ -22,15 +26,18 @@ class SecondaryButton extends StatelessWidget {
       width: fullWidth ? double.infinity : null,
       child: OutlinedButton.icon(
         onPressed: onPressed,
-        icon: icon != null ? Icon(icon) : const SizedBox.shrink(),
-        label: Text(text),
+        icon: icon != null ? Icon(icon, size: iconSize) : const SizedBox.shrink(),
+        label: Text(text, style: TextStyle(fontSize: fontSize)),
         style: OutlinedButton.styleFrom(
           foregroundColor: AppTheme.primaryColor,
           side: const BorderSide(color: AppTheme.primaryColor),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width * 0.03,
+            vertical: MediaQuery.of(context).size.height * 0.01,
+          ),
         ),
       ),
     );

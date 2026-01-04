@@ -16,7 +16,9 @@ class InfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: padding,
+        padding: padding is EdgeInsets
+            ? EdgeInsets.all(MediaQuery.of(context).size.width * 0.02)
+            : padding,
         child: child,
       ),
     );

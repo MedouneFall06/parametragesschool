@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/theme/app_theme.dart';
@@ -25,7 +27,10 @@ class PageHeader extends StatelessWidget {
     final bool shouldShowBackButton = showBackButton && canPop;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: EdgeInsets.symmetric(
+        horizontal: MediaQuery.of(context).size.width * 0.02,
+        vertical: MediaQuery.of(context).size.height * 0.01,
+      ),
       decoration: BoxDecoration(
         color: AppTheme.primaryColor,
         borderRadius: BorderRadius.circular(20),
@@ -43,9 +48,11 @@ class PageHeader extends StatelessWidget {
           // Bouton Retour - AFFICHER TOUJOURS (sauf si explicitement désactivé)
           if (shouldShowBackButton)
             Padding(
-              padding: const EdgeInsets.only(right: 8.0),
+              padding: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.01),
               child: IconButton(
-                icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
+                icon: Icon(Icons.arrow_back_ios_new, 
+                  color: Colors.white, 
+                  size: MediaQuery.of(context).size.width * 0.025),
                 onPressed: onBackPressed ?? () => context.pop(),
                 tooltip: 'Retour',
               ),
@@ -60,13 +67,13 @@ class PageHeader extends StatelessWidget {
                   children: [
                     // Si pas de bouton retour mais qu'on veut l'espacement
                     if (!shouldShowBackButton)
-                      const SizedBox(width: 48), // Espace pour alignement
+                      SizedBox(width: MediaQuery.of(context).size.width * 0.06), // Espace pour alignement
 
                     Expanded(
                       child: Text(
                         title,
-                        style: const TextStyle(
-                          fontSize: 24,
+                        style: TextStyle(
+                          fontSize: max(18,MediaQuery.of(context).size.width * 0.035),
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
@@ -80,11 +87,11 @@ class PageHeader extends StatelessWidget {
                 
                 if (subtitle != null)
                   Padding(
-                    padding: const EdgeInsets.only(top: 4.0),
+                    padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.004),
                     child: Text(
                       subtitle!,
-                      style: const TextStyle(
-                        fontSize: 14,
+                      style: TextStyle(
+                        fontSize: max(10, MediaQuery.of(context).size.width * 0.016),
                         color: Colors.white70,
                       ),
                     ),

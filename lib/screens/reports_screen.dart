@@ -4,6 +4,44 @@ import 'package:parametragesschool/widgets/stateless_widgets/page_header.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/primary_button.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/secondary_button.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/info_card.dart';
+import 'package:parametragesschool/core/responsive/responsive_grid.dart';
+
+// Constantes modifiables pour le responsive design
+class ReportsScreenConstants {
+  // Padding général
+  static const double paddingAll = 0.02;
+  static const double paddingHorizontal = 0.02;
+  static const double paddingVertical = 0.013;
+  static const double paddingBetweenItems = 0.02;
+  static const double paddingBetweenStats = 0.02;
+  static const double paddingBetweenCards = 0.01;
+  
+  // Statistiques
+  static const double statTitleFontSize = 0.025;
+  static const double statIconSize = 0.04;
+  static const double statValueFontSize = 0.045;
+  static const double statSpacing = 0.015;
+  
+  // Cartes de rapports
+  static const double reportCardPadding = 0.02;
+  static const double reportAvatarSize = 0.08;
+  static const double reportTitleFontSize = 0.025;
+  static const double reportSubtitleFontSize = 0.018;
+  static const double reportInfoFontSize = 0.016;
+  static const double reportIconSize = 0.025;
+  
+  // Recherche et filtres
+  static const double filterLabelFontSize = 0.025;
+  static const double filterContentPaddingHorizontal = 0.02;
+  static const double filterContentPaddingVertical = 0.015;
+  static const double searchHintFontSize = 0.018;
+  
+  // Espacements
+  static const double spacingSmall = 0.003;
+  static const double spacingMedium = 0.006;
+  static const double spacingLarge = 0.01;
+  static const double spacingExtraLarge = 0.015;
+}
 
 class ReportsScreen extends StatefulWidget {
   const ReportsScreen({super.key});
@@ -46,7 +84,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
             ),
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(MediaQuery.of(context).size.width * ReportsScreenConstants.paddingAll),
                 child: Column(
                   children: [
                     // TODO: Remplacer par données dynamiques
@@ -58,18 +96,18 @@ class _ReportsScreenState extends State<ReportsScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Type de rapport',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: MediaQuery.of(context).size.width * ReportsScreenConstants.statTitleFontSize,
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 12),
+                          SizedBox(height: MediaQuery.of(context).size.height * ReportsScreenConstants.spacingSmall),
                           Wrap(
-                            spacing: 8,
-                            runSpacing: 8,
+                            spacing: MediaQuery.of(context).size.width * ReportsScreenConstants.spacingSmall,
+                            runSpacing: MediaQuery.of(context).size.width * ReportsScreenConstants.spacingSmall,
                             children: _reportTypes.map((type) {
                               return ChoiceChip(
                                 label: Text(_reportTypeLabels[type] ?? type),
@@ -92,114 +130,112 @@ class _ReportsScreenState extends State<ReportsScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: MediaQuery.of(context).size.height * ReportsScreenConstants.spacingExtraLarge),
                     
                     // Date Range
                     InfoCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Période',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: MediaQuery.of(context).size.width * ReportsScreenConstants.statTitleFontSize,
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 16),
-                          Row(
+                          SizedBox(height: MediaQuery.of(context).size.height * ReportsScreenConstants.spacingSmall),
+                          ResponsiveGrid(
+                            customSpacing: MediaQuery.of(context).size.width * ReportsScreenConstants.paddingBetweenItems,
                             children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      'Début',
-                                      style: TextStyle(
-                                        color: AppTheme.textSecondary,
-                                      ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Début',
+                                    style: TextStyle(
+                                      color: AppTheme.textSecondary,
+                                      fontSize: MediaQuery.of(context).size.width * ReportsScreenConstants.reportInfoFontSize,
                                     ),
-                                    const SizedBox(height: 8),
-                                    ElevatedButton(
-                                      onPressed: () async {
-                                        final DateTime? picked = await showDatePicker(
-                                          context: context,
-                                          initialDate: _startDate,
-                                          firstDate: DateTime(2020),
-                                          lastDate: DateTime.now(),
-                                        );
-                                        if (picked != null) {
-                                          setState(() {
-                                            _startDate = picked;
-                                          });
-                                        }
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.white,
-                                        foregroundColor: AppTheme.textPrimary,
-                                        elevation: 0,
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            '${_startDate.day}/${_startDate.month}/${_startDate.year}',
-                                          ),
-                                          const Icon(Icons.calendar_today, size: 18),
-                                        ],
-                                      ),
+                                  ),
+                                  SizedBox(height: MediaQuery.of(context).size.height * ReportsScreenConstants.spacingSmall),
+                                  ElevatedButton(
+                                    onPressed: () async {
+                                      final DateTime? picked = await showDatePicker(
+                                        context: context,
+                                        initialDate: _startDate,
+                                        firstDate: DateTime(2020),
+                                        lastDate: DateTime.now(),
+                                      );
+                                      if (picked != null) {
+                                        setState(() {
+                                          _startDate = picked;
+                                        });
+                                      }
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.white,
+                                      foregroundColor: AppTheme.textPrimary,
+                                      elevation: 0,
                                     ),
-                                  ],
-                                ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          '${_startDate.day}/${_startDate.month}/${_startDate.year}',
+                                        ),
+                                        Icon(Icons.calendar_today, size: MediaQuery.of(context).size.width * ReportsScreenConstants.reportIconSize),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
-                              const SizedBox(width: 16),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      'Fin',
-                                      style: TextStyle(
-                                        color: AppTheme.textSecondary,
-                                      ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Fin',
+                                    style: TextStyle(
+                                      color: AppTheme.textSecondary,
+                                      fontSize: MediaQuery.of(context).size.width * ReportsScreenConstants.reportInfoFontSize,
                                     ),
-                                    const SizedBox(height: 8),
-                                    ElevatedButton(
-                                      onPressed: () async {
-                                        final DateTime? picked = await showDatePicker(
-                                          context: context,
-                                          initialDate: _endDate,
-                                          firstDate: _startDate,
-                                          lastDate: DateTime.now(),
-                                        );
-                                        if (picked != null) {
-                                          setState(() {
-                                            _endDate = picked;
-                                          });
-                                        }
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.white,
-                                        foregroundColor: AppTheme.textPrimary,
-                                        elevation: 0,
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            '${_endDate.day}/${_endDate.month}/${_endDate.year}',
-                                          ),
-                                          const Icon(Icons.calendar_today, size: 18),
-                                        ],
-                                      ),
+                                  ),
+                                  SizedBox(height: MediaQuery.of(context).size.height * ReportsScreenConstants.spacingSmall),
+                                  ElevatedButton(
+                                    onPressed: () async {
+                                      final DateTime? picked = await showDatePicker(
+                                        context: context,
+                                        initialDate: _endDate,
+                                        firstDate: _startDate,
+                                        lastDate: DateTime.now(),
+                                      );
+                                      if (picked != null) {
+                                        setState(() {
+                                          _endDate = picked;
+                                        });
+                                      }
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.white,
+                                      foregroundColor: AppTheme.textPrimary,
+                                      elevation: 0,
                                     ),
-                                  ],
-                                ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          '${_endDate.day}/${_endDate.month}/${_endDate.year}',
+                                        ),
+                                        Icon(Icons.calendar_today, size: MediaQuery.of(context).size.width * ReportsScreenConstants.reportIconSize),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: MediaQuery.of(context).size.height * ReportsScreenConstants.spacingSmall),
                           SecondaryButton(
                             text: 'Derniers 30 jours',
                             onPressed: () {
@@ -214,7 +250,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: MediaQuery.of(context).size.height * ReportsScreenConstants.spacingExtraLarge),
                     
                     // Report Preview
                     InfoCard(
@@ -224,10 +260,10 @@ class _ReportsScreenState extends State<ReportsScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(
+                              Text(
                                 'Aperçu du rapport',
                                 style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: MediaQuery.of(context).size.width * ReportsScreenConstants.statTitleFontSize,
                                   fontWeight: FontWeight.w600,
                                   color: AppTheme.textPrimary,
                                 ),
@@ -242,34 +278,34 @@ class _ReportsScreenState extends State<ReportsScreen> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: MediaQuery.of(context).size.height * ReportsScreenConstants.spacingSmall),
                           Container(
-                            height: 200,
+                            height: MediaQuery.of(context).size.height * 0.25,
                             decoration: BoxDecoration(
                               color: Colors.grey[50],
                               borderRadius: BorderRadius.circular(8),
                               border: Border.all(color: Colors.grey[200]!),
                             ),
-                            child: const Center(
+                            child: Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(Icons.auto_graph, size: 50, color: Colors.grey),
-                                  SizedBox(height: 12),
+                                  Icon(Icons.auto_graph, size: MediaQuery.of(context).size.width * 0.15, color: Colors.grey),
+                                  SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                                   Text(
                                     'Graphique du rapport',
                                     style: TextStyle(color: Colors.grey),
                                   ),
-                                  SizedBox(height: 8),
+                                  SizedBox(height: MediaQuery.of(context).size.height * 0.005),
                                   Text(
                                     'Les données s\'afficheront ici après génération',
-                                    style: TextStyle(color: Colors.grey, fontSize: 12),
+                                    style: TextStyle(color: Colors.grey, fontSize: MediaQuery.of(context).size.width * ReportsScreenConstants.reportInfoFontSize),
                                   ),
                                 ],
                               ),
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: MediaQuery.of(context).size.height * ReportsScreenConstants.spacingSmall),
                           // TODO: Remplacer par données dynamiques
                           _buildStatRow(
                             label: 'Nombre d\'étudiants',
@@ -298,23 +334,24 @@ class _ReportsScreenState extends State<ReportsScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: MediaQuery.of(context).size.height * ReportsScreenConstants.spacingExtraLarge),
                     
                     // Export Options
                     InfoCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Options d\'export',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: MediaQuery.of(context).size.width * ReportsScreenConstants.statTitleFontSize,
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 16),
-                          Row(
+                          SizedBox(height: MediaQuery.of(context).size.height * ReportsScreenConstants.spacingSmall),
+                          ResponsiveGrid(
+                            customSpacing: MediaQuery.of(context).size.width * ReportsScreenConstants.paddingBetweenItems,
                             children: [
                               _buildExportOption(
                                 icon: Icons.picture_as_pdf,
@@ -323,7 +360,6 @@ class _ReportsScreenState extends State<ReportsScreen> {
                                   // TODO: Exporter PDF
                                 },
                               ),
-                              const SizedBox(width: 12),
                               _buildExportOption(
                                 icon: Icons.table_chart,
                                 label: 'Excel',
@@ -331,7 +367,6 @@ class _ReportsScreenState extends State<ReportsScreen> {
                                   // TODO: Exporter Excel
                                 },
                               ),
-                              const SizedBox(width: 12),
                               _buildExportOption(
                                 icon: Icons.image,
                                 label: 'Image',
@@ -341,7 +376,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: MediaQuery.of(context).size.height * ReportsScreenConstants.spacingSmall),
                           PrimaryButton(
                             text: 'Exporter le rapport complet',
                             onPressed: () {
@@ -354,7 +389,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 32),
+                    SizedBox(height: MediaQuery.of(context).size.height * ReportsScreenConstants.spacingExtraLarge),
                     
                     // Saved Reports
                     InfoCard(
@@ -364,10 +399,10 @@ class _ReportsScreenState extends State<ReportsScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(
+                              Text(
                                 'Rapports sauvegardés',
                                 style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: MediaQuery.of(context).size.width * ReportsScreenConstants.statTitleFontSize,
                                   fontWeight: FontWeight.w600,
                                   color: AppTheme.textPrimary,
                                 ),
@@ -382,7 +417,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: MediaQuery.of(context).size.height * ReportsScreenConstants.spacingSmall),
                           // TODO: Remplacer par ListView.builder
                           _buildSavedReport(
                             name: 'Rapport mensuel académique',
@@ -405,7 +440,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 32),
+                    SizedBox(height: MediaQuery.of(context).size.height * ReportsScreenConstants.spacingExtraLarge),
                   ],
                 ),
               ),
@@ -422,14 +457,15 @@ class _ReportsScreenState extends State<ReportsScreen> {
     required String change,
   }) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * ReportsScreenConstants.spacingSmall),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               fontWeight: FontWeight.w500,
+              fontSize: MediaQuery.of(context).size.width * ReportsScreenConstants.reportSubtitleFontSize,
             ),
           ),
           Column(
@@ -437,15 +473,15 @@ class _ReportsScreenState extends State<ReportsScreen> {
             children: [
               Text(
                 value,
-                style: const TextStyle(
-                  fontSize: 16,
+                style: TextStyle(
+                  fontSize: MediaQuery.of(context).size.width * ReportsScreenConstants.reportTitleFontSize,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               Text(
                 change,
-                style: const TextStyle(
-                  fontSize: 12,
+                style: TextStyle(
+                  fontSize: MediaQuery.of(context).size.width * ReportsScreenConstants.reportInfoFontSize,
                   color: AppTheme.accentColor,
                 ),
               ),
@@ -466,7 +502,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
         onTap: onTap,
         borderRadius: BorderRadius.circular(8),
         child: Container(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(MediaQuery.of(context).size.width * ReportsScreenConstants.reportCardPadding),
           decoration: BoxDecoration(
             color: AppTheme.primaryColor.withOpacity(0.05),
             borderRadius: BorderRadius.circular(8),
@@ -474,12 +510,13 @@ class _ReportsScreenState extends State<ReportsScreen> {
           ),
           child: Column(
             children: [
-              Icon(icon, color: AppTheme.primaryColor, size: 30),
-              const SizedBox(height: 8),
+              Icon(icon, color: AppTheme.primaryColor, size: MediaQuery.of(context).size.width * ReportsScreenConstants.reportIconSize),
+              SizedBox(height: MediaQuery.of(context).size.height * ReportsScreenConstants.spacingSmall),
               Text(
                 label,
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.w500,
+                  fontSize: MediaQuery.of(context).size.width * ReportsScreenConstants.reportSubtitleFontSize,
                 ),
               ),
             ],
@@ -496,13 +533,13 @@ class _ReportsScreenState extends State<ReportsScreen> {
   }) {
     return ListTile(
       leading: Container(
-        width: 40,
-        height: 40,
+        width: MediaQuery.of(context).size.width * ReportsScreenConstants.reportAvatarSize,
+        height: MediaQuery.of(context).size.width * ReportsScreenConstants.reportAvatarSize,
         decoration: BoxDecoration(
           color: AppTheme.primaryColor.withOpacity(0.1),
           borderRadius: BorderRadius.circular(8),
         ),
-        child: const Icon(Icons.description, color: AppTheme.primaryColor),
+        child: Icon(Icons.description, color: AppTheme.primaryColor, size: MediaQuery.of(context).size.width * ReportsScreenConstants.reportIconSize),
       ),
       title: Text(name),
       subtitle: Text('$type • $date'),
@@ -510,13 +547,13 @@ class _ReportsScreenState extends State<ReportsScreen> {
         mainAxisSize: MainAxisSize.min,
         children: [
           IconButton(
-            icon: const Icon(Icons.download, size: 20),
+            icon: Icon(Icons.download, size: MediaQuery.of(context).size.width * ReportsScreenConstants.reportIconSize),
             onPressed: () {
               // TODO: Télécharger
             },
           ),
           IconButton(
-            icon: const Icon(Icons.delete, size: 20, color: AppTheme.errorColor),
+            icon: Icon(Icons.delete, size: MediaQuery.of(context).size.width * ReportsScreenConstants.reportIconSize, color: AppTheme.errorColor),
             onPressed: () {
               // TODO: Supprimer
             },

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:parametragesschool/core/theme/app_theme.dart';
+import 'package:parametragesschool/core/constant/constants.dart';
 
 class ContactCard extends StatelessWidget {
   const ContactCard({super.key});
@@ -8,7 +9,7 @@ class ContactCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.cardPadding)),
         child: Column(
           children: [
             Icon(

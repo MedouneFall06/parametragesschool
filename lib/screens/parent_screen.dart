@@ -7,8 +7,9 @@ import 'package:parametragesschool/widgets/stateless_widgets/info_card.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/stat_card.dart';
 import 'package:parametragesschool/models/parent_model.dart';
 import 'package:parametragesschool/models/user_model.dart';
-// ignore: unused_import
 import 'package:parametragesschool/models/etudiant_model.dart';
+import 'package:parametragesschool/core/responsive/responsive_grid.dart';
+import 'package:parametragesschool/core/constant/constants.dart';
 
 // TODO: Transformer en StatefulWidget avec Provider
 // TODO: Créer ParentViewModel
@@ -133,52 +134,44 @@ class _ParentScreenState extends State<ParentScreen> {
             ),
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.paddingAll)),
                 child: Column(
                   children: [
                     // Statistics
-                    Row(
+                    ResponsiveGrid(
+                      customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenStats),
                       children: [
-                        Expanded(
-                          child: StatCard(
-                            title: 'Parents',
-                            value: _parents.length.toString(),
-                            icon: Icons.family_restroom,
-                            color: AppTheme.primaryColor,
-                          ),
+                        StatCard(
+                          title: 'Parents',
+                          value: _parents.length.toString(),
+                          icon: Icons.family_restroom,
+                          color: AppTheme.primaryColor,
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: StatCard(
-                            title: 'Avec enfants',
-                            value: parentsAvecEnfants.toString(),
-                            icon: Icons.people,
-                            color: AppTheme.accentColor,
-                          ),
+                        StatCard(
+                          title: 'Avec enfants',
+                          value: parentsAvecEnfants.toString(),
+                          icon: Icons.people,
+                          color: AppTheme.accentColor,
                         ),
                       ],
                     ),
                     
-                    const SizedBox(height: 12),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                     
-                    Row(
+                    ResponsiveGrid(
+                      customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenStats),
                       children: [
-                        Expanded(
-                          child: StatCard(
-                            title: 'Enfants total',
-                            value: totalEnfants.toString(),
-                            icon: Icons.child_care,
-                            color: AppTheme.secondaryColor,
-                          ),
+                        StatCard(
+                          title: 'Enfants total',
+                          value: totalEnfants.toString(),
+                          icon: Icons.child_care,
+                          color: AppTheme.secondaryColor,
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: StatCard(
-                            title: 'Moyenne/enfant',
-                            value: enfantsMoyenne.toStringAsFixed(1),
-                            icon: Icons.calculate,
-                            color: AppTheme.infoColor,
-                          ),
+                        StatCard(
+                          title: 'Moyenne/enfant',
+                          value: enfantsMoyenne.toStringAsFixed(1),
+                          icon: Icons.calculate,
+                          color: AppTheme.infoColor,
                         ),
                       ],
                     ),
@@ -190,15 +183,15 @@ class _ParentScreenState extends State<ParentScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Recherche et filtres',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           // Search Bar
                           TextField(
                             decoration: InputDecoration(
@@ -224,51 +217,73 @@ class _ParentScreenState extends State<ParentScreen> {
                               });
                             },
                           ),
-                          const SizedBox(height: 12),
-                          Row(
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                          ResponsiveGrid(
+                            customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenItems),
                             children: [
-                              Expanded(
-                                child: DropdownButtonFormField<String?>(
-                                  value: _selectedStatut,
-                                  decoration: const InputDecoration(
-                                    labelText: 'Statut (optionnel)',
-                                    border: OutlineInputBorder(),
-                                    filled: true,
-                                    fillColor: Colors.white,
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Statut',
+                                    style: TextStyle(
+                                      color: AppTheme.textSecondary,
+                                      fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
+                                    ),
                                   ),
-                                  items: [
-                                    const DropdownMenuItem(
-                                      value: null,
-                                      child: Text('Tous les parents'),
+                                  SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                                  DropdownButtonFormField<String?>(
+                                    value: _selectedStatut,
+                                    decoration: const InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      filled: true,
+                                      fillColor: Colors.white,
                                     ),
-                                    const DropdownMenuItem(
-                                      value: 'with_children',
-                                      child: Text('Avec enfants'),
-                                    ),
-                                    const DropdownMenuItem(
-                                      value: 'without_children',
-                                      child: Text('Sans enfants'),
-                                    ),
-                                  ],
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _selectedStatut = value;
-                                    });
-                                  },
-                                ),
+                                    items: [
+                                      const DropdownMenuItem(
+                                        value: null,
+                                        child: Text('Tous les parents'),
+                                      ),
+                                      const DropdownMenuItem(
+                                        value: 'with_children',
+                                        child: Text('Avec enfants'),
+                                      ),
+                                      const DropdownMenuItem(
+                                        value: 'without_children',
+                                        child: Text('Sans enfants'),
+                                      ),
+                                    ],
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _selectedStatut = value;
+                                      });
+                                    },
+                                  ),
+                                ],
                               ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: SecondaryButton(
-                                  text: 'Réinitialiser',
-                                  onPressed: () {
-                                    setState(() {
-                                      _searchQuery = '';
-                                      _selectedStatut = null;
-                                    });
-                                  },
-                                  icon: Icons.filter_alt_off,
-                                ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Actions',
+                                    style: TextStyle(
+                                      color: AppTheme.textSecondary,
+                                      fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
+                                    ),
+                                  ),
+                                  SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                                  SecondaryButton(
+                                    text: 'Réinitialiser',
+                                    onPressed: () {
+                                      setState(() {
+                                        _searchQuery = '';
+                                        _selectedStatut = null;
+                                      });
+                                    },
+                                    icon: Icons.filter_alt_off,
+                                    fullWidth: true,
+                                  ),
+                                ],
                               ),
                             ],
                           ),
@@ -288,8 +303,8 @@ class _ParentScreenState extends State<ParentScreen> {
                             children: [
                               Text(
                                 'Parents (${filteredParents.length})',
-                                style: const TextStyle(
-                                  fontSize: 18,
+                                style: TextStyle(
+                                  fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                                   fontWeight: FontWeight.w600,
                                   color: AppTheme.textPrimary,
                                 ),
@@ -326,8 +341,8 @@ class _ParentScreenState extends State<ParentScreen> {
                                 margin: const EdgeInsets.only(bottom: 12),
                                 child: ListTile(
                                   leading: Container(
-                                    width: 50,
-                                    height: 50,
+                                    width: AppConstants.widthPercentage(context, AppConstants.avatarSize),
+                                    height: AppConstants.widthPercentage(context, AppConstants.avatarSize),
                                     decoration: BoxDecoration(
                                       color: _getParentColor(parent.id),
                                       shape: BoxShape.circle,
@@ -335,10 +350,10 @@ class _ParentScreenState extends State<ParentScreen> {
                                     child: Center(
                                       child: Text(
                                         _getInitials(parent.prenom, parent.nom),
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 16,
+                                          fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                                         ),
                                       ),
                                     ),
@@ -352,34 +367,34 @@ class _ParentScreenState extends State<ParentScreen> {
                                   subtitle: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      const SizedBox(height: 4),
+                                      SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                                       Text(
                                         parent.email,
-                                        style: const TextStyle(
-                                          fontSize: 14,
+                                        style: TextStyle(
+                                          fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
                                         ),
                                       ),
-                                      const SizedBox(height: 4),
+                                      SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                                       if (enfants.isNotEmpty)
                                         Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               '${enfants.length} enfant(s)',
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 color: AppTheme.textSecondary,
-                                                fontSize: 13,
+                                                fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
                                               ),
                                             ),
-                                            const SizedBox(height: 4),
+                                            SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                                             ...enfantsDetails.take(2).map((enfant) {
                                               return Padding(
-                                                padding: const EdgeInsets.only(bottom: 2),
+                                                padding: EdgeInsets.only(bottom: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                                                 child: Text(
                                                   '• $enfant',
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                     color: AppTheme.textSecondary,
-                                                    fontSize: 12,
+                                                    fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
                                                   ),
                                                   maxLines: 1,
                                                   overflow: TextOverflow.ellipsis,
@@ -389,9 +404,9 @@ class _ParentScreenState extends State<ParentScreen> {
                                             if (enfants.length > 2)
                                               Text(
                                                 '• +${enfants.length - 2} autre(s)',
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                   color: AppTheme.textSecondary,
-                                                  fontSize: 12,
+                                                  fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
                                                   fontStyle: FontStyle.italic,
                                                 ),
                                               ),
@@ -402,7 +417,7 @@ class _ParentScreenState extends State<ParentScreen> {
                                           'Aucun enfant lié',
                                           style: TextStyle(
                                             color: AppTheme.textSecondary.withOpacity(0.7),
-                                            fontSize: 13,
+                                            fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
                                             fontStyle: FontStyle.italic,
                                           ),
                                         ),
@@ -412,16 +427,16 @@ class _ParentScreenState extends State<ParentScreen> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       IconButton(
-                                        icon: const Icon(Icons.message,
-                                            size: 20),
+                                        icon: Icon(Icons.message,
+                                            size: AppConstants.widthPercentage(context, AppConstants.smallIconSize)),
                                         onPressed: () {
                                           // TODO: Contacter parent
                                         },
                                         color: AppTheme.primaryColor,
                                       ),
                                       IconButton(
-                                        icon: const Icon(Icons.edit,
-                                            size: 20),
+                                        icon: Icon(Icons.edit,
+                                            size: AppConstants.widthPercentage(context, AppConstants.smallIconSize)),
                                         onPressed: () {
                                           // TODO: Éditer parent
                                         },
@@ -446,71 +461,65 @@ class _ParentScreenState extends State<ParentScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Répartition des enfants',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 16),
-                          Row(
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                          ResponsiveGrid(
+                            customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenItems),
                             children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      '$parentsAvecEnfants',
-                                      style: const TextStyle(
-                                        fontSize: 32,
-                                        fontWeight: FontWeight.bold,
-                                        color: AppTheme.primaryColor,
-                                      ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    '$parentsAvecEnfants',
+                                    style: TextStyle(
+                                      fontSize: AppConstants.responsiveFontSize(context, AppConstants.statValueFontSize),
+                                      fontWeight: FontWeight.bold,
+                                      color: AppTheme.primaryColor,
                                     ),
-                                    const SizedBox(height: 8),
-                                    const Text(
-                                      'Parents avec enfants',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: AppTheme.textSecondary,
-                                      ),
+                                  ),
+                                  SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                                  Text(
+                                    'Parents avec enfants',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: AppTheme.textSecondary,
+                                      fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                              Container(
-                                width: 1,
-                                height: 60,
-                                color: AppTheme.backgroundColor,
-                              ),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      '${_parents.length - parentsAvecEnfants}',
-                                      style: const TextStyle(
-                                        fontSize: 32,
-                                        fontWeight: FontWeight.bold,
-                                        color: AppTheme.textSecondary,
-                                      ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    '${_parents.length - parentsAvecEnfants}',
+                                    style: TextStyle(
+                                      fontSize: AppConstants.responsiveFontSize(context, AppConstants.statValueFontSize),
+                                      fontWeight: FontWeight.bold,
+                                      color: AppTheme.textSecondary,
                                     ),
-                                    const SizedBox(height: 8),
-                                    const Text(
-                                      'Parents sans enfants',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: AppTheme.textSecondary,
-                                      ),
+                                  ),
+                                  SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                                  Text(
+                                    'Parents sans enfants',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: AppTheme.textSecondary,
+                                      fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           LinearProgressIndicator(
                             value: parentsAvecEnfants / _parents.length,
                             backgroundColor: AppTheme.backgroundColor,
@@ -529,22 +538,17 @@ class _ParentScreenState extends State<ParentScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Outils de communication',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 16),
-                          GridView.count(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 12,
-                            mainAxisSpacing: 12,
-                            childAspectRatio: 2,
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                          ResponsiveGrid(
+                            customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenItems),
                             children: [
                               _buildCommunicationTool(
                                 icon: Icons.notifications,
@@ -584,34 +588,32 @@ class _ParentScreenState extends State<ParentScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 32),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Management Buttons
-                    Row(
+                    ResponsiveGrid(
+                      customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenItems),
                       children: [
-                        Expanded(
-                          child: SecondaryButton(
-                            text: 'Lier des enfants',
-                            onPressed: () {
-                              // TODO: Lier enfants
-                            },
-                            icon: Icons.link,
-                          ),
+                        SecondaryButton(
+                          text: 'Lier des enfants',
+                          onPressed: () {
+                            // TODO: Lier enfants
+                          },
+                          icon: Icons.link,
+                          fullWidth: true,
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: PrimaryButton(
-                            text: 'Envoyer bulletins',
-                            onPressed: () {
-                              // TODO: Envoyer bulletins
-                            },
-                            icon: Icons.send,
-                          ),
+                        PrimaryButton(
+                          text: 'Envoyer bulletins',
+                          onPressed: () {
+                            // TODO: Envoyer bulletins
+                          },
+                          icon: Icons.send,
+                          fullWidth: true,
                         ),
                       ],
                     ),
                     
-                    const SizedBox(height: 16),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                     
                     SecondaryButton(
                       text: 'Générer rapport parental',
@@ -663,35 +665,35 @@ class _ParentScreenState extends State<ParentScreen> {
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
         child: Padding(
-          padding: const EdgeInsets.all(12),
+          padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.cardPadding)),
           child: Row(
             children: [
               Container(
-                width: 40,
-                height: 40,
+                width: AppConstants.widthPercentage(context, AppConstants.avatarSize * 0.5),
+                height: AppConstants.widthPercentage(context, AppConstants.avatarSize * 0.5),
                 decoration: BoxDecoration(
                   color: AppTheme.primaryColor.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: Icon(icon, color: AppTheme.primaryColor, size: 20),
+                child: Icon(icon, color: AppTheme.primaryColor, size: AppConstants.widthPercentage(context, AppConstants.smallIconSize)),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: AppConstants.widthPercentage(context, AppConstants.spacingSmall)),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       title,
-                      style: const TextStyle(
-                        fontSize: 14,
+                      style: TextStyle(
+                        fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                     Text(
                       description,
-                      style: const TextStyle(
-                        fontSize: 12,
+                      style: TextStyle(
+                        fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
                         color: AppTheme.textSecondary,
                       ),
                     ),

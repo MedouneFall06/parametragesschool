@@ -28,14 +28,13 @@ import '../screens/user_management_screen.dart';
 import '../screens/etudiant_list_screen.dart';
 import '../screens/etudiant_screen.dart';
 import '../screens/etudiant_detail_screen.dart';
+import '../screens/etudiant_edit_screen.dart' as EtudiantEdit;
 
 import '../screens/enseignant_screen.dart';
 import '../screens/teacher_evaluation_screen.dart';
 
-//import '../screens/absence_screen.dart';
 import '../screens/absence_list_screen.dart';
-
-import '../screens/absence_edit_screen.dart'; // À créer
+import '../screens/absence_edit_screen.dart';
 
 import '../screens/note_screen.dart';
 import '../screens/note_edit_screen.dart';
@@ -76,6 +75,14 @@ import '../screens/developer_screen.dart';
 import '../screens/about_screen.dart';
 import '../screens/coming_soon_screen.dart';
 import '../screens/no_internet_screen.dart';
+
+// Nouveaux écrans ajoutés
+import '../screens/parent_screen.dart';
+import '../screens/cafeteria_screen.dart';
+import '../screens/finance_screen.dart';
+import '../screens/library_screen.dart';
+import '../screens/transport_screen.dart';
+import '../screens/maintenance_screen.dart';
 
 // ============================================================================
 // ROUTER PROVIDER
@@ -172,14 +179,14 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/etudiant-create',
         name: 'etudiant-create',
-        builder: (context, state) => const EtudiantEditScreen(mode: 'create'),
+        builder: (context, state) => const EtudiantEdit.EtudiantEditScreen(mode: 'create'),
       ),
       GoRoute(
         path: '/etudiant-edit',
         name: 'etudiant-edit',
         builder: (context, state) {
           final args = state.extra as Map<String, dynamic>? ?? {};
-          return EtudiantEditScreen(
+          return EtudiantEdit.EtudiantEditScreen(
             etudiant: args['etudiant']!,
             mode: 'edit',
           );
@@ -384,6 +391,38 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/no-internet',
         name: 'noInternet',
         builder: (context, state) => const NoInternetScreen(),
+      ),
+
+      // Nouveaux écrans ajoutés
+      GoRoute(
+        path: '/parent',
+        name: 'parent',
+        builder: (context, state) => const ParentScreen(),
+      ),
+      GoRoute(
+        path: '/cafeteria',
+        name: 'cafeteria',
+        builder: (context, state) => const CafeteriaScreen(),
+      ),
+      GoRoute(
+        path: '/finance',
+        name: 'finance',
+        builder: (context, state) => const FinanceScreen(),
+      ),
+      GoRoute(
+        path: '/library',
+        name: 'library',
+        builder: (context, state) => const LibraryScreen(),
+      ),
+      GoRoute(
+        path: '/transport',
+        name: 'transport',
+        builder: (context, state) => const TransportScreen(),
+      ),
+      GoRoute(
+        path: '/maintenance',
+        name: 'maintenance',
+        builder: (context, state) => const MaintenanceScreen(),
       ),
       // Autres
       GoRoute(

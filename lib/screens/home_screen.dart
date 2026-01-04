@@ -28,7 +28,7 @@ class HomeScreen extends StatelessWidget {
                     // Section ACADÉMIQUE
                     _buildSectionTitle('📊 ACADÉMIQUE'),
                     ResponsiveGrid(
-                      spacing: 12,
+                      customSpacing: 12,
                       children: [
                         _buildModuleCard(
                           icon: Icons.people_alt,
@@ -80,7 +80,7 @@ class HomeScreen extends StatelessWidget {
                     // Section PLANNING
                     _buildSectionTitle('📅 PLANNING'),
                     ResponsiveGrid(
-                      spacing: 12,
+                      customSpacing: 12,
                       children: [
                         _buildModuleCard(
                           icon: Icons.calendar_today,
@@ -104,7 +104,7 @@ class HomeScreen extends StatelessWidget {
                     // Section PERSONNEL
                     _buildSectionTitle('👥 PERSONNEL'),
                     ResponsiveGrid(
-                      spacing: 12,
+                      customSpacing: 12,
                       children: [
                         _buildModuleCard(
                           icon: Icons.school,
@@ -128,7 +128,7 @@ class HomeScreen extends StatelessWidget {
                     // Section RAPPORTS & ANALYSE
                     _buildSectionTitle('📈 RAPPORTS & ANALYSE'),
                     ResponsiveGrid(
-                      spacing: 12,
+                      customSpacing: 12,
                       children: [
                         _buildModuleCard(
                           icon: Icons.bar_chart,
@@ -159,7 +159,7 @@ class HomeScreen extends StatelessWidget {
                     // Section ADMINISTRATION
                     _buildSectionTitle('⚙️ ADMINISTRATION'),
                     ResponsiveGrid(
-                      spacing: 12,
+                      customSpacing: 12,
                       children: [
                         _buildModuleCard(
                           icon: Icons.settings,

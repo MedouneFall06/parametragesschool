@@ -6,8 +6,8 @@ import 'package:parametragesschool/widgets/stateless_widgets/primary_button.dart
 import 'package:parametragesschool/widgets/stateless_widgets/secondary_button.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/info_card.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/stat_card.dart';
-// TODO: Importer les services de sauvegarde
-
+import 'package:parametragesschool/core/constant/constants.dart';
+import 'package:parametragesschool/core/responsive/responsive_grid.dart';
 class BackupScreen extends StatefulWidget {
   const BackupScreen({super.key});
 
@@ -106,7 +106,7 @@ class _BackupScreenState extends State<BackupScreen> {
             const PageHeader(title: 'Sauvegardes'),
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.paddingAll)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -115,46 +115,48 @@ class _BackupScreenState extends State<BackupScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Statut des sauvegardes',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           Row(
                             children: [
-                              _buildBackupStatusIndicator(),
-                              const SizedBox(width: 16),
+                              _buildBackupStatusIndicator(context),
+                              SizedBox(width: AppConstants.widthPercentage(context, AppConstants.spacingSmall)),
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Text(
+                                    Text(
                                       'Sauvegarde à jour',
                                       style: TextStyle(
-                                        fontSize: 16,
+                                        fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                                         fontWeight: FontWeight.w600,
                                         color: AppTheme.successColor,
                                       ),
                                     ),
-                                    const SizedBox(height: 4),
-                                    const Text(
+                                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                                    Text(
                                       'Dernière sauvegarde: Aujourd\'hui, 02:00',
                                       style: TextStyle(
                                         color: AppTheme.textSecondary,
+                                        fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
                                       ),
                                     ),
-                                    const SizedBox(height: 8),
+                                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                                     if (_isBackingUp) ...[
                                       const LinearProgressIndicator(),
-                                      const SizedBox(height: 8),
-                                      const Text(
+                                      SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                                      Text(
                                         'Sauvegarde en cours...',
                                         style: TextStyle(
                                           color: AppTheme.warningColor,
+                                          fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
                                         ),
                                       ),
                                     ],
@@ -167,32 +169,28 @@ class _BackupScreenState extends State<BackupScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Statistiques
-                    Row(
+                    ResponsiveGrid(
+                      customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenStats),
                       children: [
-                        Expanded(
-                          child: StatCard(
-                            title: 'Sauvegardes',
-                            value: '24',
-                            icon: Icons.backup,
-                            color: AppTheme.primaryColor,
-                          ),
+                        StatCard(
+                          title: 'Sauvegardes',
+                          value: '24',
+                          icon: Icons.backup,
+                          color: AppTheme.primaryColor,
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: StatCard(
-                            title: 'Dernière taille',
-                            value: '45.2 MB',
-                            icon: Icons.storage,
-                            color: AppTheme.accentColor,
-                          ),
+                        StatCard(
+                          title: 'Dernière taille',
+                          value: '45.2 MB',
+                          icon: Icons.storage,
+                          color: AppTheme.accentColor,
                         ),
                       ],
                     ),
                     
-                    const SizedBox(height: 12),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                     
                     StatCard(
                       title: 'Espace utilisé',
@@ -201,52 +199,56 @@ class _BackupScreenState extends State<BackupScreen> {
                       color: AppTheme.infoColor,
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Options de sauvegarde
                     InfoCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Destination',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 12),
-                          const Text(
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                          Text(
                             'Choisissez où sauvegarder vos données',
                             style: TextStyle(
                               color: AppTheme.textSecondary,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
                             ),
                           ),
-                          const SizedBox(height: 16),
-                          Wrap(
-                            spacing: 12,
-                            runSpacing: 12,
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                          ResponsiveGrid(
+                            customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenItems),
                             children: [
                               _buildStorageOption(
+                                context: context,
                                 type: 'local',
                                 name: 'Stockage local',
                                 icon: Icons.phone_android,
                                 description: 'Sur votre appareil',
                               ),
                               _buildStorageOption(
+                                context: context,
                                 type: 'cloud',
                                 name: 'Cloud',
                                 icon: Icons.cloud,
                                 description: 'Google Drive / iCloud',
                               ),
                               _buildStorageOption(
+                                context: context,
                                 type: 'nas',
                                 name: 'NAS/Server',
                                 icon: Icons.storage,
                                 description: 'Serveur local',
                               ),
                               _buildStorageOption(
+                                context: context,
                                 type: 'external',
                                 name: 'Externe',
                                 icon: Icons.usb,
@@ -258,25 +260,35 @@ class _BackupScreenState extends State<BackupScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Configuration automatique
                     InfoCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Sauvegarde automatique',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           SwitchListTile(
-                            title: const Text('Activer la sauvegarde automatique'),
-                            subtitle: const Text('Sauvegarder automatiquement les données'),
+                            title: Text(
+                              'Activer la sauvegarde automatique',
+                              style: TextStyle(
+                                fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
+                              ),
+                            ),
+                            subtitle: Text(
+                              'Sauvegarder automatiquement les données',
+                              style: TextStyle(
+                                fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
+                              ),
+                            ),
                             value: true,
                             onChanged: (value) {
                               // TODO: Implémenter
@@ -284,16 +296,36 @@ class _BackupScreenState extends State<BackupScreen> {
                             activeColor: AppTheme.primaryColor,
                           ),
                           const Divider(),
-                          const ListTile(
-                            leading: Icon(Icons.schedule),
-                            title: Text('Fréquence'),
-                            subtitle: Text('Tous les jours à 02:00'),
-                            trailing: Icon(Icons.chevron_right),
+                          ListTile(
+                            leading: Icon(Icons.schedule, size: AppConstants.widthPercentage(context, AppConstants.smallIconSize)),
+                            title: Text(
+                              'Fréquence',
+                              style: TextStyle(
+                                fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
+                              ),
+                            ),
+                            subtitle: Text(
+                              'Tous les jours à 02:00',
+                              style: TextStyle(
+                                fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
+                              ),
+                            ),
+                            trailing: Icon(Icons.chevron_right, size: AppConstants.widthPercentage(context, AppConstants.smallIconSize)),
                           ),
                           const Divider(),
                           SwitchListTile(
-                            title: const Text('Sauvegarde sur Wi-Fi seulement'),
-                            subtitle: const Text('Éviter l\'utilisation des données mobiles'),
+                            title: Text(
+                              'Sauvegarde sur Wi-Fi seulement',
+                              style: TextStyle(
+                                fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
+                              ),
+                            ),
+                            subtitle: Text(
+                              'Éviter l\'utilisation des données mobiles',
+                              style: TextStyle(
+                                fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
+                              ),
+                            ),
                             value: true,
                             onChanged: (value) {
                               // TODO: Implémenter
@@ -302,8 +334,18 @@ class _BackupScreenState extends State<BackupScreen> {
                           ),
                           const Divider(),
                           SwitchListTile(
-                            title: const Text('Notification après sauvegarde'),
-                            subtitle: const Text('Recevoir une notification quand la sauvegarde est terminée'),
+                            title: Text(
+                              'Notification après sauvegarde',
+                              style: TextStyle(
+                                fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
+                              ),
+                            ),
+                            subtitle: Text(
+                              'Recevoir une notification quand la sauvegarde est terminée',
+                              style: TextStyle(
+                                fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
+                              ),
+                            ),
                             value: false,
                             onChanged: (value) {
                               // TODO: Implémenter
@@ -314,32 +356,32 @@ class _BackupScreenState extends State<BackupScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Historique des sauvegardes
                     InfoCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Historique des sauvegardes',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           ..._backupHistory.map((backup) {
                             return Column(
                               children: [
-                                _buildBackupHistoryItem(backup),
+                                _buildBackupHistoryItem(context, backup),
                                 if (_backupHistory.indexOf(backup) < _backupHistory.length - 1)
                                   const Divider(),
                               ],
                             );
                           }).toList(),
-                          const SizedBox(height: 16),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           SecondaryButton(
                             text: 'Voir tout l\'historique',
                             onPressed: () {
@@ -352,7 +394,7 @@ class _BackupScreenState extends State<BackupScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 32),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Actions principales
                     if (_isBackingUp) ...[
@@ -371,7 +413,7 @@ class _BackupScreenState extends State<BackupScreen> {
                       ),
                     ],
                     
-                    const SizedBox(height: 16),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                     
                     if (_isRestoring) ...[
                       PrimaryButton(
@@ -389,7 +431,7 @@ class _BackupScreenState extends State<BackupScreen> {
                       ),
                     ],
                     
-                    const SizedBox(height: 16),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                     
                     SecondaryButton(
                       text: 'Configurer la sauvegarde cloud',
@@ -400,46 +442,44 @@ class _BackupScreenState extends State<BackupScreen> {
                       icon: Icons.cloud_upload,
                     ),
                     
-                    const SizedBox(height: 32),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Actions avancées
                     InfoCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Actions avancées',
                             style: TextStyle(
-                              fontSize: 16,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 16),
-                          Row(
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                          ResponsiveGrid(
+                            customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenItems),
                             children: [
-                              Expanded(
-                                child: SecondaryButton(
-                                  text: 'Exporter config',
-                                  onPressed: () {
-                                    // TODO: Exporter configuration
-                                  },
-                                  icon: Icons.download,
-                                ),
+                              SecondaryButton(
+                                text: 'Exporter config',
+                                onPressed: () {
+                                  // TODO: Exporter configuration
+                                },
+                                icon: Icons.download,
+                                fullWidth: true,
                               ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: SecondaryButton(
-                                  text: 'Vérifier intégrité',
-                                  onPressed: () {
-                                    // TODO: Vérifier intégrité
-                                  },
-                                  icon: Icons.verified,
-                                ),
+                              SecondaryButton(
+                                text: 'Vérifier intégrité',
+                                onPressed: () {
+                                  // TODO: Vérifier intégrité
+                                },
+                                icon: Icons.verified,
+                                fullWidth: true,
                               ),
                             ],
                           ),
-                          const SizedBox(height: 12),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           SecondaryButton(
                             text: 'Gérer l\'espace de stockage',
                             onPressed: () {
@@ -452,7 +492,7 @@ class _BackupScreenState extends State<BackupScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 32),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                   ],
                 ),
               ),
@@ -463,23 +503,24 @@ class _BackupScreenState extends State<BackupScreen> {
     );
   }
 
-  Widget _buildBackupStatusIndicator() {
+  Widget _buildBackupStatusIndicator(BuildContext context) {
     return Container(
-      width: 50,
-      height: 50,
+      width: AppConstants.widthPercentage(context, AppConstants.avatarSize),
+      height: AppConstants.widthPercentage(context, AppConstants.avatarSize),
       decoration: BoxDecoration(
         color: AppTheme.successColor.withOpacity(0.1),
         shape: BoxShape.circle,
       ),
-      child: const Icon(
+      child: Icon(
         Icons.check_circle,
         color: AppTheme.successColor,
-        size: 28,
+        size: AppConstants.widthPercentage(context, AppConstants.smallIconSize),
       ),
     );
   }
 
   Widget _buildStorageOption({
+    required BuildContext context,
     required String type,
     required String name,
     required IconData icon,
@@ -492,36 +533,37 @@ class _BackupScreenState extends State<BackupScreen> {
         });
       },
       child: Container(
-        width: 150,
-        padding: const EdgeInsets.all(12),
+        width: AppConstants.widthPercentage(context, AppConstants.minCardWidth),
+        padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.cardPadding)),
         decoration: BoxDecoration(
           color: _selectedBackup == type
               ? AppTheme.primaryColor.withOpacity(0.1)
               : Colors.white,
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(AppConstants.borderRadius),
           border: Border.all(
             color: _selectedBackup == type
                 ? AppTheme.primaryColor
                 : Colors.grey[300]!,
-            width: _selectedBackup == type ? 2 : 1,
+            width: _selectedBackup == type ? AppConstants.borderWidth : 1,
           ),
         ),
         child: Column(
           children: [
-            Icon(icon, color: AppTheme.primaryColor, size: 32),
-            const SizedBox(height: 8),
+            Icon(icon, color: AppTheme.primaryColor, size: AppConstants.widthPercentage(context, AppConstants.iconSize)),
+            SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
             Text(
               name,
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.w500,
+                fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
               ),
             ),
-            const SizedBox(height: 4),
+            SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
             Text(
               description,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 12,
+              style: TextStyle(
+                fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
                 color: AppTheme.textSecondary,
               ),
             ),
@@ -531,16 +573,21 @@ class _BackupScreenState extends State<BackupScreen> {
     );
   }
 
-  Widget _buildBackupHistoryItem(Map<String, dynamic> backup) {
+  Widget _buildBackupHistoryItem(BuildContext context, Map<String, dynamic> backup) {
     return ListTile(
       leading: Icon(
         backup['status'] == 'success' ? Icons.check_circle : Icons.error,
         color: backup['status'] == 'success' ? AppTheme.successColor : AppTheme.errorColor,
+        size: AppConstants.widthPercentage(context, AppConstants.smallIconSize),
       ),
-      title: Text('${backup['type']} - ${backup['location']}'),
-      subtitle: Text('${backup['date']} • ${backup['size']}'),
+      title: Text(
+        '${backup['type']} - ${backup['location']}'
+      ),
+      subtitle: Text(
+        '${backup['date']} • ${backup['size']}'
+      ),
       trailing: IconButton(
-        icon: const Icon(Icons.more_vert),
+        icon: Icon(Icons.more_vert, size: AppConstants.widthPercentage(context, AppConstants.smallIconSize)),
         onPressed: () {
           _showBackupOptions(backup);
         },

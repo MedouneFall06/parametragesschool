@@ -3,6 +3,8 @@ import 'package:parametragesschool/core/theme/app_theme.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/page_header.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/primary_button.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/info_card.dart';
+import 'package:parametragesschool/core/constant/constants.dart';
+import 'package:parametragesschool/core/responsive/responsive_grid.dart';
 
 class AppearanceSettingsScreen extends StatefulWidget {
   const AppearanceSettingsScreen({super.key});
@@ -44,7 +46,7 @@ class _AppearanceSettingsScreenState extends State<AppearanceSettingsScreen> {
             const PageHeader(title: 'Apparence'),
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.paddingAll)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -53,18 +55,28 @@ class _AppearanceSettingsScreenState extends State<AppearanceSettingsScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Thème',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 12),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           SwitchListTile(
-                            title: const Text('Mode sombre'),
-                            subtitle: const Text('Activer le thème sombre'),
+                            title: Text(
+                              'Mode sombre',
+                              style: TextStyle(
+                                fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
+                              ),
+                            ),
+                            subtitle: Text(
+                              'Activer le thème sombre',
+                              style: TextStyle(
+                                fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
+                              ),
+                            ),
                             value: _isDarkMode,
                             onChanged: (value) {
                               setState(() {
@@ -77,31 +89,32 @@ class _AppearanceSettingsScreenState extends State<AppearanceSettingsScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Color Palette
                     InfoCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Palette de couleurs',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 12),
-                          const Text(
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                          Text(
                             'Choisissez la couleur principale de l\'application',
                             style: TextStyle(
                               color: AppTheme.textSecondary,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           SizedBox(
-                            height: 80,
+                            height: AppConstants.heightPercentage(context, AppConstants.avatarSize),
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
                               itemCount: _colorPalette.length,
@@ -113,28 +126,28 @@ class _AppearanceSettingsScreenState extends State<AppearanceSettingsScreen> {
                                     });
                                   },
                                   child: Container(
-                                    margin: const EdgeInsets.only(right: 12),
+                                    margin: EdgeInsets.only(right: AppConstants.widthPercentage(context, AppConstants.spacingSmall)),
                                     child: Column(
                                       children: [
                                         Container(
-                                          width: 50,
-                                          height: 50,
+                                          width: AppConstants.widthPercentage(context, AppConstants.avatarSize * 0.5),
+                                          height: AppConstants.widthPercentage(context, AppConstants.avatarSize * 0.5),
                                           decoration: BoxDecoration(
                                             color: _colorPalette[index],
                                             shape: BoxShape.circle,
                                             border: _selectedColorIndex == index
                                                 ? Border.all(
                                                     color: AppTheme.primaryColor,
-                                                    width: 3,
+                                                    width: AppConstants.borderWidth,
                                                   )
                                                 : null,
                                           ),
                                         ),
-                                        const SizedBox(height: 4),
+                                        SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                                         Text(
                                           _colorNames[index],
                                           style: TextStyle(
-                                            fontSize: 12,
+                                            fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
                                             color: _selectedColorIndex == index
                                                 ? AppTheme.primaryColor
                                                 : AppTheme.textSecondary,
@@ -154,25 +167,25 @@ class _AppearanceSettingsScreenState extends State<AppearanceSettingsScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Font Size
                     InfoCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Taille de police',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 12),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           Row(
                             children: [
-                              const Icon(Icons.text_decrease, color: AppTheme.textSecondary),
+                              Icon(Icons.text_decrease, color: AppTheme.textSecondary, size: AppConstants.widthPercentage(context, AppConstants.smallIconSize)),
                               Expanded(
                                 child: Slider(
                                   value: _fontSize,
@@ -188,44 +201,44 @@ class _AppearanceSettingsScreenState extends State<AppearanceSettingsScreen> {
                                   activeColor: AppTheme.primaryColor,
                                 ),
                               ),
-                              const Icon(Icons.text_increase, color: AppTheme.textSecondary),
+                              Icon(Icons.text_increase, color: AppTheme.textSecondary, size: AppConstants.widthPercentage(context, AppConstants.smallIconSize)),
                             ],
                           ),
-                          const SizedBox(height: 8),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
-                              Text('Petit', style: TextStyle(color: AppTheme.textSecondary)),
-                              Text('Moyen', style: TextStyle(color: AppTheme.textSecondary)),
-                              Text('Grand', style: TextStyle(color: AppTheme.textSecondary)),
+                            children: [
+                              Text('Petit', style: TextStyle(color: AppTheme.textSecondary, fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize))),
+                              Text('Moyen', style: TextStyle(color: AppTheme.textSecondary, fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize))),
+                              Text('Grand', style: TextStyle(color: AppTheme.textSecondary, fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize))),
                             ],
                           ),
                         ],
                       ),
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Preview Card
                     InfoCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Aperçu',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 12),
-                          _buildPreviewCard(),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
+                          _buildPreviewCard(context),
                         ],
                       ),
                     ),
                     
-                    const SizedBox(height: 32),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     
                     // Apply Button
                     PrimaryButton(
@@ -233,8 +246,13 @@ class _AppearanceSettingsScreenState extends State<AppearanceSettingsScreen> {
                       onPressed: () {
                         // Appliquer les préférences
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Préférences d\'apparence enregistrées'),
+                          SnackBar(
+                            content: Text(
+                              'Préférences d\'apparence enregistrées',
+                              style: TextStyle(
+                                fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
+                              ),
+                            ),
                           ),
                         );
                       },
@@ -242,7 +260,7 @@ class _AppearanceSettingsScreenState extends State<AppearanceSettingsScreen> {
                       icon: Icons.check_circle,
                     ),
                     
-                    const SizedBox(height: 16),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                     
                     // Reset Button
                     PrimaryButton(
@@ -258,7 +276,7 @@ class _AppearanceSettingsScreenState extends State<AppearanceSettingsScreen> {
                       icon: Icons.restart_alt,
                     ),
                     
-                    const SizedBox(height: 32),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                   ],
                 ),
               ),
@@ -269,11 +287,11 @@ class _AppearanceSettingsScreenState extends State<AppearanceSettingsScreen> {
     );
   }
 
-  Widget _buildPreviewCard() {
+  Widget _buildPreviewCard(BuildContext context) {
     return Card(
       color: _isDarkMode ? Colors.grey[800] : Colors.white,
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.cardPadding)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -285,7 +303,7 @@ class _AppearanceSettingsScreenState extends State<AppearanceSettingsScreen> {
                 color: _isDarkMode ? Colors.white : AppTheme.textPrimary,
               ),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
             Text(
               'Ceci est un texte d\'exemple pour montrer la taille de police sélectionnée.',
               style: TextStyle(
@@ -293,14 +311,17 @@ class _AppearanceSettingsScreenState extends State<AppearanceSettingsScreen> {
                 color: _isDarkMode ? Colors.grey[300] : AppTheme.textSecondary,
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: AppConstants.widthPercentage(context, AppConstants.spacingSmall),
+                    vertical: AppConstants.heightPercentage(context, AppConstants.spacingSmall),
+                  ),
                   decoration: BoxDecoration(
                     color: _colorPalette[_selectedColorIndex],
-                    borderRadius: BorderRadius.circular(6),
+                    borderRadius: BorderRadius.circular(AppConstants.borderRadius),
                   ),
                   child: Text(
                     'Bouton',
@@ -310,12 +331,15 @@ class _AppearanceSettingsScreenState extends State<AppearanceSettingsScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 12),
+                SizedBox(width: AppConstants.widthPercentage(context, AppConstants.spacingSmall)),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: AppConstants.widthPercentage(context, AppConstants.spacingSmall),
+                    vertical: AppConstants.heightPercentage(context, AppConstants.spacingSmall),
+                  ),
                   decoration: BoxDecoration(
                     border: Border.all(color: _colorPalette[_selectedColorIndex]),
-                    borderRadius: BorderRadius.circular(6),
+                    borderRadius: BorderRadius.circular(AppConstants.borderRadius),
                   ),
                   child: Text(
                     'Secondaire',

@@ -5,6 +5,8 @@ import 'package:parametragesschool/widgets/stateless_widgets/primary_button.dart
 import 'package:parametragesschool/widgets/stateless_widgets/secondary_button.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/form_text_field.dart';
 import 'package:parametragesschool/models/absence_model.dart';
+import 'package:parametragesschool/core/constant/constants.dart';
+import 'package:parametragesschool/core/responsive/responsive_grid.dart';
 
 class AbsenceEditScreen extends StatefulWidget {
   final Absence? absence;
@@ -116,7 +118,7 @@ class _AbsenceEditScreenState extends State<AbsenceEditScreen> {
             ),
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.paddingAll)),
                 child: Form(
                   key: _formKey,
                   child: Column(
@@ -127,23 +129,23 @@ class _AbsenceEditScreenState extends State<AbsenceEditScreen> {
                         Card(
                           elevation: 2,
                           child: Padding(
-                            padding: const EdgeInsets.all(16),
+                            padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.cardPadding)),
                             child: Row(
                               children: [
                                 Container(
-                                  width: 40,
-                                  height: 40,
+                                  width: AppConstants.widthPercentage(context, AppConstants.avatarSize * 0.5),
+                                  height: AppConstants.widthPercentage(context, AppConstants.avatarSize * 0.5),
                                   decoration: BoxDecoration(
                                     color: AppTheme.primaryColor,
                                     shape: BoxShape.circle,
                                   ),
-                                  child: const Icon(
+                                  child: Icon(
                                     Icons.person,
                                     color: Colors.white,
-                                    size: 20,
+                                    size: AppConstants.widthPercentage(context, AppConstants.smallIconSize),
                                   ),
                                 ),
-                                const SizedBox(width: 12),
+                                SizedBox(width: AppConstants.widthPercentage(context, AppConstants.spacingSmall)),
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -152,13 +154,13 @@ class _AbsenceEditScreenState extends State<AbsenceEditScreen> {
                                         'Étudiant',
                                         style: TextStyle(
                                           color: AppTheme.textSecondary,
-                                          fontSize: 12,
+                                          fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
                                         ),
                                       ),
                                       Text(
                                         widget.etudiantNom!,
-                                        style: const TextStyle(
-                                          fontSize: 16,
+                                        style: TextStyle(
+                                          fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
@@ -170,32 +172,32 @@ class _AbsenceEditScreenState extends State<AbsenceEditScreen> {
                           ),
                         ),
                       
-                      if (widget.etudiantNom != null) const SizedBox(height: 16),
+                      if (widget.etudiantNom != null) SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                       
                       // Date
                       Card(
                         elevation: 2,
                         child: Padding(
-                          padding: const EdgeInsets.all(16),
+                          padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.cardPadding)),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
+                              Text(
                                 'Date',
                                 style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                                   fontWeight: FontWeight.w600,
                                   color: AppTheme.textPrimary,
                                 ),
                               ),
-                              const SizedBox(height: 12),
+                              SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                               TextFormField(
                                 controller: _dateController,
                                 readOnly: true,
                                 decoration: InputDecoration(
                                   labelText: 'Date de l\'absence',
                                   suffixIcon: IconButton(
-                                    icon: const Icon(Icons.calendar_today),
+                                    icon: Icon(Icons.calendar_today, size: AppConstants.widthPercentage(context, AppConstants.smallIconSize)),
                                     onPressed: () => _selectDate(context),
                                   ),
                                   border: const OutlineInputBorder(),
@@ -214,25 +216,25 @@ class _AbsenceEditScreenState extends State<AbsenceEditScreen> {
                         ),
                       ),
                       
-                      const SizedBox(height: 16),
+                      SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                       
                       // Motif
                       Card(
                         elevation: 2,
                         child: Padding(
-                          padding: const EdgeInsets.all(16),
+                          padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.cardPadding)),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
+                              Text(
                                 'Motif',
                                 style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                                   fontWeight: FontWeight.w600,
                                   color: AppTheme.textPrimary,
                                 ),
                               ),
-                              const SizedBox(height: 12),
+                              SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                               FormTextField(
                                 controller: _motifController,
                                 label: 'Motif de l\'absence',
@@ -253,28 +255,38 @@ class _AbsenceEditScreenState extends State<AbsenceEditScreen> {
                         ),
                       ),
                       
-                      const SizedBox(height: 16),
+                      SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                       
                       // Statut
                       Card(
                         elevation: 2,
                         child: Padding(
-                          padding: const EdgeInsets.all(16),
+                          padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.cardPadding)),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
+                              Text(
                                 'Statut',
                                 style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                                   fontWeight: FontWeight.w600,
                                   color: AppTheme.textPrimary,
                                 ),
                               ),
-                              const SizedBox(height: 12),
+                              SizedBox(height: AppConstants.fixedHeightSmall),
                               SwitchListTile(
-                                title: const Text('Absence justifiée'),
-                                subtitle: const Text('Cochez si l\'absence est justifiée'),
+                                title: Text(
+                                  'Absence justifiée',
+                                  style: TextStyle(
+                                    fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
+                                  ),
+                                ),
+                                subtitle: Text(
+                                  'Cochez si l\'absence est justifiée',
+                                  style: TextStyle(
+                                    fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
+                                  ),
+                                ),
                                 value: _justifie,
                                 onChanged: (value) {
                                   setState(() {
@@ -283,14 +295,14 @@ class _AbsenceEditScreenState extends State<AbsenceEditScreen> {
                                 },
                                 activeColor: AppTheme.successColor,
                               ),
-                              const SizedBox(height: 8),
+                              SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                               Container(
-                                padding: const EdgeInsets.all(12),
+                                padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.spacingSmall)),
                                 decoration: BoxDecoration(
                                   color: _justifie
                                       ? AppTheme.successColor.withOpacity(0.1)
                                       : AppTheme.errorColor.withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(8),
+                                  borderRadius: BorderRadius.circular(AppConstants.borderRadius),
                                   border: Border.all(
                                     color: _justifie
                                         ? AppTheme.successColor
@@ -305,6 +317,7 @@ class _AbsenceEditScreenState extends State<AbsenceEditScreen> {
                                     color: _justifie
                                         ? AppTheme.successColor
                                         : AppTheme.errorColor,
+                                    fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
                                   ),
                                 ),
                               ),
@@ -313,34 +326,32 @@ class _AbsenceEditScreenState extends State<AbsenceEditScreen> {
                         ),
                       ),
                       
-                      const SizedBox(height: 32),
+                      SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                       
                       // Boutons d'action
-                      Row(
+                      ResponsiveGrid(
+                        customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenItems),
                         children: [
-                          Expanded(
-                            child: SecondaryButton(
-                              text: 'Annuler',
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              icon: Icons.cancel,
-                            ),
+                          SecondaryButton(
+                            text: 'Annuler',
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            icon: Icons.cancel,
+                            fullWidth: true,
                           ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: PrimaryButton(
-                              text: _isSubmitting
-                                  ? (widget.absence != null ? 'Mise à jour...' : 'Enregistrement...')
-                                  : (widget.absence != null ? 'Mettre à jour' : 'Enregistrer'),
-                              onPressed: _isSubmitting ? null : _submitForm,
-                              icon: widget.absence != null ? Icons.update : Icons.save,
-                            ),
+                          PrimaryButton(
+                            text: _isSubmitting
+                                ? (widget.absence != null ? 'Mise à jour...' : 'Enregistrement...')
+                                : (widget.absence != null ? 'Mettre à jour' : 'Enregistrer'),
+                            onPressed: _isSubmitting ? null : _submitForm,
+                            icon: widget.absence != null ? Icons.update : Icons.save,
+                            fullWidth: true,
                           ),
                         ],
                       ),
                       
-                      const SizedBox(height: 32),
+                      SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                     ],
                   ),
                 ),

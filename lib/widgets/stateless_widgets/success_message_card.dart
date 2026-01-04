@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:parametragesschool/core/theme/app_theme.dart';
+import 'package:parametragesschool/core/constant/constants.dart';
 
 class SuccessMessageCard extends StatelessWidget {
   final String title;
@@ -18,7 +19,7 @@ class SuccessMessageCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.cardPadding)),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
         borderRadius: BorderRadius.circular(12),

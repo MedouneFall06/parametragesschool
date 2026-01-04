@@ -7,6 +7,44 @@ import 'package:parametragesschool/widgets/stateless_widgets/info_card.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/stat_card.dart';
 import 'package:parametragesschool/models/enseignant_model.dart';
 import 'package:parametragesschool/models/user_model.dart';
+import 'package:parametragesschool/core/responsive/responsive_grid.dart';
+
+// Constantes modifiables pour le responsive design
+class EnseignantScreenConstants {
+  // Padding général
+  static const double paddingAll = 0.02;
+  static const double paddingHorizontal = 0.02;
+  static const double paddingVertical = 0.013;
+  static const double paddingBetweenItems = 0.02;
+  static const double paddingBetweenStats = 0.02;
+  static const double paddingBetweenCards = 0.01;
+  
+  // Statistiques
+  static const double statTitleFontSize = 0.025;
+  static const double statIconSize = 0.04;
+  static const double statValueFontSize = 0.045;
+  static const double statSpacing = 0.015;
+  
+  // Cartes d'enseignants
+  static const double teacherCardPadding = 0.02;
+  static const double teacherAvatarSize = 0.08;
+  static const double teacherTitleFontSize = 0.025;
+  static const double teacherSubtitleFontSize = 0.018;
+  static const double teacherInfoFontSize = 0.016;
+  static const double teacherIconSize = 0.025;
+  
+  // Recherche et filtres
+  static const double searchLabelFontSize = 0.025;
+  static const double searchContentPaddingHorizontal = 0.02;
+  static const double searchContentPaddingVertical = 0.015;
+  static const double searchHintFontSize = 0.018;
+  
+  // Espacements
+  static const double spacingSmall = 0.003;
+  static const double spacingMedium = 0.006;
+  static const double spacingLarge = 0.01;
+  static const double spacingExtraLarge = 0.015;
+}
 
 // TODO: Transformer en StatefulWidget avec Provider
 // TODO: Créer EnseignantViewModel
@@ -125,76 +163,68 @@ class _EnseignantScreenState extends State<EnseignantScreen> {
             ),
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(MediaQuery.of(context).size.width * EnseignantScreenConstants.paddingAll),
                 child: Column(
                   children: [
                     // Statistics
-                    Row(
+                    ResponsiveGrid(
+                      customSpacing: MediaQuery.of(context).size.width * EnseignantScreenConstants.paddingBetweenStats,
                       children: [
-                        Expanded(
-                          child: StatCard(
-                            title: 'Enseignants',
-                            value: _enseignants.length.toString(),
-                            icon: Icons.people,
-                            color: AppTheme.primaryColor,
-                          ),
+                        StatCard(
+                          title: 'Enseignants',
+                          value: _enseignants.length.toString(),
+                          icon: Icons.people,
+                          color: AppTheme.primaryColor,
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: StatCard(
-                            title: 'Spécialités',
-                            value: specialites.length.toString(),
-                            icon: Icons.school,
-                            color: AppTheme.accentColor,
-                          ),
+                        StatCard(
+                          title: 'Spécialités',
+                          value: specialites.length.toString(),
+                          icon: Icons.school,
+                          color: AppTheme.accentColor,
                         ),
                       ],
                     ),
                     
-                    const SizedBox(height: 12),
+                    SizedBox(height: MediaQuery.of(context).size.height * EnseignantScreenConstants.spacingSmall),
                     
-                    Row(
+                    ResponsiveGrid(
+                      customSpacing: MediaQuery.of(context).size.width * EnseignantScreenConstants.paddingBetweenStats,
                       children: [
-                        Expanded(
-                          child: StatCard(
-                            title: 'Classes couvertes',
-                            value: totalClasses.toString(),
-                            icon: Icons.class_,
-                            color: AppTheme.secondaryColor,
-                          ),
+                        StatCard(
+                          title: 'Classes couvertes',
+                          value: totalClasses.toString(),
+                          icon: Icons.class_,
+                          color: AppTheme.secondaryColor,
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: StatCard(
-                            title: 'Matières enseignées',
-                            value: _matieresEnseignants.values
-                                .expand((list) => list)
-                                .toSet()
-                                .length
-                                .toString(),
-                            icon: Icons.menu_book,
-                            color: AppTheme.infoColor,
-                          ),
+                        StatCard(
+                          title: 'Matières enseignées',
+                          value: _matieresEnseignants.values
+                              .expand((list) => list)
+                              .toSet()
+                              .length
+                              .toString(),
+                          icon: Icons.menu_book,
+                          color: AppTheme.infoColor,
                         ),
                       ],
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: MediaQuery.of(context).size.height * EnseignantScreenConstants.spacingExtraLarge),
                     
                     // Search and Filters
                     InfoCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Recherche et filtres',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: MediaQuery.of(context).size.width * EnseignantScreenConstants.statTitleFontSize,
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: MediaQuery.of(context).size.height * EnseignantScreenConstants.spacingSmall),
                           // Search Bar
                           TextField(
                             decoration: InputDecoration(
@@ -213,6 +243,13 @@ class _EnseignantScreenState extends State<EnseignantScreen> {
                               border: const OutlineInputBorder(),
                               filled: true,
                               fillColor: Colors.white,
+                              contentPadding: EdgeInsets.symmetric(
+                                horizontal: MediaQuery.of(context).size.width * EnseignantScreenConstants.searchContentPaddingHorizontal,
+                                vertical: MediaQuery.of(context).size.height * EnseignantScreenConstants.searchContentPaddingVertical,
+                              ),
+                            ),
+                            style: TextStyle(
+                              fontSize: MediaQuery.of(context).size.width * EnseignantScreenConstants.searchHintFontSize,
                             ),
                             onChanged: (value) {
                               setState(() {
@@ -220,49 +257,47 @@ class _EnseignantScreenState extends State<EnseignantScreen> {
                               });
                             },
                           ),
-                          const SizedBox(height: 12),
-                          Row(
+                          SizedBox(height: MediaQuery.of(context).size.height * EnseignantScreenConstants.spacingSmall),
+                          ResponsiveGrid(
+                            customSpacing: MediaQuery.of(context).size.width * EnseignantScreenConstants.paddingBetweenItems,
                             children: [
-                              Expanded(
-                                child: DropdownButtonFormField<String?>(
-                                  value: _selectedSpecialite,
-                                  decoration: const InputDecoration(
-                                    labelText: 'Spécialité (optionnel)',
-                                    border: OutlineInputBorder(),
-                                    filled: true,
-                                    fillColor: Colors.white,
+                              DropdownButtonFormField<String?>(
+                                value: _selectedSpecialite,
+                                decoration: InputDecoration(
+                                  labelText: 'Spécialité (optionnel)',
+                                  labelStyle: TextStyle(fontSize: MediaQuery.of(context).size.width * EnseignantScreenConstants.searchLabelFontSize),
+                                  border: const OutlineInputBorder(),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                ),
+                                items: [
+                                  const DropdownMenuItem(
+                                    value: null,
+                                    child: Text('Toutes les spécialités'),
                                   ),
-                                  items: [
-                                    const DropdownMenuItem(
-                                      value: null,
-                                      child: Text('Toutes les spécialités'),
-                                    ),
-                                    ...specialites.map((specialite) {
-                                      return DropdownMenuItem(
-                                        value: specialite,
-                                        child: Text(specialite),
-                                      );
-                                    }).toList(),
-                                  ],
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _selectedSpecialite = value;
-                                    });
-                                  },
-                                ),
+                                  ...specialites.map((specialite) {
+                                    return DropdownMenuItem(
+                                      value: specialite,
+                                      child: Text(specialite),
+                                    );
+                                  }).toList(),
+                                ],
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedSpecialite = value;
+                                  });
+                                },
                               ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: SecondaryButton(
-                                  text: 'Réinitialiser',
-                                  onPressed: () {
-                                    setState(() {
-                                      _searchQuery = '';
-                                      _selectedSpecialite = null;
-                                    });
-                                  },
-                                  icon: Icons.filter_alt_off,
-                                ),
+                              SecondaryButton(
+                                text: 'Réinitialiser',
+                                onPressed: () {
+                                  setState(() {
+                                    _searchQuery = '';
+                                    _selectedSpecialite = null;
+                                  });
+                                },
+                                icon: Icons.filter_alt_off,
+                                fullWidth: true,
                               ),
                             ],
                           ),
@@ -270,7 +305,7 @@ class _EnseignantScreenState extends State<EnseignantScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: MediaQuery.of(context).size.height * EnseignantScreenConstants.spacingExtraLarge),
                     
                     // Enseignants List
                     InfoCard(
@@ -282,8 +317,8 @@ class _EnseignantScreenState extends State<EnseignantScreen> {
                             children: [
                               Text(
                                 'Enseignants (${filteredEnseignants.length})',
-                                style: const TextStyle(
-                                  fontSize: 18,
+                                style: TextStyle(
+                                  fontSize: MediaQuery.of(context).size.width * EnseignantScreenConstants.statTitleFontSize,
                                   fontWeight: FontWeight.w600,
                                   color: AppTheme.textPrimary,
                                 ),
@@ -297,10 +332,10 @@ class _EnseignantScreenState extends State<EnseignantScreen> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: MediaQuery.of(context).size.height * EnseignantScreenConstants.spacingSmall),
                           if (filteredEnseignants.isEmpty)
-                            const Padding(
-                              padding: EdgeInsets.all(32),
+                            Padding(
+                              padding: EdgeInsets.all(MediaQuery.of(context).size.width * EnseignantScreenConstants.paddingAll),
                               child: Text(
                                 'Aucun enseignant ne correspond aux critères',
                                 textAlign: TextAlign.center,
@@ -317,11 +352,11 @@ class _EnseignantScreenState extends State<EnseignantScreen> {
                               final classes = _classesEnseignants[enseignant.id] ?? [];
                               
                               return Card(
-                                margin: const EdgeInsets.only(bottom: 12),
+                                margin: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * EnseignantScreenConstants.paddingBetweenCards),
                                 child: ListTile(
                                   leading: Container(
-                                    width: 50,
-                                    height: 50,
+                                    width: MediaQuery.of(context).size.width * EnseignantScreenConstants.teacherAvatarSize,
+                                    height: MediaQuery.of(context).size.width * EnseignantScreenConstants.teacherAvatarSize,
                                     decoration: BoxDecoration(
                                       color: _getEnseignantColor(enseignant.id),
                                       shape: BoxShape.circle,
@@ -329,62 +364,63 @@ class _EnseignantScreenState extends State<EnseignantScreen> {
                                     child: Center(
                                       child: Text(
                                         _getInitials(enseignant.prenom, enseignant.nom),
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 16,
+                                          fontSize: MediaQuery.of(context).size.width * EnseignantScreenConstants.teacherTitleFontSize,
                                         ),
                                       ),
                                     ),
                                   ),
                                   title: Text(
                                     '${enseignant.prenom} ${enseignant.nom}',
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontWeight: FontWeight.w600,
+                                      fontSize: MediaQuery.of(context).size.width * EnseignantScreenConstants.teacherTitleFontSize,
                                     ),
                                   ),
                                   subtitle: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      const SizedBox(height: 4),
+                                      SizedBox(height: MediaQuery.of(context).size.height * EnseignantScreenConstants.spacingSmall),
                                       if (details != null)
                                         Text(
                                           details.specialite,
-                                          style: const TextStyle(
-                                            fontSize: 14,
+                                          style: TextStyle(
+                                            fontSize: MediaQuery.of(context).size.width * EnseignantScreenConstants.teacherSubtitleFontSize,
                                           ),
                                         ),
-                                      const SizedBox(height: 4),
+                                      SizedBox(height: MediaQuery.of(context).size.height * EnseignantScreenConstants.spacingSmall),
                                       Text(
                                         enseignant.email,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           color: AppTheme.textSecondary,
-                                          fontSize: 13,
+                                          fontSize: MediaQuery.of(context).size.width * EnseignantScreenConstants.teacherInfoFontSize,
                                         ),
                                       ),
-                                      const SizedBox(height: 4),
+                                      SizedBox(height: MediaQuery.of(context).size.height * EnseignantScreenConstants.spacingSmall),
                                       Wrap(
-                                        spacing: 4,
-                                        runSpacing: 4,
+                                        spacing: MediaQuery.of(context).size.width * EnseignantScreenConstants.spacingSmall,
+                                        runSpacing: MediaQuery.of(context).size.width * EnseignantScreenConstants.spacingSmall,
                                         children: [
                                           ...matieres.take(2).map((matiere) {
                                             return Chip(
                                               label: Text(
                                                 matiere,
-                                                style: const TextStyle(fontSize: 10),
+                                                style: TextStyle(fontSize: MediaQuery.of(context).size.width * EnseignantScreenConstants.teacherInfoFontSize),
                                               ),
                                               backgroundColor: AppTheme.primaryColor.withOpacity(0.1),
-                                              labelPadding: const EdgeInsets.symmetric(horizontal: 8),
+                                              labelPadding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * EnseignantScreenConstants.spacingSmall),
                                             );
                                           }).toList(),
                                           if (matieres.length > 2)
                                             Chip(
                                               label: Text(
                                                 '+${matieres.length - 2}',
-                                                style: const TextStyle(fontSize: 10),
+                                                style: TextStyle(fontSize: MediaQuery.of(context).size.width * EnseignantScreenConstants.teacherInfoFontSize),
                                               ),
                                               backgroundColor: AppTheme.textSecondary.withOpacity(0.1),
-                                              labelPadding: const EdgeInsets.symmetric(horizontal: 8),
+                                              labelPadding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * EnseignantScreenConstants.spacingSmall),
                                             ),
                                         ],
                                       ),
@@ -394,16 +430,16 @@ class _EnseignantScreenState extends State<EnseignantScreen> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       IconButton(
-                                        icon: const Icon(Icons.edit,
-                                            size: 20),
+                                        icon: Icon(Icons.edit,
+                                            size: MediaQuery.of(context).size.width * EnseignantScreenConstants.teacherIconSize),
                                         onPressed: () {
                                           // TODO: Éditer enseignant
                                         },
                                         color: AppTheme.primaryColor,
                                       ),
                                       IconButton(
-                                        icon: const Icon(Icons.delete,
-                                            size: 20),
+                                        icon: Icon(Icons.delete,
+                                            size: MediaQuery.of(context).size.width * EnseignantScreenConstants.teacherIconSize),
                                         onPressed: () {
                                           _showDeleteDialog(context, enseignant);
                                         },
@@ -421,22 +457,22 @@ class _EnseignantScreenState extends State<EnseignantScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: MediaQuery.of(context).size.height * EnseignantScreenConstants.spacingExtraLarge),
                     
                     // Specialties Distribution
                     InfoCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Répartition par spécialité',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: MediaQuery.of(context).size.width * EnseignantScreenConstants.statTitleFontSize,
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: MediaQuery.of(context).size.height * EnseignantScreenConstants.spacingSmall),
                           ...specialites.map((specialite) {
                             final count = _enseignantsDetails.values
                                 .where((e) => e.specialite == specialite)
@@ -444,7 +480,7 @@ class _EnseignantScreenState extends State<EnseignantScreen> {
                             final percentage = (count / _enseignants.length * 100);
                             
                             return Padding(
-                              padding: const EdgeInsets.only(bottom: 12),
+                              padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * EnseignantScreenConstants.spacingSmall),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -465,7 +501,7 @@ class _EnseignantScreenState extends State<EnseignantScreen> {
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(height: 8),
+                                  SizedBox(height: MediaQuery.of(context).size.height * EnseignantScreenConstants.spacingSmall),
                                   LinearProgressIndicator(
                                     value: count / _enseignants.length,
                                     backgroundColor: AppTheme.backgroundColor,
@@ -483,29 +519,24 @@ class _EnseignantScreenState extends State<EnseignantScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: MediaQuery.of(context).size.height * EnseignantScreenConstants.spacingExtraLarge),
                     
                     // Quick Actions
                     InfoCard(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Actions rapides',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: MediaQuery.of(context).size.width * EnseignantScreenConstants.statTitleFontSize,
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          const SizedBox(height: 16),
-                          GridView.count(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 12,
-                            mainAxisSpacing: 12,
-                            childAspectRatio: 2.5,
+                          SizedBox(height: MediaQuery.of(context).size.height * EnseignantScreenConstants.spacingSmall),
+                          ResponsiveGrid(
+                            customSpacing: MediaQuery.of(context).size.width * EnseignantScreenConstants.paddingBetweenItems,
                             children: [
                               _buildActionTile(
                                 icon: Icons.assignment,
@@ -541,34 +572,32 @@ class _EnseignantScreenState extends State<EnseignantScreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 32),
+                    SizedBox(height: MediaQuery.of(context).size.height * EnseignantScreenConstants.spacingExtraLarge),
                     
                     // Management Tools
-                    Row(
+                    ResponsiveGrid(
+                      customSpacing: MediaQuery.of(context).size.width * EnseignantScreenConstants.paddingBetweenItems,
                       children: [
-                        Expanded(
-                          child: SecondaryButton(
-                            text: 'Générer rapport',
-                            onPressed: () {
-                              // TODO: Générer rapport
-                            },
-                            icon: Icons.description,
-                          ),
+                        SecondaryButton(
+                          text: 'Générer rapport',
+                          onPressed: () {
+                            // TODO: Générer rapport
+                          },
+                          icon: Icons.description,
+                          fullWidth: true,
                         ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: PrimaryButton(
-                            text: 'Répartir charges',
-                            onPressed: () {
-                              // TODO: Répartir charges
-                            },
-                            icon: Icons.balance,
-                          ),
+                        PrimaryButton(
+                          text: 'Répartir charges',
+                          onPressed: () {
+                            // TODO: Répartir charges
+                          },
+                          icon: Icons.balance,
+                          fullWidth: true,
                         ),
                       ],
                     ),
                     
-                    const SizedBox(height: 32),
+                    SizedBox(height: MediaQuery.of(context).size.height * EnseignantScreenConstants.spacingExtraLarge),
                   ],
                 ),
               ),
@@ -621,24 +650,24 @@ class _EnseignantScreenState extends State<EnseignantScreen> {
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
         child: Padding(
-          padding: const EdgeInsets.all(12),
+          padding: EdgeInsets.all(MediaQuery.of(context).size.width * EnseignantScreenConstants.teacherCardPadding),
           child: Row(
             children: [
               Container(
-                width: 40,
-                height: 40,
+                width: MediaQuery.of(context).size.width * EnseignantScreenConstants.teacherAvatarSize,
+                height: MediaQuery.of(context).size.width * EnseignantScreenConstants.teacherAvatarSize,
                 decoration: BoxDecoration(
                   color: AppTheme.primaryColor.withOpacity(0.1),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(icon, color: AppTheme.primaryColor, size: 20),
+                child: Icon(icon, color: AppTheme.primaryColor, size: MediaQuery.of(context).size.width * EnseignantScreenConstants.teacherIconSize),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: MediaQuery.of(context).size.width * EnseignantScreenConstants.spacingSmall),
               Expanded(
                 child: Text(
                   title,
-                  style: const TextStyle(
-                    fontSize: 14,
+                  style: TextStyle(
+                    fontSize: MediaQuery.of(context).size.width * EnseignantScreenConstants.teacherSubtitleFontSize,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
