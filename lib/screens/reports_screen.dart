@@ -5,6 +5,7 @@ import 'package:parametragesschool/widgets/stateless_widgets/primary_button.dart
 import 'package:parametragesschool/widgets/stateless_widgets/secondary_button.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/info_card.dart';
 import 'package:parametragesschool/core/responsive/responsive_grid.dart';
+import 'package:parametragesschool/core/constant/constants.dart';
 
 // Constantes modifiables pour le responsive design
 class ReportsScreenConstants {
@@ -280,7 +281,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                           ),
                           SizedBox(height: MediaQuery.of(context).size.height * ReportsScreenConstants.spacingSmall),
                           Container(
-                            height: MediaQuery.of(context).size.height * 0.25,
+                            height: AppConstants.heightPercentage(context, AppConstants.paddingBetweenStats * 12.5),
                             decoration: BoxDecoration(
                               color: Colors.grey[50],
                               borderRadius: BorderRadius.circular(8),
@@ -290,13 +291,13 @@ class _ReportsScreenState extends State<ReportsScreen> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Icon(Icons.auto_graph, size: MediaQuery.of(context).size.width * 0.15, color: Colors.grey),
-                                  SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                                  Icon(Icons.auto_graph, size: AppConstants.widthPercentage(context, AppConstants.iconSize * 3), color: Colors.grey),
+                                  SizedBox(height: AppConstants.heightPercentage(context, AppConstants.paddingVertical)),
                                   Text(
                                     'Graphique du rapport',
                                     style: TextStyle(color: Colors.grey),
                                   ),
-                                  SizedBox(height: MediaQuery.of(context).size.height * 0.005),
+                                  SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingTiny)),
                                   Text(
                                     'Les données s\'afficheront ici après génération',
                                     style: TextStyle(color: Colors.grey, fontSize: MediaQuery.of(context).size.width * ReportsScreenConstants.reportInfoFontSize),

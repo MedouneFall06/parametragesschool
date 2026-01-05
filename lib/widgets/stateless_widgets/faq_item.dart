@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:parametragesschool/core/theme/app_theme.dart';
+import 'package:parametragesschool/core/constant/constants.dart';
 
 class FAQItem extends StatefulWidget {
   final String question;
@@ -22,15 +23,20 @@ class _FAQItemState extends State<FAQItem> {
   Widget build(BuildContext context) {
     return Card(
       child: ExpansionTile(
-        tilePadding: const EdgeInsets.symmetric(horizontal: 16),
+        tilePadding: EdgeInsets.symmetric(horizontal: AppConstants.widthPercentage(context, AppConstants.spacingSmall)),
         title: Text(
           widget.question,
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: FontWeight.w600,
             color: AppTheme.textPrimary,
           ),
         ),
-        childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+        childrenPadding: EdgeInsets.fromLTRB(
+          AppConstants.widthPercentage(context, AppConstants.spacingSmall),
+          0,
+          AppConstants.widthPercentage(context, AppConstants.spacingSmall),
+          AppConstants.heightPercentage(context, AppConstants.spacingSmall),
+        ),
         initiallyExpanded: _isExpanded,
         onExpansionChanged: (expanded) {
           setState(() {
@@ -40,9 +46,9 @@ class _FAQItemState extends State<FAQItem> {
         children: [
           Text(
             widget.answer,
-            style: const TextStyle(
+            style: TextStyle(
               color: AppTheme.textSecondary,
-              height: 1.5,
+              height: AppConstants.textHeight,
             ),
           ),
         ],

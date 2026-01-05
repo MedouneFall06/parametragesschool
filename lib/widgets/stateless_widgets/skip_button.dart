@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:parametragesschool/core/theme/app_theme.dart';
+import 'package:parametragesschool/core/constant/constants.dart';
 
 class SkipButton extends StatelessWidget {
   final VoidCallback? onPressed;
@@ -13,10 +15,13 @@ class SkipButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: onPressed ?? () {
-        Navigator.pushReplacementNamed(context, '/login');
+        context.goNamed('login');
       },
       style: TextButton.styleFrom(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: EdgeInsets.symmetric(
+          horizontal: AppConstants.widthPercentage(context, AppConstants.spacingSmall),
+          vertical: AppConstants.heightPercentage(context, AppConstants.spacingTiny),
+        ),
       ),
       child: Text(
         'Passer',

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:parametragesschool/core/constant/constants.dart';
 
 class LoadingIndicator extends StatelessWidget {
   final Color? color;
@@ -18,22 +19,22 @@ class LoadingIndicator extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         SizedBox(
-          width: size,
-          height: size,
+          width: AppConstants.widthPercentage(context, AppConstants.iconSize),
+          height: AppConstants.widthPercentage(context, AppConstants.iconSize),
           child: CircularProgressIndicator(
             valueColor: AlwaysStoppedAnimation<Color>(
               color ?? Colors.white,
             ),
-            strokeWidth: 3,
+            strokeWidth: AppConstants.borderWidth,
           ),
         ),
         if (text != null) ...[
-          const SizedBox(height: 16),
+          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
           Text(
             text!,
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.white,
-              fontSize: 14,
+              fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
               fontWeight: FontWeight.w500,
             ),
           ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
 import 'primary_button.dart';
+import '../../core/constant/constants.dart';
 
 class EmptyStateWidget extends StatelessWidget {
   final String title;
@@ -22,40 +23,40 @@ class EmptyStateWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.04),
+        padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.cardPadding)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
               icon,
-              size: MediaQuery.of(context).size.width * 0.15,
-              color: AppTheme.textSecondary.withOpacity(0.5),
+              size: AppConstants.widthPercentage(context, AppConstants.avatarSize * 2),
+              color: AppTheme.textSecondary.withOpacity(AppConstants.veryLowOpacity),
             ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+            SizedBox(height: AppConstants.heightPercentage(context, AppConstants.paddingBetweenStats)),
             Text(
               title,
               style: TextStyle(
-                fontSize: MediaQuery.of(context).size.width * 0.025,
+                fontSize: AppConstants.responsiveFontSize(context, AppConstants.statTitleFontSize),
                 fontWeight: FontWeight.w600,
                 color: AppTheme.textPrimary,
               ),
             ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+            SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
             Text(
               message,
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: MediaQuery.of(context).size.width * 0.02,
+                fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
                 color: AppTheme.textSecondary,
               ),
             ),
             if (buttonText != null && onButtonPressed != null) ...[
-              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+              SizedBox(height: AppConstants.heightPercentage(context, AppConstants.paddingBetweenStats)),
               PrimaryButton(
                 text: buttonText!,
                 onPressed: onButtonPressed!,
                 fullWidth: false,
-                iconSize: MediaQuery.of(context).size.width * 0.025,
+                iconSize: AppConstants.widthPercentage(context, AppConstants.smallIconSize),
               ),
             ],
           ],

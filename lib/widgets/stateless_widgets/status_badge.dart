@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
+import '../../core/constant/constants.dart';
 
 class StatusBadge extends StatelessWidget {
   final String text;
@@ -16,15 +17,18 @@ class StatusBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      padding: EdgeInsets.symmetric(
+        horizontal: AppConstants.widthPercentage(context, AppConstants.spacingSmall),
+        vertical: AppConstants.heightPercentage(context, AppConstants.spacingTiny),
+      ),
       decoration: BoxDecoration(
         color: color,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(AppConstants.extraBorderRadius),
       ),
       child: Text(
         text,
         style: TextStyle(
-          fontSize: 12,
+          fontSize: AppConstants.responsiveFontSize(context, AppConstants.smallFontSize),
           fontWeight: FontWeight.w500,
           color: textColor,
         ),

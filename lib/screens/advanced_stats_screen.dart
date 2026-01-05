@@ -233,7 +233,7 @@ class _AdvancedStatsScreenState extends State<AdvancedStatsScreen> {
                           ),
                           SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.25,
+                            height: AppConstants.heightPercentage(context, AppConstants.paddingBetweenStats * 12.5),
                             child: _buildTrendChart(),
                           ),
                           SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
@@ -269,7 +269,7 @@ class _AdvancedStatsScreenState extends State<AdvancedStatsScreen> {
                           ),
                           SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                           SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.20,
+                            height: AppConstants.heightPercentage(context, AppConstants.paddingBetweenStats * 10),
                             child: _buildAttendanceChart(),
                           ),
                           SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),

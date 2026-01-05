@@ -1,0 +1,15 @@
+## Notes sur les Row() à remplacer par ResponsiveGrid
+
+### Widgets à analyser pour la phase 2 :
+
+#### lib/widgets/ :
+- **dot_indicator.dart** - Row() simple avec IconButton et SizedBox, à garder
+- **back_to_login_link.dart** - Row() simple avec IconButton et Text, à garder  
+- **accept_checkbox.dart** - Row() simple avec Checkbox et Expanded Text, à garder
+- **stat_card.dart** - Row() dans Column avec Text et Icon, à garder (simple)
+- **page_header.dart** - Row() complexe avec navigation et titres, à garder (logique spécifique)
+- **etudiant_card.dart** - Plusieurs Row() complexes avec informations étudiant, à évaluer
+- **contact_card.dart** - Row() avec Icon et Text, à garder (simple)
+
+#### lib/screens/ :
+Analyse à faire pour identifier les Row() qui pourraient être remplacés par ResponsiveGrid

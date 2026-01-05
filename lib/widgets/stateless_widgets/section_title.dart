@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:parametragesschool/core/theme/app_theme.dart';
+import 'package:parametragesschool/core/constant/constants.dart';
 
 class SectionTitle extends StatelessWidget {
   final String title;
@@ -18,17 +19,17 @@ class SectionTitle extends StatelessWidget {
       children: [
         Text(
           title,
-          style: const TextStyle(
-            fontSize: 18,
+          style: TextStyle(
+            fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
             fontWeight: FontWeight.w700,
             color: AppTheme.primaryColor,
           ),
         ),
         if (withDivider) ...[
-          const SizedBox(height: 8),
+          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
           Container(
-            height: 2,
-            width: 60,
+            height: AppConstants.borderWidth,
+            width: AppConstants.widthPercentage(context, AppConstants.spacingExtraLarge),
             color: AppTheme.accentColor,
           ),
         ],

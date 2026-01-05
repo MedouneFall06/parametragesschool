@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:parametragesschool/core/theme/app_theme.dart';
 import 'package:parametragesschool/models/etudiant_model.dart';
+import 'package:parametragesschool/core/constant/constants.dart';
 
 class EtudiantCard extends StatelessWidget {
   final Etudiant etudiant;
@@ -32,14 +33,14 @@ class EtudiantCard extends StatelessWidget {
             minHeight: 0,
             maxHeight: double.infinity,
           ),
-          padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.015),
+          padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.cardPadding)),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               // AVATAR - TAILLE DYNAMIQUE
               Container(
-                width: MediaQuery.of(context).size.width * 0.08,
-                height: MediaQuery.of(context).size.width * 0.08,
+                width: AppConstants.widthPercentage(context, AppConstants.avatarSize),
+                height: AppConstants.widthPercentage(context, AppConstants.avatarSize),
                 decoration: BoxDecoration(
                   color: _getAvatarColor(etudiant.id),
                   shape: BoxShape.circle,
@@ -48,7 +49,7 @@ class EtudiantCard extends StatelessWidget {
                   child: Text(
                     _getInitiales(etudiant.prenom, etudiant.nom),
                     style: TextStyle(
-                      fontSize: MediaQuery.of(context).size.width * 0.025,
+                      fontSize: AppConstants.responsiveFontSize(context, AppConstants.statTitleFontSize),
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
@@ -56,7 +57,7 @@ class EtudiantCard extends StatelessWidget {
                 ),
               ),
               
-              SizedBox(width: MediaQuery.of(context).size.width * 0.02),
+              SizedBox(width: AppConstants.widthPercentage(context, AppConstants.paddingBetweenCards)),
               
               // CONTENU PRINCIPAL
               Expanded(
@@ -69,16 +70,16 @@ class EtudiantCard extends StatelessWidget {
                     Text(
                       "${etudiant.prenom} ${etudiant.nom}",
                       style: TextStyle(
-                        fontSize: MediaQuery.of(context).size.width * 0.03,
+                        fontSize: AppConstants.responsiveFontSize(context, AppConstants.labelFontSize),
                         fontWeight: FontWeight.w600,
                         color: AppTheme.textPrimary,
-                        height: 1.2,
+                        height: AppConstants.textHeight,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                     
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.002),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingTiny)),
                     
                     // MATRICULE
                     _buildCompactInfoRow(
@@ -107,11 +108,11 @@ class EtudiantCard extends StatelessWidget {
               
               // FLÈCHE
               if (onTap != null && width > 300) ...[
-                SizedBox(width: MediaQuery.of(context).size.width * 0.01),
+                SizedBox(width: AppConstants.widthPercentage(context, AppConstants.spacingSmall)),
                 Icon(
                   Icons.chevron_right,
                   color: AppTheme.primaryColor,
-                  size: MediaQuery.of(context).size.width * 0.04,
+                  size: AppConstants.widthPercentage(context, AppConstants.iconSize),
                 ),
               ],
             ],
@@ -127,23 +128,23 @@ class EtudiantCard extends StatelessWidget {
     required BuildContext context,
   }) {
     return Padding(
-      padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.001),
+      padding: EdgeInsets.only(bottom: AppConstants.heightPercentage(context, AppConstants.spacingTiny)),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Icon(
             icon,
-            size: MediaQuery.of(context).size.width * 0.02,
+            size: AppConstants.widthPercentage(context, AppConstants.smallIconSize),
             color: AppTheme.textSecondary,
           ),
-          SizedBox(width: MediaQuery.of(context).size.width * 0.008),
+          SizedBox(width: AppConstants.widthPercentage(context, AppConstants.spacingSmall)),
           Expanded(
             child: Text(
               text,
               style: TextStyle(
-                fontSize: MediaQuery.of(context).size.width * 0.022,
+                fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
                 color: AppTheme.textSecondary,
-                height: 1.1,
+                height: AppConstants.textHeight,
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -161,24 +162,24 @@ class EtudiantCard extends StatelessWidget {
     final hasParent = etudiant.parentId != null && etudiant.parentId!.isNotEmpty;
     
     return Padding(
-      padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.001),
+      padding: EdgeInsets.only(top: AppConstants.heightPercentage(context, AppConstants.spacingTiny)),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Icon(
             hasParent ? Icons.family_restroom : Icons.person_off,
-            size: MediaQuery.of(context).size.width * 0.02,
+            size: AppConstants.widthPercentage(context, AppConstants.smallIconSize),
             color: hasParent ? AppTheme.successColor : AppTheme.textSecondary,
           ),
-          SizedBox(width: MediaQuery.of(context).size.width * 0.008),
+          SizedBox(width: AppConstants.widthPercentage(context, AppConstants.spacingSmall)),
           Expanded(
             child: Text(
               hasParent ? "Parent lié" : "Non lié",
               style: TextStyle(
-                fontSize: MediaQuery.of(context).size.width * 0.02,
+                fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
                 color: hasParent ? AppTheme.successColor : AppTheme.textSecondary,
                 fontStyle: FontStyle.italic,
-                height: 1.1,
+                height: AppConstants.textHeight,
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-// ignore: unused_import
 import 'package:parametragesschool/core/theme/app_theme.dart';
+import 'package:parametragesschool/core/constant/constants.dart';
 
 class VersionBadge extends StatelessWidget {
   final String version;
@@ -13,17 +13,20 @@ class VersionBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: EdgeInsets.symmetric(
+        horizontal: AppConstants.widthPercentage(context, AppConstants.spacingSmall),
+        vertical: AppConstants.heightPercentage(context, AppConstants.spacingTiny),
+      ),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.white.withOpacity(0.3)),
+        color: Colors.white.withOpacity(AppConstants.veryLowOpacity),
+        borderRadius: BorderRadius.circular(AppConstants.extraBorderRadius),
+        border: Border.all(color: Colors.white.withOpacity(AppConstants.lowOpacity)),
       ),
       child: Text(
         'Version $version',
-        style: const TextStyle(
+        style: TextStyle(
           color: Colors.white,
-          fontSize: 12,
+          fontSize: AppConstants.responsiveFontSize(context, AppConstants.smallFontSize),
           fontWeight: FontWeight.w500,
         ),
       ),

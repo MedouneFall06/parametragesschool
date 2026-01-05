@@ -665,7 +665,7 @@ class _ParentScreenState extends State<ParentScreen> {
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
         child: Padding(
-          padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.cardPadding)),
+            padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.cardPadding)),
           child: Row(
             children: [
               Container(

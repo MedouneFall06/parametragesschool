@@ -1,0 +1,19 @@
+## Fichiers skipés lors de la migration
+
+### Raison : Erreurs de compilation persistantes
+
+#### lib/screens/onboarding_screen.dart
+- Erreurs : Méthodes pushNamed/goNamed non définies pour BuildContext
+- Cause : Problème d'import GoRouter ou de configuration du context
+- Solution : À corriger manuellement avec l'équipe de développement
+
+#### lib/screens/profile_screen.dart  
+- Erreurs : Méthodes pop/goNamed non définies pour BuildContext
+- Cause : Problème d'import GoRouter ou de configuration du context
+- Solution : À corriger manuellement avec l'équipe de développement
+
+### Notes :
+- Les fichiers ont été partiellement migrés mais contiennent encore des erreurs
+- Les imports GoRouter ont été ajoutés mais les méthodes ne sont pas reconnues
+- Cela peut indiquer un problème de configuration du router ou de version de GoRouter
+- À vérifier avec l'équipe de développement pour la configuration exacte du projet

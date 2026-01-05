@@ -14,26 +14,26 @@ class ContactCard extends StatelessWidget {
           children: [
             Icon(
               Icons.support_agent,
-              size: 60,
+              size: AppConstants.widthPercentage(context, AppConstants.avatarSize),
               color: AppTheme.primaryColor,
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: AppConstants.heightPercentage(context, AppConstants.paddingVertical)),
             Text(
               'Nous sommes là pour vous aider',
-              style: const TextStyle(
-                fontSize: 18,
+              style: TextStyle(
+                fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                 fontWeight: FontWeight.w600,
                 color: AppTheme.textPrimary,
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
             Text(
               'Notre équipe support est disponible du lundi au vendredi, de 9h à 18h.',
-              style: const TextStyle(
+              style: TextStyle(
                 color: AppTheme.textSecondary,
-                fontSize: 14,
-                height: 1.5,
+                fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
+                height: AppConstants.textHeight,
               ),
               textAlign: TextAlign.center,
             ),

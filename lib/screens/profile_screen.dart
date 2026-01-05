@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:parametragesschool/core/theme/app_theme.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/page_header.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/primary_button.dart';
@@ -165,7 +166,7 @@ class ProfileScreen extends StatelessWidget {
                           SecondaryButton(
                             text: 'Changer le mot de passe',
                             onPressed: () {
-                              Navigator.pushNamed(context, '/forgot-password');
+                              context.goNamed('forgot-password');
                             },
                             fullWidth: true,
                             icon: Icons.lock,
@@ -383,14 +384,14 @@ class ProfileScreen extends StatelessWidget {
         content: const Text('Êtes-vous sûr de vouloir vous déconnecter ?'),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => context.pop(),
             child: const Text('Annuler'),
           ),
           PrimaryButton(
             text: 'Déconnexion',
             onPressed: () {
-              Navigator.pop(context);
-              Navigator.pushReplacementNamed(context, '/login');
+              context.pop();
+              context.goNamed('login');
             },
             fullWidth: false,
           ),

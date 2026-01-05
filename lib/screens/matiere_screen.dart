@@ -10,6 +10,7 @@ import 'package:parametragesschool/models/matiere_model.dart';
 // ignore: unused_import
 import 'package:parametragesschool/models/departement_model.dart';
 import 'package:parametragesschool/core/responsive/responsive_grid.dart';
+import 'package:parametragesschool/core/constant/constants.dart';
 
 // Constantes modifiables pour le responsive design
 class MatiereScreenConstants {
@@ -130,7 +131,7 @@ class _MatiereScreenState extends State<MatiereScreen> {
                   children: [
                     // Statistics
                     ResponsiveGrid(
-                      customSpacing: MediaQuery.of(context).size.width * MatiereScreenConstants.paddingBetweenStats,
+                      customSpacing: AppConstants.widthPercentage(context, AppConstants.paddingBetweenStats),
                       children: [
                         StatCard(
                           title: 'Matières totales',
@@ -147,7 +148,7 @@ class _MatiereScreenState extends State<MatiereScreen> {
                       ],
                     ),
 
-                    SizedBox(height: MediaQuery.of(context).size.height * MatiereScreenConstants.spacingSmall),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
 
                     StatCard(
                       title: 'Moyenne coefficient',
@@ -156,7 +157,7 @@ class _MatiereScreenState extends State<MatiereScreen> {
                       color: AppTheme.secondaryColor,
                     ),
 
-                    SizedBox(height: MediaQuery.of(context).size.height * MatiereScreenConstants.spacingExtraLarge),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
 
                     // Search and Filters
                     InfoCard(
@@ -166,17 +167,17 @@ class _MatiereScreenState extends State<MatiereScreen> {
                           Text(
                             'Recherche et filtres',
                             style: TextStyle(
-                              fontSize: MediaQuery.of(context).size.width * MatiereScreenConstants.statTitleFontSize,
+                              fontSize: AppConstants.responsiveFontSize(context, AppConstants.statTitleFontSize),
                               fontWeight: FontWeight.w600,
                               color: AppTheme.textPrimary,
                             ),
                           ),
-                          SizedBox(height: MediaQuery.of(context).size.height * MatiereScreenConstants.spacingMedium),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingMedium)),
                           // Search Bar
                           TextField(
                             decoration: InputDecoration(
                               hintText: 'Rechercher une matière...',
-                              hintStyle: TextStyle(fontSize: MediaQuery.of(context).size.width * MatiereScreenConstants.searchHintFontSize),
+                              hintStyle: TextStyle(fontSize: AppConstants.responsiveFontSize(context, AppConstants.hintFontSize)),
                               prefixIcon: const Icon(Icons.search),
                               suffixIcon: _searchQuery.isNotEmpty
                                   ? IconButton(
@@ -198,7 +199,7 @@ class _MatiereScreenState extends State<MatiereScreen> {
                               });
                             },
                           ),
-                          SizedBox(height: MediaQuery.of(context).size.height * MatiereScreenConstants.spacingMedium),
+                          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingMedium)),
                           ResponsiveGrid(
                             customSpacing: MediaQuery.of(context).size.width * MatiereScreenConstants.paddingBetweenItems,
                             children: [

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:parametragesschool/core/theme/app_theme.dart';
+import 'package:parametragesschool/core/constant/constants.dart';
 
 class FormTextField extends StatelessWidget {
   final TextEditingController? controller;
@@ -41,10 +42,10 @@ class FormTextField extends StatelessWidget {
           style: TextStyle(
             fontWeight: FontWeight.w500,
             color: AppTheme.textPrimary,
-            fontSize: MediaQuery.of(context).size.width * 0.016,
+            fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
           ),
         ),
-        SizedBox(height: MediaQuery.of(context).size.height * 0.007),
+        SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
         TextFormField(
           controller: controller,
           keyboardType: keyboardType,
@@ -55,21 +56,21 @@ class FormTextField extends StatelessWidget {
           enabled: enabled,
           decoration: InputDecoration(
             hintText: hintText,
-            hintStyle: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.014),
+            hintStyle: TextStyle(fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize)),
             prefixIcon: prefixIcon != null
-                ? Icon(prefixIcon, color: AppTheme.textSecondary, size: MediaQuery.of(context).size.width * 0.02)
+                ? Icon(prefixIcon, color: AppTheme.textSecondary, size: AppConstants.responsiveFontSize(context, AppConstants.buttonTextFontSize))
                 : null,
             suffixIcon: suffixIcon != null
                 ? IconButton(
-                    icon: Icon(suffixIcon, color: AppTheme.textSecondary, size: MediaQuery.of(context).size.width * 0.02),
+                    icon: Icon(suffixIcon, color: AppTheme.textSecondary, size: AppConstants.widthPercentage(context, AppConstants.smallIconSize)),
                     onPressed: onSuffixPressed,
                   )
                 : null,
             filled: true,
             fillColor: enabled ? Colors.white : Colors.grey[100],
             contentPadding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * 0.02,
-              vertical: MediaQuery.of(context).size.height * 0.012,
+              horizontal: AppConstants.widthPercentage(context, AppConstants.paddingHorizontal),
+              vertical: AppConstants.heightPercentage(context, AppConstants.paddingVertical),
             ),
           ),
         ),

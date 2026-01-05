@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-// ignore: unused_import
 import 'package:parametragesschool/core/theme/app_theme.dart';
+import 'package:parametragesschool/core/constant/constants.dart';
 
 class ScrollableContent extends StatelessWidget {
   final Widget child;

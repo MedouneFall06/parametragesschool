@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:parametragesschool/core/theme/app_theme.dart';
+import 'package:parametragesschool/core/constant/constants.dart';
 
 class OnboardingSlide extends StatelessWidget {
   final String title;
@@ -18,39 +19,42 @@ class OnboardingSlide extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.cardPadding)),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            width: 150,
-            height: 150,
+            width: AppConstants.widthPercentage(context, AppConstants.avatarSize * 2),
+            height: AppConstants.widthPercentage(context, AppConstants.avatarSize * 2),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
+              color: color.withOpacity(AppConstants.veryLowOpacity),
               shape: BoxShape.circle,
             ),
             child: Center(
               child: Icon(
                 icon,
-                size: 70,
+                size: AppConstants.widthPercentage(context, AppConstants.iconSize * 2),
                 color: color,
               ),
             ),
           ),
-          const SizedBox(height: 48),
+          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.paddingBetweenStats)),
           Text(
             title,
-            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+            style: TextStyle(
+              fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
+              fontWeight: FontWeight.bold,
               color: AppTheme.textPrimary,
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
           Text(
             description,
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+            style: TextStyle(
+              fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
               color: AppTheme.textSecondary,
-              height: 1.5,
+              height: AppConstants.textHeight,
             ),
             textAlign: TextAlign.center,
           ),

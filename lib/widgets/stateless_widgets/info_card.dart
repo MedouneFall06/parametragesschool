@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-// ignore: unused_import
 import '../../core/theme/app_theme.dart';
+import '../../core/constant/constants.dart';
 
 class InfoCard extends StatelessWidget {
   final Widget child;
@@ -17,7 +17,7 @@ class InfoCard extends StatelessWidget {
     return Card(
       child: Padding(
         padding: padding is EdgeInsets
-            ? EdgeInsets.all(MediaQuery.of(context).size.width * 0.02)
+            ? EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.paddingAll))
             : padding,
         child: child,
       ),

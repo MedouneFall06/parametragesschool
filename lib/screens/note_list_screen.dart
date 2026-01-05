@@ -8,6 +8,7 @@ import 'package:parametragesschool/widgets/stateless_widgets/empty_state_widget.
 import 'package:parametragesschool/models/note_model.dart';
 import 'package:parametragesschool/models/etudiant_model.dart';
 import 'package:parametragesschool/models/matiere_model.dart';
+import 'package:parametragesschool/core/constant/constants.dart';
 
 // Constantes modifiables pour le responsive design
 class NoteListConstants {
@@ -206,7 +207,7 @@ class _NoteListScreenState extends State<NoteListScreen> {
               ),
               SizedBox(width: MediaQuery.of(context).size.width * NoteListConstants.paddingBetweenItems),
               Container(
-                margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.01),
+                margin: EdgeInsets.only(top: AppConstants.heightPercentage(context, AppConstants.paddingVertical)),
                 child: PrimaryButton(
                   text: 'Ajouter',
                   onPressed: () {
@@ -242,13 +243,13 @@ class _NoteListScreenState extends State<NoteListScreen> {
                       return Column(
                         children: [
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * NoteListConstants.paddingHorizontal),
+                            padding: EdgeInsets.symmetric(horizontal: AppConstants.widthPercentage(context, NoteListConstants.paddingHorizontal)),
                             child: Row(
                               children: [
                                 _buildStatCard('Notes', _notes.length.toString(), Icons.assignment),
-                                SizedBox(width: MediaQuery.of(context).size.width * NoteListConstants.paddingBetweenStats),
+                                SizedBox(width: AppConstants.widthPercentage(context, NoteListConstants.paddingBetweenStats)),
                                 _buildStatCard('Moyenne', '15.2', Icons.trending_up),
-                                SizedBox(width: MediaQuery.of(context).size.width * NoteListConstants.paddingBetweenStats),
+                                SizedBox(width: AppConstants.widthPercentage(context, NoteListConstants.paddingBetweenStats)),
                                 _buildStatCard('Élèves', _etudiants.length.toString(), Icons.people),
                               ],
                             ),

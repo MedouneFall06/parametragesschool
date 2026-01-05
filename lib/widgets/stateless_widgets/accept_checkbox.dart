@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:parametragesschool/core/theme/app_theme.dart';
+import 'package:parametragesschool/core/constant/constants.dart';
 
 class AcceptCheckbox extends StatelessWidget {
   final bool value;
@@ -21,24 +22,24 @@ class AcceptCheckbox extends StatelessWidget {
           onChanged: onChanged,
           activeColor: AppTheme.primaryColor,
         ),
-        const SizedBox(width: 8),
+        SizedBox(width: AppConstants.widthPercentage(context, AppConstants.spacingSmall)),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'J\'ai lu et j\'accepte les conditions d\'utilisation',
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   color: AppTheme.textPrimary,
                 ),
               ),
-              const SizedBox(height: 4),
+              SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingTiny)),
               Text(
                 'En cochant cette case, vous acceptez toutes les conditions mentionnées ci-dessus.',
                 style: TextStyle(
                   color: AppTheme.textSecondary,
-                  fontSize: 12,
+                  fontSize: AppConstants.responsiveFontSize(context, AppConstants.smallFontSize),
                 ),
               ),
             ],

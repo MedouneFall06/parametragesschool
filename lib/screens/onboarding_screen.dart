@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:parametragesschool/core/theme/app_theme.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/page_header.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/onboarding_slide.dart';
@@ -104,7 +106,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                 curve: Curves.easeInOut,
                               );
                             } else {
-                              Navigator.pushReplacementNamed(context, '/login');
+                              context.goNamed('login');
                             }
                           },
                           text: _currentPage < slides.length - 1 ? 'Suivant' : 'Commencer',

@@ -267,6 +267,62 @@ class AppConstants {
   
   /// Rayon des coins très grands
   static const double largeBorderRadius = 20.0;
+  
+  // ==================== CONSTANTES NUMÉRIQUES SPÉCIFIQUES ====================
+  /// Constante pour les notes maximales
+  static const double maxNote = 20.0;
+  
+  /// Constante pour les notes excellentes
+  static const double excellentNote = 16.0;
+  
+  /// Constante pour les notes bonnes
+  static const double goodNote = 14.0;
+  
+  /// Constante pour les notes moyennes
+  static const double averageNote = 10.0;
+  
+  /// Constante pour les années scolaires
+  static const int schoolYearStart = 2023;
+  static const int schoolYearEnd = 2024;
+  
+  /// Constante pour les durées
+  static const int defaultDurationDays = 30;
+  
+  /// Constante pour les tailles fixes
+  static const double fixedSize12 = 12.0;
+  static const double fixedSize14 = 14.0;
+  static const double fixedSize16 = 16.0;
+  static const double fixedSize18 = 18.0;
+  static const double fixedSize20 = 20.0;
+  static const double fixedSize24 = 24.0;
+  static const double fixedSize32 = 32.0;
+  static const double fixedSize40 = 40.0;
+  static const double fixedSize48 = 48.0;
+  static const double fixedSize50 = 50.0;
+  static const double fixedSize60 = 60.0;
+  static const double fixedSize72 = 72.0;
+  static const double fixedSize80 = 80.0;
+  static const double fixedSize100 = 100.0;
+  static const double fixedSize120 = 120.0;
+  static const double fixedSize144 = 144.0;
+  static const double fixedSize160 = 160.0;
+  static const double fixedSize180 = 180.0;
+  static const double fixedSize200 = 200.0;
+  static const double fixedSize240 = 240.0;
+  static const double fixedSize280 = 280.0;
+  static const double fixedSize320 = 320.0;
+  static const double fixedSize360 = 360.0;
+  static const double fixedSize400 = 400.0;
+  static const double fixedSize480 = 480.0;
+  static const double fixedSize560 = 560.0;
+  static const double fixedSize640 = 640.0;
+  static const double fixedSize720 = 720.0;
+  static const double fixedSize800 = 800.0;
+  static const double fixedSize960 = 960.0;
+  static const double fixedSize1080 = 1080.0;
+  static const double fixedSize1200 = 1200.0;
+  static const double fixedSize1440 = 1440.0;
+  static const double fixedSize1920 = 1920.0;
 
   // ==================== UTILITAIRES ====================
   /// Nombre minimum de colonnes pour le grid

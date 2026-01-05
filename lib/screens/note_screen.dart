@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:parametragesschool/core/responsive/responsive_wrapper.dart';
 import 'package:parametragesschool/core/responsive/responsive_grid.dart';
 import 'package:parametragesschool/core/theme/app_theme.dart';
+import 'package:parametragesschool/core/constant/constants.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/page_header.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/primary_button.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/secondary_button.dart';
@@ -104,9 +105,9 @@ class _NoteScreenState extends State<NoteScreen> {
               child: ResponsiveWrapper(
                 child: SingleChildScrollView(
                   padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width < 600 ? MediaQuery.of(context).size.width * 0.04 : 
-                                 MediaQuery.of(context).size.width < 1200 ? MediaQuery.of(context).size.width * 0.02 : MediaQuery.of(context).size.width * 0.015,
-                    vertical: MediaQuery.of(context).size.height * 0.01,
+                    horizontal: MediaQuery.of(context).size.width < 600 ? AppConstants.widthPercentage(context, AppConstants.paddingHorizontal) :
+                                 MediaQuery.of(context).size.width < 1200 ? AppConstants.widthPercentage(context, AppConstants.paddingHorizontal * 0.5) : AppConstants.widthPercentage(context, AppConstants.paddingHorizontal * 0.375),
+                    vertical: AppConstants.heightPercentage(context, AppConstants.paddingVertical),
                   ),
                   child: Column(
                     children: [
@@ -128,7 +129,7 @@ class _NoteScreenState extends State<NoteScreen> {
                         ],
                       ),
                       
-                      SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                      SizedBox(height: AppConstants.heightPercentage(context, AppConstants.paddingVertical)),
                       
                       StatCard(
                         title: 'Moyenne ${_matieres[_selectedMatiere]}',
@@ -137,7 +138,7 @@ class _NoteScreenState extends State<NoteScreen> {
                         color: AppTheme.secondaryColor,
                       ),
                       
-                      SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                      SizedBox(height: AppConstants.heightPercentage(context, AppConstants.paddingBetweenStats)),
                       
                       // Filters
                       InfoCard(
@@ -147,22 +148,22 @@ class _NoteScreenState extends State<NoteScreen> {
                             Text(
                               'Filtres',
                               style: TextStyle(
-                                fontSize: MediaQuery.of(context).size.width * 0.025,
+                                fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
                                 fontWeight: FontWeight.w600,
                                 color: AppTheme.textPrimary,
                               ),
                             ),
-                            SizedBox(height: MediaQuery.of(context).size.height * 0.013),
+                            SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                             ResponsiveGrid(
                               children: [
                                 DropdownButtonFormField<String>(
                                   value: _selectedMatiere,
                                   decoration: InputDecoration(
                                     labelText: 'Matière',
-                                    labelStyle: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.014),
+                                    labelStyle: TextStyle(fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize)),
                                     contentPadding: EdgeInsets.symmetric(
-                                      horizontal: MediaQuery.of(context).size.width * 0.02,
-                                      vertical: MediaQuery.of(context).size.height * 0.015,
+                                      horizontal: AppConstants.widthPercentage(context, AppConstants.paddingHorizontal),
+                                      vertical: AppConstants.heightPercentage(context, AppConstants.paddingVertical * 1.125),
                                     ),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(8),
@@ -186,10 +187,10 @@ class _NoteScreenState extends State<NoteScreen> {
                                   value: _selectedEtudiant,
                                   decoration: InputDecoration(
                                     labelText: 'Étudiant (optionnel)',
-                                    labelStyle: TextStyle(fontSize: MediaQuery.of(context).size.width * 0.014),
+                                    labelStyle: TextStyle(fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize)),
                                     contentPadding: EdgeInsets.symmetric(
-                                      horizontal: MediaQuery.of(context).size.width * 0.02,
-                                      vertical: MediaQuery.of(context).size.height * 0.015,
+                                      horizontal: AppConstants.widthPercentage(context, AppConstants.paddingHorizontal),
+                                      vertical: AppConstants.heightPercentage(context, AppConstants.paddingVertical * 1.125),
                                     ),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(8),
@@ -217,7 +218,7 @@ class _NoteScreenState extends State<NoteScreen> {
                                 ),
                               ],
                             ),
-                            SizedBox(height: MediaQuery.of(context).size.height * 0.013),
+                            SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                             Row(
                               children: [
                                 Expanded(
@@ -247,7 +248,7 @@ class _NoteScreenState extends State<NoteScreen> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(width: MediaQuery.of(context).size.width * 0.02),
+                                SizedBox(width: AppConstants.widthPercentage(context, AppConstants.paddingHorizontal)),
                                 SecondaryButton(
                                   text: 'Réinitialiser',
                                   onPressed: () {
@@ -264,7 +265,7 @@ class _NoteScreenState extends State<NoteScreen> {
                         ),
                       ),
                       
-                      SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                      SizedBox(height: AppConstants.heightPercentage(context, AppConstants.paddingBetweenStats)),
                       
                       // Notes List
                       InfoCard(
@@ -299,25 +300,26 @@ class _NoteScreenState extends State<NoteScreen> {
                                   'Aucune note pour cette matière',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                    color: AppTheme.textSecondary,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
                                   ),
-                                ),
-                              )
+                              ),
+                            )
                             else
                               ...notesMatiere.map((note) {
                                 return Padding(
-                                  padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.01),
+                                  padding: EdgeInsets.only(bottom: AppConstants.heightPercentage(context, AppConstants.paddingVertical)),
                                   child: Card(
                                     child: ListTile(
                                       leading: CircleAvatar(
-                                        radius: MediaQuery.of(context).size.width * 0.05,
+                                        radius: AppConstants.widthPercentage(context, AppConstants.avatarSize),
                                         backgroundColor: _getNoteColor(note.valeur),
                                         child: Text(
                                           note.valeur.toStringAsFixed(1),
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,
-                                            fontSize: MediaQuery.of(context).size.width * 0.015,
+                                            fontSize: AppConstants.responsiveFontSize(context, AppConstants.statTitleFontSize),
                                           ),
                                         ),
                                       ),
@@ -325,7 +327,7 @@ class _NoteScreenState extends State<NoteScreen> {
                                         _etudiants[note.etudiantId] ?? 'Étudiant inconnu',
                                         style: TextStyle(
                                           fontWeight: FontWeight.w500,
-                                          fontSize: MediaQuery.of(context).size.width * 0.016,
+                                          fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
                                         ),
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
@@ -334,7 +336,7 @@ class _NoteScreenState extends State<NoteScreen> {
                                         '${note.date.day}/${note.date.month}/${note.date.year}',
                                         style: TextStyle(
                                           color: AppTheme.textSecondary,
-                                          fontSize: MediaQuery.of(context).size.width * 0.012,
+                                          fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
                                         ),
                                       ),
                                       trailing: Row(
@@ -342,21 +344,21 @@ class _NoteScreenState extends State<NoteScreen> {
                                         children: [
                                           IconButton(
                                             icon: Icon(Icons.edit,
-                                                size: MediaQuery.of(context).size.width * 0.02),
+                                                size: AppConstants.widthPercentage(context, AppConstants.smallIconSize)),
                                             onPressed: () {
                                               // TODO: Éditer la note
                                             },
                                             color: AppTheme.primaryColor,
-                                            padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.01),
+                                            padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.smallIconSize)),
                                           ),
                                           IconButton(
                                             icon: Icon(Icons.delete,
-                                                size: MediaQuery.of(context).size.width * 0.02),
+                                                size: AppConstants.widthPercentage(context, AppConstants.smallIconSize)),
                                             onPressed: () {
                                               _showDeleteDialog(context, note);
                                             },
                                             color: AppTheme.errorColor,
-                                            padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.01),
+                                            padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.smallIconSize)),
                                           ),
                                         ],
                                       ),
@@ -368,7 +370,7 @@ class _NoteScreenState extends State<NoteScreen> {
                         ),
                       ),
                       
-                      SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                      SizedBox(height: AppConstants.heightPercentage(context, AppConstants.paddingBetweenStats)),
                       
                       // Statistics by Subject
                       InfoCard(
@@ -383,7 +385,7 @@ class _NoteScreenState extends State<NoteScreen> {
                                 color: AppTheme.textPrimary,
                               ),
                             ),
-                            SizedBox(height: MediaQuery.of(context).size.height * 0.013),
+                            SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                             ResponsiveGrid(
                               children: _matieres.entries.map((matiere) {
                                 final matiereNotes = _notes
@@ -394,7 +396,7 @@ class _NoteScreenState extends State<NoteScreen> {
                                     : 0.0;
                                 
                                 return Container(
-                                  padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.015),
+                                  padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.cardPadding)),
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(12),
@@ -411,20 +413,20 @@ class _NoteScreenState extends State<NoteScreen> {
                                     children: [
                                       Text(
                                         matiere.value,
-                                        style: TextStyle(
-                                          fontSize: MediaQuery.of(context).size.width * 0.018,
-                                          fontWeight: FontWeight.w600,
+                                      style: TextStyle(
+                                        fontSize: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize),
+                                        fontWeight: FontWeight.w600,
                                           color: AppTheme.textPrimary,
                                         ),
                                       ),
-                                      SizedBox(height: MediaQuery.of(context).size.height * 0.007),
+                                      SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingTiny)),
                                       Row(
                                         children: [
                                           Expanded(
                                             child: Text(
                                               'Moyenne',
                                               style: TextStyle(
-                                                fontSize: MediaQuery.of(context).size.width * 0.011,
+                                                fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
                                                 color: AppTheme.textSecondary,
                                               ),
                                               maxLines: 1,
@@ -433,8 +435,8 @@ class _NoteScreenState extends State<NoteScreen> {
                                           ),
                                           Container(
                                             padding: EdgeInsets.symmetric(
-                                              horizontal: MediaQuery.of(context).size.width * 0.015,
-                                              vertical: MediaQuery.of(context).size.height * 0.004,
+                                              horizontal: AppConstants.widthPercentage(context, AppConstants.cardPadding),
+                                              vertical: AppConstants.heightPercentage(context, AppConstants.spacingTiny),
                                             ),
                                             decoration: BoxDecoration(
                                               color: _getNoteColor(moyenne),
@@ -445,7 +447,7 @@ class _NoteScreenState extends State<NoteScreen> {
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.bold,
-                                                fontSize: MediaQuery.of(context).size.width * 0.011,
+                                                fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
                                               ),
                                             ),
                                           ),
@@ -475,7 +477,7 @@ class _NoteScreenState extends State<NoteScreen> {
                                 color: AppTheme.textPrimary,
                               ),
                             ),
-                            SizedBox(height: MediaQuery.of(context).size.height * 0.013),
+                            SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
                             ResponsiveGrid(
                               children: [
                                 SecondaryButton(

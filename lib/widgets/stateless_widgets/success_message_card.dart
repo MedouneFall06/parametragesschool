@@ -21,34 +21,34 @@ class SuccessMessageCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.cardPadding)),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color.withOpacity(0.3)),
+        color: color.withOpacity(AppConstants.veryLowOpacity),
+        borderRadius: BorderRadius.circular(AppConstants.borderRadius),
+        border: Border.all(color: color.withOpacity(AppConstants.lowOpacity)),
       ),
       child: Column(
         children: [
           Icon(
             icon,
-            size: 60,
+            size: AppConstants.widthPercentage(context, AppConstants.avatarSize),
             color: color,
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.paddingBetweenCards)),
           Text(
             title,
-            style: const TextStyle(
-              fontSize: 20,
+            style: TextStyle(
+              fontSize: AppConstants.responsiveFontSize(context, AppConstants.hugeFontSize),
               fontWeight: FontWeight.w600,
               color: AppTheme.textPrimary,
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
           Text(
             message,
-            style: const TextStyle(
+            style: TextStyle(
               color: AppTheme.textSecondary,
-              fontSize: 14,
-              height: 1.5,
+              fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
+              height: AppConstants.textHeight,
             ),
             textAlign: TextAlign.center,
           ),

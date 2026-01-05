@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:parametragesschool/core/theme/app_theme.dart';
 import 'package:parametragesschool/widgets/stateless_widgets/page_header.dart';
 import 'package:parametragesschool/core/responsive/responsive_grid.dart';
+import 'package:parametragesschool/core/constant/constants.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -26,11 +27,12 @@ class HomeScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Section ACADÉMIQUE
-                    _buildSectionTitle('📊 ACADÉMIQUE'),
+                    _buildSectionTitle(context, '📊 ACADÉMIQUE'),
                     ResponsiveGrid(
-                      customSpacing: 12,
+                      customSpacing: AppConstants.widthPercentage(context, AppConstants.spacingSmall),
                       children: [
                         _buildModuleCard(
+                          context: context,
                           icon: Icons.people_alt,
                           title: 'Étudiants',
                           subtitle: 'Gérer les étudiants',
@@ -38,6 +40,7 @@ class HomeScreen extends StatelessWidget {
                           onTap: () => context.pushNamed('etudiants'),
                         ),
                         _buildModuleCard(
+                          context: context,
                           icon: Icons.grade,
                           title: 'Notes',
                           subtitle: 'Saisie et consultation',
@@ -45,6 +48,7 @@ class HomeScreen extends StatelessWidget {
                           onTap: () => context.pushNamed('notes'),
                         ),
                         _buildModuleCard(
+                          context: context,
                           icon: Icons.class_,
                           title: 'Classes',
                           subtitle: 'Classes et niveaux',
@@ -52,6 +56,7 @@ class HomeScreen extends StatelessWidget {
                           onTap: () => context.pushNamed('classes'),
                         ),
                         _buildModuleCard(
+                          context: context,
                           icon: Icons.description,
                           title: 'Bulletin',
                           subtitle: 'Bulletins scolaires',
@@ -59,6 +64,7 @@ class HomeScreen extends StatelessWidget {
                           onTap: () => context.pushNamed('bulletin'),
                         ),
                         _buildModuleCard(
+                          context: context,
                           icon: Icons.menu_book,
                           title: 'Matières',
                           subtitle: 'Matières enseignées',
@@ -66,6 +72,7 @@ class HomeScreen extends StatelessWidget {
                           onTap: () => context.pushNamed('matieres'),
                         ),
                         _buildModuleCard(
+                          context: context,
                           icon: Icons.person_off,
                           title: 'Absences',
                           subtitle: 'Gestion des absences',
@@ -75,14 +82,15 @@ class HomeScreen extends StatelessWidget {
                       ],
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingLarge)),
                     
                     // Section PLANNING
-                    _buildSectionTitle('📅 PLANNING'),
+                    _buildSectionTitle(context, '📅 PLANNING'),
                     ResponsiveGrid(
-                      customSpacing: 12,
+                      customSpacing: AppConstants.widthPercentage(context, AppConstants.spacingSmall),
                       children: [
                         _buildModuleCard(
+                          context: context,
                           icon: Icons.calendar_today,
                           title: 'Emploi du temps',
                           subtitle: 'Planning des cours',
@@ -90,6 +98,7 @@ class HomeScreen extends StatelessWidget {
                           onTap: () => context.pushNamed('schedule'),
                         ),
                         _buildModuleCard(
+                          context: context,
                           icon: Icons.event,
                           title: 'Calendrier scolaire',
                           subtitle: 'Événements et vacances',
@@ -99,14 +108,15 @@ class HomeScreen extends StatelessWidget {
                       ],
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingLarge)),
                     
                     // Section PERSONNEL
-                    _buildSectionTitle('👥 PERSONNEL'),
+                    _buildSectionTitle(context, '👥 PERSONNEL'),
                     ResponsiveGrid(
-                      customSpacing: 12,
+                      customSpacing: AppConstants.widthPercentage(context, AppConstants.spacingSmall),
                       children: [
                         _buildModuleCard(
+                          context: context,
                           icon: Icons.school,
                           title: 'Enseignants',
                           subtitle: 'Gestion du personnel',
@@ -114,6 +124,7 @@ class HomeScreen extends StatelessWidget {
                           onTap: () => context.pushNamed('enseignants'),
                         ),
                         _buildModuleCard(
+                          context: context,
                           icon: Icons.assessment,
                           title: 'Évaluation',
                           subtitle: 'Évaluation enseignants',
@@ -123,14 +134,15 @@ class HomeScreen extends StatelessWidget {
                       ],
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingLarge)),
                     
                     // Section RAPPORTS & ANALYSE
-                    _buildSectionTitle('📈 RAPPORTS & ANALYSE'),
+                    _buildSectionTitle(context, '📈 RAPPORTS & ANALYSE'),
                     ResponsiveGrid(
-                      customSpacing: 12,
+                      customSpacing: AppConstants.widthPercentage(context, AppConstants.spacingSmall),
                       children: [
                         _buildModuleCard(
+                          context: context,
                           icon: Icons.bar_chart,
                           title: 'Rapports',
                           subtitle: 'Rapports généraux',
@@ -138,6 +150,7 @@ class HomeScreen extends StatelessWidget {
                           onTap: () => context.pushNamed('reports'),
                         ),
                         _buildModuleCard(
+                          context: context,
                           icon: Icons.analytics,
                           title: 'Statistiques',
                           subtitle: 'Statistiques avancées',
@@ -145,6 +158,7 @@ class HomeScreen extends StatelessWidget {
                           onTap: () => context.pushNamed('advancedStats'),
                         ),
                         _buildModuleCard(
+                          context: context,
                           icon: Icons.auto_awesome,
                           title: 'Rapports auto',
                           subtitle: 'Rapports automatiques',
@@ -154,14 +168,15 @@ class HomeScreen extends StatelessWidget {
                       ],
                     ),
                     
-                    const SizedBox(height: 24),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingLarge)),
                     
                     // Section ADMINISTRATION
-                    _buildSectionTitle('⚙️ ADMINISTRATION'),
+                    _buildSectionTitle(context, '⚙️ ADMINISTRATION'),
                     ResponsiveGrid(
-                      customSpacing: 12,
+                      customSpacing: AppConstants.widthPercentage(context, AppConstants.spacingSmall),
                       children: [
                         _buildModuleCard(
+                          context: context,
                           icon: Icons.settings,
                           title: 'Paramètres',
                           subtitle: 'Paramètres système',
@@ -169,6 +184,7 @@ class HomeScreen extends StatelessWidget {
                           onTap: () => context.pushNamed('settings'),
                         ),
                         _buildModuleCard(
+                          context: context,
                           icon: Icons.backup,
                           title: 'Backup',
                           subtitle: 'Sauvegarde des données',
@@ -176,6 +192,7 @@ class HomeScreen extends StatelessWidget {
                           onTap: () => context.pushNamed('backup'),
                         ),
                         _buildModuleCard(
+                          context: context,
                           icon: Icons.people_outline,
                           title: 'Utilisateurs',
                           subtitle: 'Gestion des comptes',
@@ -183,6 +200,7 @@ class HomeScreen extends StatelessWidget {
                           onTap: () => context.pushNamed('userManagement'),
                         ),
                         _buildModuleCard(
+                          context: context,
                           icon: Icons.sync,
                           title: 'Sync',
                           subtitle: 'Synchronisation',
@@ -190,6 +208,7 @@ class HomeScreen extends StatelessWidget {
                           onTap: () => context.pushNamed('sync'),
                         ),
                         _buildModuleCard(
+                          context: context,
                           icon: Icons.dashboard,
                           title: 'Admin Dashboard',
                           subtitle: 'Tableau de bord admin',
@@ -197,6 +216,7 @@ class HomeScreen extends StatelessWidget {
                           onTap: () => context.pushNamed('adminDashboard'),
                         ),
                         _buildModuleCard(
+                          context: context,
                           icon: Icons.history,
                           title: 'Audit Log',
                           subtitle: 'Journal d\'audit',
@@ -206,7 +226,7 @@ class HomeScreen extends StatelessWidget {
                       ],
                     ),
                     
-                    const SizedBox(height: 32),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingExtraLarge)),
                   ],
                 ),
               ),
@@ -217,13 +237,13 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSectionTitle(String title) {
+  Widget _buildSectionTitle(BuildContext context, String title) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
+      padding: EdgeInsets.only(bottom: AppConstants.heightPercentage(context, AppConstants.spacingSmall)),
       child: Text(
         title,
-        style: const TextStyle(
-          fontSize: 18,
+        style: TextStyle(
+          fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
           fontWeight: FontWeight.bold,
           color: AppTheme.textPrimary,
         ),
@@ -232,6 +252,7 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _buildModuleCard({
+    required BuildContext context,
     required IconData icon,
     required String title,
     required String subtitle,
@@ -240,48 +261,54 @@ class HomeScreen extends StatelessWidget {
   }) {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppConstants.borderRadius)),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppConstants.borderRadius),
         child: Padding(
-          padding: const EdgeInsets.all(12),
+          padding: EdgeInsets.all(AppConstants.widthPercentage(context, AppConstants.cardPadding)),
           child: Row(
             children: [
               Container(
-                width: 40,
-                height: 40,
+                width: AppConstants.widthPercentage(context, AppConstants.iconSize),
+                height: AppConstants.widthPercentage(context, AppConstants.iconSize),
                 decoration: BoxDecoration(
                   color: color.withOpacity(0.15),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(AppConstants.smallBorderRadius),
                 ),
-                child: Icon(icon, color: color, size: 20),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: AppConstants.widthPercentage(context, AppConstants.spacingSmall)),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      title,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: AppTheme.textPrimary,
-                      ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Icon(icon, color: color, size: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize)),
+                        Text(
+                          title,
+                          style: TextStyle(
+                            fontSize: AppConstants.responsiveFontSize(context, AppConstants.titleFontSize),
+                            fontWeight: FontWeight.w600,
+                            color: AppTheme.textPrimary,
+                          ),
+                        ),
+                        
+                      ],
                     ),
-                    const SizedBox(height: 2),
+                    SizedBox(height: AppConstants.heightPercentage(context, AppConstants.spacingTiny)),
                     Text(
                       subtitle,
-                      style: const TextStyle(
-                        fontSize: 11,
+                      style: TextStyle(
+                        fontSize: AppConstants.responsiveFontSize(context, AppConstants.infoFontSize),
                         color: AppTheme.textSecondary,
                       ),
                     ),
                   ],
                 ),
               ),
-              const Icon(Icons.chevron_right, size: 16, color: Colors.grey),
+              Icon(Icons.chevron_right, size: AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize), color: AppTheme.textSecondary),
             ],
           ),
         ),

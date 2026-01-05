@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/theme/app_theme.dart';
+import '../../core/constant/constants.dart';
 
 class PageHeader extends StatelessWidget {
   final String title;
@@ -28,8 +29,8 @@ class PageHeader extends StatelessWidget {
 
     return Container(
       padding: EdgeInsets.symmetric(
-        horizontal: MediaQuery.of(context).size.width * 0.02,
-        vertical: MediaQuery.of(context).size.height * 0.01,
+        horizontal: AppConstants.widthPercentage(context, AppConstants.paddingHorizontal),
+        vertical: AppConstants.heightPercentage(context, AppConstants.paddingVertical),
       ),
       decoration: BoxDecoration(
         color: AppTheme.primaryColor,
@@ -37,7 +38,7 @@ class PageHeader extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.1),
-            blurRadius: 8,
+            blurRadius: AppConstants.lightShadowBlur,
             offset: const Offset(0, 4),
           ),
         ],
@@ -48,11 +49,11 @@ class PageHeader extends StatelessWidget {
           // Bouton Retour - AFFICHER TOUJOURS (sauf si explicitement désactivé)
           if (shouldShowBackButton)
             Padding(
-              padding: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.01),
+              padding: EdgeInsets.only(right: AppConstants.widthPercentage(context, AppConstants.spacingSmall)),
               child: IconButton(
                 icon: Icon(Icons.arrow_back_ios_new, 
                   color: Colors.white, 
-                  size: MediaQuery.of(context).size.width * 0.025),
+                  size: AppConstants.widthPercentage(context, AppConstants.smallIconSize)),
                 onPressed: onBackPressed ?? () => context.pop(),
                 tooltip: 'Retour',
               ),
@@ -67,13 +68,13 @@ class PageHeader extends StatelessWidget {
                   children: [
                     // Si pas de bouton retour mais qu'on veut l'espacement
                     if (!shouldShowBackButton)
-                      SizedBox(width: MediaQuery.of(context).size.width * 0.06), // Espace pour alignement
+                      SizedBox(width: AppConstants.widthPercentage(context, AppConstants.spacingExtraLarge)), // Espace pour alignement
 
                     Expanded(
                       child: Text(
                         title,
                         style: TextStyle(
-                          fontSize: max(18,MediaQuery.of(context).size.width * 0.035),
+                          fontSize: max(AppConstants.hugeFontSize, AppConstants.responsiveFontSize(context, AppConstants.titleFontSize)),
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
@@ -85,17 +86,17 @@ class PageHeader extends StatelessWidget {
                   ],
                 ),
                 
-                if (subtitle != null)
-                  Padding(
-                    padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.004),
-                    child: Text(
-                      subtitle!,
-                      style: TextStyle(
-                        fontSize: max(10, MediaQuery.of(context).size.width * 0.016),
-                        color: Colors.white70,
+                    if (subtitle != null)
+                      Padding(
+                        padding: EdgeInsets.only(top: AppConstants.heightPercentage(context, AppConstants.spacingTiny)),
+                        child: Text(
+                          subtitle!,
+                          style: TextStyle(
+                            fontSize: max(AppConstants.smallFontSize, AppConstants.responsiveFontSize(context, AppConstants.subtitleFontSize)),
+                            color: Colors.white70,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
               ],
             ),
           ),

@@ -30,18 +30,18 @@ class StatCard extends StatelessWidget {
                 Text(
                   title,
                   style: TextStyle(
-                    fontSize: MediaQuery.of(context).size.width * 0.025,
+                    fontSize: AppConstants.responsiveFontSize(context, AppConstants.statTitleFontSize),
                     color: AppTheme.textSecondary,
                   ),
                 ),
-                Icon(icon, color: AppTheme.primaryColor, size: MediaQuery.of(context).size.width * 0.04),
+                Icon(icon, color: AppTheme.primaryColor, size: AppConstants.widthPercentage(context, AppConstants.iconSize)),
               ],
             ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+            SizedBox(height: AppConstants.heightPercentage(context, AppConstants.paddingVertical)),
             Text(
               value,
               style: TextStyle(
-                fontSize: MediaQuery.of(context).size.width * 0.045,
+                fontSize: AppConstants.responsiveFontSize(context, AppConstants.statValueFontSize),
                 fontWeight: FontWeight.bold,
                 color: AppTheme.textPrimary,
               ),

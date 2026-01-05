@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:parametragesschool/core/theme/app_theme.dart';
+import 'package:parametragesschool/core/constant/constants.dart';
 
 class SupportOptionTile extends StatelessWidget {
   final IconData icon;
@@ -25,17 +26,17 @@ class SupportOptionTile extends StatelessWidget {
       child: ListTile(
         onTap: onTap,
         leading: Container(
-          width: 40,
-          height: 40,
+          width: AppConstants.widthPercentage(context, AppConstants.iconSize),
+          height: AppConstants.widthPercentage(context, AppConstants.iconSize),
           decoration: BoxDecoration(
-            color: color.withOpacity(0.1),
+            color: color.withOpacity(AppConstants.veryLowOpacity),
             shape: BoxShape.circle,
           ),
           child: Icon(icon, color: color),
         ),
         title: Text(
           title,
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: FontWeight.w600,
             color: AppTheme.textPrimary,
           ),

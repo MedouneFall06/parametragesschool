@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
+import '../../core/constant/constants.dart';
 
 
 class SecondaryButton extends StatelessWidget {
@@ -35,8 +36,8 @@ class SecondaryButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
           ),
           padding: EdgeInsets.symmetric(
-            horizontal: MediaQuery.of(context).size.width * 0.03,
-            vertical: MediaQuery.of(context).size.height * 0.01,
+            horizontal: AppConstants.widthPercentage(context, AppConstants.paddingHorizontal),
+            vertical: AppConstants.heightPercentage(context, AppConstants.paddingVertical),
           ),
         ),
       ),
